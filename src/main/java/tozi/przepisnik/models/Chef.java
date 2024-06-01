@@ -1,18 +1,21 @@
 package tozi.przepisnik.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.*;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Data
-@NoArgsConstructor
 public class Chef {
     @Id
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "chef_id")
+    private Integer chefId;
 
     private String name;
 
     private int age;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "createdBy")
+    private List<Recipe> recipes;
 }

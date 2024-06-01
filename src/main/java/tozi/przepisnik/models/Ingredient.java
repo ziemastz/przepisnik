@@ -5,16 +5,17 @@ import lombok.*;
 
 @Entity
 @Data
-@NoArgsConstructor
 public class Ingredient {
     @Id
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ingredient_id")
+    private Integer ingredientId;
 
     private String name;
 
     private boolean isVegetarian;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ingredient id", referencedColumnName = "ingredient_id", nullable = true)
+    @JoinColumn(name = "ingredient nutrients", referencedColumnName = "nutrients_id", nullable = true)
     private Nutrients nutrients;
 }

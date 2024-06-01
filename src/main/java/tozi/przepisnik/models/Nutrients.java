@@ -5,13 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
 
+/**
+ * Nutrients in 100 grams of the ingredient.
+ */
 @Entity
 @Data
 @NoArgsConstructor
 public class Nutrients {
     @Id
-    @Column(name = "ingredient_id")
-    private Integer ingredientId;
+    @Column(name = "nutrients_id")
+    private Integer nutrientsId;
 
     private double proteins;
 
