@@ -12,10 +12,18 @@ public class Chef {
     @Column(name = "chef_id")
     private Integer chefId;
 
+    private String username;
+
+    private String password;
+
     private String name;
+
+    private String email;
 
     private Integer age;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "createdBy")
     private List<Recipe> recipes;
+
+    private Role role;
 }

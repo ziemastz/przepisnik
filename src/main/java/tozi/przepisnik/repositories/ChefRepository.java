@@ -7,4 +7,6 @@ import tozi.przepisnik.models.Chef;
 @Repository
 public interface ChefRepository extends JpaRepository<Chef, Integer> {
     Chef findByName(String name);
+
+    Chef findByUsername(String username);
 }
