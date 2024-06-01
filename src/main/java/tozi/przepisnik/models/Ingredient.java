@@ -15,7 +15,7 @@ public class Ingredient {
 
     private boolean isVegetarian;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ingredient nutrients", referencedColumnName = "nutrients_id", nullable = true)
     private Nutrients nutrients;
 }

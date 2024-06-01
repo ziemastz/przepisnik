@@ -14,7 +14,7 @@ public class Chef {
 
     private String name;
 
-    private int age;
+    private Integer age;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "createdBy")
     private List<Recipe> recipes;
