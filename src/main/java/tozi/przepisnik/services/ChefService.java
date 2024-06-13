@@ -19,7 +19,6 @@ public class ChefService implements IChefServer {
 
     private Chef loggedChef = new Chef();
 
-    @Autowired
     public ChefService(ChefRepository chefRepository) {
         this.chefRepository = chefRepository;
     }

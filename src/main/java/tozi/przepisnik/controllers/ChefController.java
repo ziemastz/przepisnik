@@ -13,7 +13,6 @@ import java.util.List;
 public class ChefController {
     private final IChefServer chefServer;
 
-    @Autowired
     public ChefController(IChefServer chefServer) {
         this.chefServer = chefServer;
     }
