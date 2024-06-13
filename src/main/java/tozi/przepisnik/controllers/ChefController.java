@@ -9,10 +9,14 @@ import tozi.przepisnik.services.interfaces.IChefServer;
 import java.util.List;
 
 @RestController
-@RequestMapping("chef")
+@RequestMapping("/chef")
 public class ChefController {
+    private final IChefServer chefServer;
+
     @Autowired
-    private IChefServer chefServer;
+    public ChefController(IChefServer chefServer) {
+        this.chefServer = chefServer;
+    }
 
     @PostMapping("/add")
     public void addChef(@RequestBody ChefDTO chef) {

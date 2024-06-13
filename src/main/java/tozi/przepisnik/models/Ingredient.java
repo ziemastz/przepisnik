@@ -8,7 +8,6 @@ import lombok.*;
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ingredient_id")
     private Integer ingredientId;
 
     private String name;
@@ -16,6 +15,5 @@ public class Ingredient {
     private boolean isVegetarian;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ingredient nutrients", referencedColumnName = "nutrients_id", nullable = true)
     private Nutrients nutrients;
 }

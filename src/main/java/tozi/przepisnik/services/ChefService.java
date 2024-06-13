@@ -15,10 +15,14 @@ import java.util.List;
 @Service
 public class ChefService implements IChefServer {
 
-    @Autowired
-    private ChefRepository chefRepository;
+    private final ChefRepository chefRepository;
 
     private Chef loggedChef = new Chef();
+
+    @Autowired
+    public ChefService(ChefRepository chefRepository) {
+        this.chefRepository = chefRepository;
+    }
 
     @Override
     public void Create(ChefDTO newChef) {

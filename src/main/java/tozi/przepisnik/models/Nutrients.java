@@ -13,7 +13,6 @@ import lombok.*;
 @NoArgsConstructor
 public class Nutrients {
     @Id
-    @Column(name = "nutrients_id")
     private Integer nutrientsId;
 
     private double proteins;
