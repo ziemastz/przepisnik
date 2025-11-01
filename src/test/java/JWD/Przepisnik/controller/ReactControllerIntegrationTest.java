@@ -7,21 +7,33 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class HomeControllerIntegrationTest {
+class ReactControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void shouldAllowAccessToRootPathWithoutAuthentication() throws Exception {
+    void shouldForwardRootRequestToIndexHtml() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("index"));
+                .andExpect(forwardedUrl("/index.html"));
+    }
+
+    @Test
+    void shouldForwardNestedSpaRoutesToIndexHtml() throws Exception {
+        mockMvc.perform(get("/recipes/list"))
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/index.html"));
+    }
+
+    @Test
+    void shouldNotInterceptApiRequests() throws Exception {
+        mockMvc.perform(get("/api/ingredients"))
+                .andExpect(status().isNotFound());
     }
 }
-

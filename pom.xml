@@ -44,10 +44,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
@@ -111,6 +107,7 @@
 				<executions>
 					<execution>
 						<id>install node and npm</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>install-node-and-npm</goal>
 						</goals>
@@ -120,6 +117,7 @@
 					</execution>
 					<execution>
 						<id>npm install</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>npm</goal>
 						</goals>
@@ -129,6 +127,7 @@
 					</execution>
 					<execution>
 						<id>npm build</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>npm</goal>
 						</goals>
@@ -144,7 +143,7 @@
 				<executions>
 					<execution>
 						<id>copy-react-build</id>
-						<phase>validate</phase>
+						<phase>process-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
