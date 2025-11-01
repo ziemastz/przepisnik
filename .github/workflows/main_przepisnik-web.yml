@@ -39,6 +39,7 @@ jobs:
 
       - name: Copy frontend build into Spring Boot static resources
         run: |
+          mkdir -p src/main/resources/static
           rm -rf src/main/resources/static/*
           cp -r frontend/build/* src/main/resources/static/
 
