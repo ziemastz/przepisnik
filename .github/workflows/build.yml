@@ -20,6 +20,6 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Build with Maven
+      - name: Build with Maven & Tests
         run: mvn -B clean verify
 
