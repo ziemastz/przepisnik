@@ -31,3 +31,21 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# === FRONTEND (React) ===
+/frontend/node_modules/
+/frontend/build/
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+
+# Editor folders
+/frontend/.vscode/
+/frontend/.idea/
+
+# npm / yarn logs
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+frontend/package-lock.json
