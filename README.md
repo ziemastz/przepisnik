@@ -1,8 +1,19 @@
 # 🥘 Przepiśnik
+
 Projekt aplikacji webowej do zarządzania przepisami kulinarnymi z kalkulatorem skłądników odżywczysz BTW
 
 **Praca dyplomowa — studia podyplomowe „Java Web Developer”** na Akademia Techniczno-Informatyczna w Naukach Stosowanych we Wrocławie
 
+---
+## 🚀 CI/CD
+
+| Pipeline | Status |
+|---------|--------|
+| Build & Test | [![Build](https://github.com/ziemastz/przepisnik/actions/workflows/build.yml/badge.svg)](https://github.com/ziemastz/przepisnik/actions/workflows/build.yml) |
+| Deploy to Azure | [![Deploy](https://github.com/ziemastz/przepisnik/actions/workflows/main_przepisnik-web.yml/badge.svg)](https://github.com/ziemastz/przepisnik/actions/workflows/main_przepisnik-web.yml) |
+
+### 🌍 Live deployment
+https://przepisnik-web-dmbwcwe2etdke5ge.westeurope-01.azurewebsites.net/
 
 ---
 
