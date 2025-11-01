@@ -24,8 +24,26 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Copy frontend build into Spring Boot static resources
+        run: |
+          rm -rf src/main/resources/static/*
+          cp -r frontend/build/* src/main/resources/static/
+
+      - name: Build backend JAR (with packaged React)
+        run: mvn clean install -DskipTests=false
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
