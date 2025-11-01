@@ -82,13 +82,19 @@ git clone https://github.com/<twoje-konto>/<nazwa-repo>.git
 
 cd <nazwa-repo>
 
-# Uruchomienie aplikacji (Spring Boot)
+# Uruchomienie aplikacji backend (Spring Boot)
 mvn spring-boot:run
+
+# Uruchamianie aplikacji fronted (React.js)
+cd frontend
+npm install
+npm start
 ```
 
 Aplikacja będzie dostępna pod adresem: http://localhost:8080
 
 # 👤 Autor
 
-Tomasz Ziemek
-Studia podyplomowe „Java Web Developer” nr albumu 1057
+Tomasz Z
+
+Studia podyplomowe „Java Web Developer”
