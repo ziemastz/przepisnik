@@ -1,8 +1,10 @@
 # 🥘 Przepiśnik
 
-Projekt aplikacji webowej do zarządzania przepisami kulinarnymi z kalkulatorem skłądników odżywczysz BTW
+Aplikacja webowa do zarządzania przepisami kulinarnymi z wbudowanym kalkulatorem wartości odżywczych (B/T/W)
 
-**Praca dyplomowa — studia podyplomowe „Java Web Developer”** na Akademia Techniczno-Informatyczna w Naukach Stosowanych we Wrocławie
+**Praca dyplomowa — studia podyplomowe „Java Web Developer”**
+
+Akademia Techniczno-Informatyczna w Naukach Stosowanych we Wrocławie
 
 ---
 ## 🚀 CI/CD
@@ -29,7 +31,7 @@ Główne funkcjonalności:
 - możliwość dodawania zdjęć potraw,
 - rejestracja i logowanie użytkowników.
 
-Projekt został zrealizowany jako część pracy dyplomowej i ma na celu praktyczne zastosowanie technologii Java oraz podejścia wielowarstwowego w tworzeniu aplikacji webowych.
+Projekt został zrealizowany w ramach pracy dyplomowej i stanowi praktyczne zastosowanie technologii Java (Spring Boot) oraz React.
 
 ---
 
@@ -38,19 +40,19 @@ Projekt został zrealizowany jako część pracy dyplomowej i ma na celu praktyc
 | Warstwa        | Zastosowane technologie |
 |----------------|------------------------|
 | Backend        | Java 17, Spring Boot, Spring Web, Spring Data JPA, Hibernate |
-| Frontend       | React |
+| Frontend       | React (TypeScript/JavaScript) |
 | Baza danych    | H2 |
 | Bezpieczeństwo | Spring Security |
 | Budowanie      | Maven |
 | CI/CD          | GitHub Actions + Azure Web App |
-| UI (opcjonalnie)| Bootstrap / Tailwind / własne style CSS |
+| UI | Bootstrap / własne style CSS |
 
 ---
 
 ## 🧱 Architektura aplikacji
 Aplikacja składa się z dwóch warstw:
-- **Backend (REST API)** napisany w Spring Boot
-- **Frontend (SPA)** napisany w React, kompilowany do statycznych plików i serwowany przez backend
+- **Backend (REST API)** napisany w Spring Boot, obsługuje logikę biznesową i komunikację z bazą danych
+- **Frontend (SPA)** napisany w React, renderowany po stronie klienta i kompilowany do statycznych plików serwowanych przez Spring Boot
 
 Podejście: architektura warstwowa (Controller → Service → Repository → Entity/DTO)
 
@@ -90,23 +92,29 @@ Legenda:
 
 ```bash
 # Klonowanie repozytorium
-git clone https://github.com/<twoje-konto>/<nazwa-repo>.git
+git clone https://github.com/ziemastz/przepisnik.git
 
-cd <nazwa-repo>
+cd przepisnik
 
 # Uruchomienie aplikacji backend (Spring Boot)
 mvn spring-boot:run
-
+```
+Frontend znajduje się w folderze `/frontend`:
+```bash
 # Uruchamianie aplikacji fronted (React.js)
 cd frontend
 npm install
 npm start
 ```
 
-Aplikacja będzie dostępna pod adresem: http://localhost:8080
+Aplikacja będzie dostępna pod adresem: 
+👉 http://localhost:8080
+
+(lub http://localhost:3000
+ dla samego frontendu w trybie dev)
 
 # 👤 Autor
 
 Tomasz Z
 
-Studia podyplomowe „Java Web Developer”
+Praca dyplomowa — studia podyplomowe „Java Web Developer”
