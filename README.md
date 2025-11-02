@@ -10,6 +10,7 @@ Projekt aplikacji webowej do zarządzania przepisami kulinarnymi z kalkulatorem 
 | Pipeline | Status |
 |---------|--------|
 | Build & Test | [![Build](https://github.com/ziemastz/przepisnik/actions/workflows/build.yml/badge.svg)](https://github.com/ziemastz/przepisnik/actions/workflows/build.yml) |
+| Coverage | ![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ziemastz_przepisnik&metric=coverage) |
 | Deploy to Azure | [![Deploy](https://github.com/ziemastz/przepisnik/actions/workflows/main_przepisnik-web.yml/badge.svg)](https://github.com/ziemastz/przepisnik/actions/workflows/main_przepisnik-web.yml) |
 
 ### 🌍 Live deployment
@@ -37,11 +38,11 @@ Projekt został zrealizowany jako część pracy dyplomowej i ma na celu praktyc
 | Warstwa        | Zastosowane technologie |
 |----------------|------------------------|
 | Backend        | Java 17, Spring Boot, Spring Web, Spring Data JPA, Hibernate |
-| Frontend       | React + Vite / Create React App *(dopasuj do projektu)* |
-| Baza danych    | PostgreSQL *(lub MySQL → dopasuj)* |
-| Bezpieczeństwo | Spring Security + BCrypt |
+| Frontend       | React |
+| Baza danych    | H2 |
+| Bezpieczeństwo | Spring Security |
 | Budowanie      | Maven |
-| CI/CD          | GitHub Actions + Azure Web App / Azure Spring Apps *(jeśli będzie użyte)* |
+| CI/CD          | GitHub Actions + Azure Web App |
 | UI (opcjonalnie)| Bootstrap / Tailwind / własne style CSS |
 
 ---
@@ -60,15 +61,15 @@ Podejście: architektura warstwowa (Controller → Service → Repository → En
 | Etap | Opis | Status |
 |------|------|--------|
 | Utworzenie repozytorium projektu i README.md | Założenie repo i wstępny opis projektu | ✅ Zrobione |
-| Utworzenie aplikacji Spring Boot | Dodanie podstawowych modułów (Web, JPA, Security, Validation) | ⏳ W trakcie / do zrobienia |
+| Utworzenie aplikacji Spring Boot | Dodanie podstawowych modułów (Web, JPA, Security, Validation) | ✅ Zrobione|
 | Konfiguracja baz danych | Utworzenie modeli, repozytoriów, migracji (Flyway/Liquibase – opcjonalnie) | ⏳ |
 | Stworzenie podstawowego CRUD (przepisy) | Endpoints REST + testy podstawowe | ⏳ |
 | Dodanie logowania i rejestracji użytkownika | Spring Security + BCrypt | ⏳ |
-| Konfiguracja GitHub Actions (CI) | Automatyczne budowanie projektu | ⏳ |
-| Publikacja backendu na Azure | Azure Web App / Azure Spring Apps | ⏳ |
+| Konfiguracja GitHub Actions (CI) | Automatyczne budowanie projektu | ✅ Zrobione |
+| Publikacja backendu na Azure | Azure Web App / Azure Spring Apps | ✅ Zrobione |
 | Stworzenie projektu React | Inicjalizacja projektu + routing + UI listy przepisów | ⏳ |
 | Integracja backend ↔ frontend | Wyświetlanie danych API w React | ⏳ |
-| Budowanie frontendu wewnątrz Spring Boot | Włączenie React `npm build` → `static/` w Spring | ⏳ |
+| Budowanie frontendu wewnątrz Spring Boot | Włączenie React `npm build` → `static/` w Spring | ✅ Zrobione |
 | Finalne testy i optymalizacje | UX, poprawki wizualne, walidacje | ⏳ |
 | Dokumentacja do pracy dyplomowej | Opis architektury, technologii, wniosków | ⏳ |
 

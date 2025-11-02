@@ -17,7 +17,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-
-      - name: Build with Maven & Tests
-        run: mvn -B clean verify
-
+      
+      - name: Build, Test & SonarCloud
+        run: | 
+          mvn -B clean verify sonar:sonar \
+            -Dsonar.projectKey=ziemastz_przepisnik \
+            -Dsonar.organization=ziemastz \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
