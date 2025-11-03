@@ -1,4 +1,4 @@
-﻿package JWD.Przepisnik.controller;
+package JWD.Przepisnik.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
