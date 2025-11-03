@@ -1,4 +1,4 @@
-package JWD.Przepisnik.web.mapper;
+﻿package JWD.Przepisnik.web.mapper;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -19,13 +19,11 @@ public class UserMapper {
             return null;
         }
 
-        if (dto.password == null || dto.password.isBlank()) {
-            throw new IllegalArgumentException("Password cannot be null or blank");
-        }
+        validatePassword(dto.password);
 
         User user = new User();
         user.setUsername(dto.username);
-        user.setPasswordHash(hashPassword(dto.password));
+        user.setPasswordHash(passwordEncoder.encode(dto.password));
         user.setEmail(dto.email);
         user.setName(dto.name);
         user.setSurname(dto.surname);
@@ -47,11 +45,9 @@ public class UserMapper {
                 user.getRole());
     }
 
-    private String hashPassword(String password) {
+    private void validatePassword(String password) {
         if (password == null || password.isBlank()) {
             throw new IllegalArgumentException("Password cannot be null or blank");
         }
-
-        return passwordEncoder.encode(password);
     }
 }

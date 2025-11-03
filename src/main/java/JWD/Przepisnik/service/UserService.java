@@ -1,5 +1,6 @@
 package JWD.Przepisnik.service;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,41 +26,23 @@ public class UserService {
     }
 
     public User createUser(UserDto userDto) {
-        if (userDto == null) {
-            throw new IllegalArgumentException("UserDto cannot be null");
-        }
+        Objects.requireNonNull(userDto, "UserDto cannot be null");
+
+        ensureUserIsUnique(userDto);
 
         User user = userMapper.toEntity(userDto);
-
-        Optional<User> byUsername = userRepository.findByUsername(userDto.username);
-        if (byUsername.isPresent()) {
-            throw new UserAlreadyExistsException(
-                    String.format("Uzytkownik z loginem '%s' juz istnieje.", userDto.username));
-        }
-
-        Optional<User> byEmail = userRepository.findByEmail(userDto.email);
-        if (byEmail.isPresent()) {
-            throw new UserAlreadyExistsException(
-                    String.format("Uzytkownik z e-mailem '%s' juz istnieje.", userDto.email));
-        }
 
         return userRepository.save(user);
     }
 
     public Optional<User> updateUser(UUID id, UserDto userDto) {
-        return userRepository.findById(id).map(existingUser -> {
-            existingUser.setUsername(userDto.username);
-            existingUser.setEmail(userDto.email);
-            existingUser.setName(userDto.name);
-            existingUser.setSurname(userDto.surname);
-            existingUser.setRole(userDto.role);
+        Objects.requireNonNull(userDto, "UserDto cannot be null");
 
-            if (userDto.password != null && !userDto.password.isBlank()) {
-                existingUser.setPasswordHash(passwordEncoder.encode(userDto.password));
-            }
-
-            return userRepository.save(existingUser);
-        });
+        return userRepository.findById(id)
+                .map(existingUser -> {
+                    applyUserUpdates(existingUser, userDto);
+                    return userRepository.save(existingUser);
+                });
     }
 
     public void deleteUser(UUID id) {
@@ -70,4 +53,33 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    private void ensureUserIsUnique(UserDto userDto) {
+        userRepository.findByUsername(userDto.username)
+                .ifPresent(existing -> {
+                    throw new UserAlreadyExistsException(
+                            String.format("Uzytkownik z loginem '%s' juz istnieje.", userDto.username));
+                });
+
+        userRepository.findByEmail(userDto.email)
+                .ifPresent(existing -> {
+                    throw new UserAlreadyExistsException(
+                            String.format("Uzytkownik z e-mailem '%s' juz istnieje.", userDto.email));
+                });
+    }
+
+    private void applyUserUpdates(User user, UserDto userDto) {
+        user.setUsername(userDto.username);
+        user.setEmail(userDto.email);
+        user.setName(userDto.name);
+        user.setSurname(userDto.surname);
+        user.setRole(userDto.role);
+
+        if (hasText(userDto.password)) {
+            user.setPasswordHash(passwordEncoder.encode(userDto.password));
+        }
+    }
+
+    private boolean hasText(String value) {
+        return value != null && !value.isBlank();
+    }
 }

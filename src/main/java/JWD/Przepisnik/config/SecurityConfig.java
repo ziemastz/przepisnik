@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,17 @@ import JWD.Przepisnik.security.JwtAuthenticationFilter;
 @Configuration
 @EnableConfigurationProperties(JwtProperties.class)
 public class SecurityConfig {
+    private static final String[] PUBLIC_RESOURCES = {
+            "/",
+            "/h2-console/**",
+            "/index.html",
+            "/static/**",
+            "/favicon.ico"
+    };
+
+    private static final String AUTH_ENDPOINT = "/api/auth/**";
+    private static final String USER_REGISTRATION_ENDPOINT = "/api/users/create";
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
@@ -34,11 +46,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/h2-console/**", "/index.html", "/static/**", "/favicon.ico").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users/create").permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(this::configureAuthorization)
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
 
@@ -46,6 +54,13 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    private void configureAuthorization(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth) {
+        auth.requestMatchers(PUBLIC_RESOURCES).permitAll();
+        auth.requestMatchers(AUTH_ENDPOINT).permitAll();
+        auth.requestMatchers(HttpMethod.POST, USER_REGISTRATION_ENDPOINT).permitAll();
+        auth.anyRequest().authenticated();
     }
 
     @Bean
