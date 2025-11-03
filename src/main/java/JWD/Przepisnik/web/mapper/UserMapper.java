@@ -1,4 +1,4 @@
-﻿package JWD.Przepisnik.web.mapper;
+package JWD.Przepisnik.web.mapper;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-﻿package JWD.Przepisnik.config;
+package JWD.Przepisnik.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
