@@ -13,7 +13,7 @@ public class ReactController {
     }
 
     @GetMapping("/{path:^(?!api|static|h2-console)(?!.*\\.).*$}/**")
-    public String forwardSpaRoutes(@PathVariable("path") String path) {
+    public String forwardSpaRoutes(@PathVariable String path) {
         return "forward:/index.html";
     }
 }
