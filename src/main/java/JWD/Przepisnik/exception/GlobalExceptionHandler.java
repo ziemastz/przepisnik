@@ -17,4 +17,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponse<Object>> handleIllegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(BaseResponse.failure(ex.getMessage()));
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<BaseResponse<Object>> handleRuntimeException(RuntimeException ex) {
+        return ResponseEntity.badRequest().body(BaseResponse.failure(ex.getMessage()));
+    }
 }

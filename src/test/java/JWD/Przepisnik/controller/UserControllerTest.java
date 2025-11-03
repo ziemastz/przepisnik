@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -25,6 +26,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import JWD.Przepisnik.exception.GlobalExceptionHandler;
+import JWD.Przepisnik.exception.UserAlreadyExistsException;
 import JWD.Przepisnik.models.User;
 import JWD.Przepisnik.service.UserService;
 import JWD.Przepisnik.web.dto.UserDto;
@@ -42,7 +45,9 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService)).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService))
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
         objectMapper = new ObjectMapper();
     }
 
@@ -69,6 +74,29 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", is(true)))
                 .andExpect(jsonPath("$.data.id", equalTo(userId.toString())));
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenUserAlreadyExists() throws Exception {
+        CreateUserRequest createRequest = new CreateUserRequest();
+        createRequest.username = "john";
+        createRequest.password = "secret";
+        createRequest.email = "john@example.com";
+        createRequest.name = "John";
+        createRequest.surname = "Doe";
+        createRequest.role = "USER";
+
+        when(userService.createUser(any(UserDto.class)))
+                .thenThrow(new UserAlreadyExistsException("Uzytkownik istnieje"));
+
+        BaseRequest<CreateUserRequest> requestBody = new BaseRequest<>(createRequest);
+
+        mockMvc.perform(post("/api/users/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success", is(false)))
+                .andExpect(jsonPath("$.errorMessages[0]", equalTo("Uzytkownik istnieje")));
     }
 
     @Test
@@ -143,5 +171,16 @@ class UserControllerTest {
 
         mockMvc.perform(post("/api/users/delete/{id}", userId))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void shouldPropagateExceptionsOnDelete() throws Exception {
+        UUID userId = UUID.randomUUID();
+        doThrow(new IllegalArgumentException("Problem")).when(userService).deleteUser(userId);
+
+        mockMvc.perform(post("/api/users/delete/{id}", userId))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success", is(false)))
+                .andExpect(jsonPath("$.errorMessages[0]", equalTo("Problem")));
     }
 }
