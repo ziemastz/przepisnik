@@ -2,6 +2,7 @@ package jwd.przepisnik.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ReactController {
@@ -11,8 +12,8 @@ public class ReactController {
         return "forward:/index.html";
     }
 
-    @GetMapping({"/{path:^(?!api$|static$)[^\\.]*}", "/{path:^(?!api$|static$)[^\\.]*}/**"})
-    public String forwardSpaRoutes() {
+    @GetMapping("/{path:^(?!api|static|h2-console)(?!.*\\.).*$}/**")
+    public String forwardSpaRoutes(@PathVariable("path") String path) {
         return "forward:/index.html";
     }
 }
