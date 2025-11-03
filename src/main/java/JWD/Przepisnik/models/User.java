@@ -1,4 +1,4 @@
-package JWD.Przepisnik.models;
+package jwd.przepisnik.models;
 
 import java.util.UUID;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package JWD.Przepisnik.security;
+package jwd.przepisnik.security;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import JWD.Przepisnik.models.User;
+import jwd.przepisnik.models.User;
 
 public class UserPrincipal implements UserDetails {
     private final UUID id;

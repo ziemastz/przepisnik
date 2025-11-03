@@ -1,4 +1,4 @@
-package JWD.Przepisnik.web.request;
+package jwd.przepisnik.web.request;
 
 import jakarta.validation.constraints.NotBlank;
 

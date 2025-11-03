@@ -1,4 +1,4 @@
-package JWD.Przepisnik.web.response;
+package jwd.przepisnik.web.response;
 
 import lombok.Value;
 

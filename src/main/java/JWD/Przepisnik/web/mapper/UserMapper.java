@@ -1,10 +1,10 @@
-package JWD.Przepisnik.web.mapper;
+package jwd.przepisnik.web.mapper;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import JWD.Przepisnik.models.User;
-import JWD.Przepisnik.web.dto.UserDto;
+import jwd.przepisnik.models.User;
+import jwd.przepisnik.web.dto.UserDto;
 
 @Component
 public class UserMapper {
@@ -47,7 +47,7 @@ public class UserMapper {
 
     private void validatePassword(String password) {
         if (password == null || password.isBlank()) {
-            throw new IllegalArgumentException("Hasło nie może być puste.");
+            throw new IllegalArgumentException("HasĹ‚o nie moĹĽe byÄ‡ puste.");
         }
     }
 }

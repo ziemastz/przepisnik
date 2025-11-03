@@ -1,4 +1,4 @@
-package JWD.Przepisnik.security;
+package jwd.przepisnik.security;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -16,7 +16,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
-import JWD.Przepisnik.config.JwtProperties;
+import jwd.przepisnik.config.JwtProperties;
 
 @Component
 public class JwtTokenProvider {

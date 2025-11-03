@@ -1,9 +1,9 @@
-package JWD.Przepisnik.exception;
+package jwd.przepisnik.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import JWD.Przepisnik.web.response.BaseResponse;
+import jwd.przepisnik.web.response.BaseResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -15,6 +15,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<BaseResponse<Object>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(BaseResponse.failure(ex.getMessage()));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<BaseResponse<Object>> handleRuntimeException(RuntimeException ex) {
         return ResponseEntity.badRequest().body(BaseResponse.failure(ex.getMessage()));
     }
 }
