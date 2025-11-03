@@ -1,4 +1,4 @@
-package JWD.Przepisnik.service;
+package jwd.przepisnik.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -20,11 +20,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import JWD.Przepisnik.exception.UserAlreadyExistsException;
-import JWD.Przepisnik.models.User;
-import JWD.Przepisnik.repository.UserRepository;
-import JWD.Przepisnik.web.dto.UserDto;
-import JWD.Przepisnik.web.mapper.UserMapper;
+import jwd.przepisnik.exception.UserAlreadyExistsException;
+import jwd.przepisnik.models.User;
+import jwd.przepisnik.repository.UserRepository;
+import jwd.przepisnik.web.dto.UserDto;
+import jwd.przepisnik.web.mapper.UserMapper;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {

@@ -1,11 +1,11 @@
-package JWD.Przepisnik.exception;
+package jwd.przepisnik.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
-import JWD.Przepisnik.web.response.BaseResponse;
+import jwd.przepisnik.web.response.BaseResponse;
 
 class GlobalExceptionHandlerTest {
 

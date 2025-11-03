@@ -1,4 +1,4 @@
-package JWD.Przepisnik.exception;
+package jwd.przepisnik.exception;
 
 public class UserAlreadyExistsException extends RuntimeException {
     public UserAlreadyExistsException(String message) {

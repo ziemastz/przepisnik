@@ -1,4 +1,4 @@
-package JWD.Przepisnik.web.mapper;
+package jwd.przepisnik.web.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -13,8 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import JWD.Przepisnik.models.User;
-import JWD.Przepisnik.web.dto.UserDto;
+import jwd.przepisnik.models.User;
+import jwd.przepisnik.web.dto.UserDto;
 
 @ExtendWith(MockitoExtension.class)
 class UserMapperTest {
@@ -52,7 +52,7 @@ class UserMapperTest {
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> userMapper.toEntity(dto));
 
-        assertEquals("Hasło nie może być puste.", exception.getMessage());
+        assertEquals("HasĹ‚o nie moĹĽe byÄ‡ puste.", exception.getMessage());
     }
 
     @Test

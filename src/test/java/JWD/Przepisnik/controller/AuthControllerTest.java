@@ -1,4 +1,4 @@
-package JWD.Przepisnik.controller;
+package jwd.przepisnik.controller;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -25,9 +25,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import JWD.Przepisnik.security.JwtTokenProvider;
-import JWD.Przepisnik.web.request.BaseRequest;
-import JWD.Przepisnik.web.request.LoginRequest;
+import jwd.przepisnik.security.JwtTokenProvider;
+import jwd.przepisnik.web.request.BaseRequest;
+import jwd.przepisnik.web.request.LoginRequest;
 
 @ExtendWith(MockitoExtension.class)
 class AuthControllerTest {

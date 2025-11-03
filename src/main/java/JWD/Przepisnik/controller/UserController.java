@@ -1,4 +1,4 @@
-package JWD.Przepisnik.controller;
+package jwd.przepisnik.controller;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import JWD.Przepisnik.service.UserService;
-import JWD.Przepisnik.web.dto.UserDto;
-import JWD.Przepisnik.web.request.BaseRequest;
-import JWD.Przepisnik.web.request.CreateUserRequest;
-import JWD.Przepisnik.web.response.BaseResponse;
-import JWD.Przepisnik.web.response.CreateUserResponse;
-import JWD.Przepisnik.web.response.UserResponse;
-import JWD.Przepisnik.models.User;
+import jwd.przepisnik.service.UserService;
+import jwd.przepisnik.web.dto.UserDto;
+import jwd.przepisnik.web.request.BaseRequest;
+import jwd.przepisnik.web.request.CreateUserRequest;
+import jwd.przepisnik.web.response.BaseResponse;
+import jwd.przepisnik.web.response.CreateUserResponse;
+import jwd.przepisnik.web.response.UserResponse;
+import jwd.przepisnik.models.User;
 import jakarta.validation.Valid;
 
 @RestController

@@ -1,4 +1,4 @@
-package JWD.Przepisnik.config;
+package jwd.przepisnik.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import JWD.Przepisnik.security.JwtAuthenticationEntryPoint;
-import JWD.Przepisnik.security.JwtAuthenticationFilter;
+import jwd.przepisnik.security.JwtAuthenticationEntryPoint;
+import jwd.przepisnik.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableConfigurationProperties(JwtProperties.class)

@@ -1,11 +1,11 @@
-package JWD.Przepisnik.security;
+package jwd.przepisnik.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import JWD.Przepisnik.repository.UserRepository;
+import jwd.przepisnik.repository.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

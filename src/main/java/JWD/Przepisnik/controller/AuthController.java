@@ -1,4 +1,4 @@
-package JWD.Przepisnik.controller;
+package jwd.przepisnik.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import JWD.Przepisnik.security.JwtTokenProvider;
-import JWD.Przepisnik.web.request.BaseRequest;
-import JWD.Przepisnik.web.request.LoginRequest;
-import JWD.Przepisnik.web.response.BaseResponse;
-import JWD.Przepisnik.web.response.LoginResponse;
+import jwd.przepisnik.security.JwtTokenProvider;
+import jwd.przepisnik.web.request.BaseRequest;
+import jwd.przepisnik.web.request.LoginRequest;
+import jwd.przepisnik.web.response.BaseResponse;
+import jwd.przepisnik.web.response.LoginResponse;
 import jakarta.validation.Valid;
 
 @RestController

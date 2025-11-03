@@ -1,4 +1,4 @@
-package JWD.Przepisnik.controller;
+package jwd.przepisnik.controller;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -26,13 +26,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import JWD.Przepisnik.exception.GlobalExceptionHandler;
-import JWD.Przepisnik.exception.UserAlreadyExistsException;
-import JWD.Przepisnik.models.User;
-import JWD.Przepisnik.service.UserService;
-import JWD.Przepisnik.web.dto.UserDto;
-import JWD.Przepisnik.web.request.BaseRequest;
-import JWD.Przepisnik.web.request.CreateUserRequest;
+import jwd.przepisnik.exception.GlobalExceptionHandler;
+import jwd.przepisnik.exception.UserAlreadyExistsException;
+import jwd.przepisnik.models.User;
+import jwd.przepisnik.service.UserService;
+import jwd.przepisnik.web.dto.UserDto;
+import jwd.przepisnik.web.request.BaseRequest;
+import jwd.przepisnik.web.request.CreateUserRequest;
 
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {

@@ -1,4 +1,4 @@
-package JWD.Przepisnik.web.dto;
+package jwd.przepisnik.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package JWD.Przepisnik.web.request;
+package jwd.przepisnik.web.request;
 
 public class CreateUserRequest {
     public String username;

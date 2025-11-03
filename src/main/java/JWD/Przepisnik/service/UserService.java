@@ -1,4 +1,4 @@
-package JWD.Przepisnik.service;
+package jwd.przepisnik.service;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -7,11 +7,11 @@ import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import JWD.Przepisnik.exception.UserAlreadyExistsException;
-import JWD.Przepisnik.models.User;
-import JWD.Przepisnik.repository.UserRepository;
-import JWD.Przepisnik.web.dto.UserDto;
-import JWD.Przepisnik.web.mapper.UserMapper;
+import jwd.przepisnik.exception.UserAlreadyExistsException;
+import jwd.przepisnik.models.User;
+import jwd.przepisnik.repository.UserRepository;
+import jwd.przepisnik.web.dto.UserDto;
+import jwd.przepisnik.web.mapper.UserMapper;
 
 @Service
 public class UserService {

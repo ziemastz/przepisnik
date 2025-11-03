@@ -1,4 +1,4 @@
-package JWD.Przepisnik.config;
+package jwd.przepisnik.config;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

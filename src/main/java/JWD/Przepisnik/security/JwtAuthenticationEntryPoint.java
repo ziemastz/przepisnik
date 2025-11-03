@@ -1,4 +1,4 @@
-package JWD.Przepisnik.security;
+package jwd.przepisnik.security;
 
 import java.io.IOException;
 
