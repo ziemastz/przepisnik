@@ -47,7 +47,7 @@ public class UserMapper {
 
     private void validatePassword(String password) {
         if (password == null || password.isBlank()) {
-            throw new IllegalArgumentException("Password cannot be null or blank");
+            throw new IllegalArgumentException("Hasło nie może być puste.");
         }
     }
 }
