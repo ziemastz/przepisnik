@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class UserResponse {
-    public String userame;
+    public String username;
     public String email;
     public String name;
     public String surname;

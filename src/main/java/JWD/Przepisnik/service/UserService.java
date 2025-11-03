@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public User createUser(UserDto userDto) {
-        Objects.requireNonNull(userDto, "Obiekt nie może być pusty.");
+        Objects.requireNonNull(userDto, "Obiekt UserDto nie moze byc pusty.");
 
         ensureUserIsUnique(userDto);
 
@@ -36,7 +36,7 @@ public class UserService {
     }
 
     public Optional<User> updateUser(UUID id, UserDto userDto) {
-        Objects.requireNonNull(userDto, "Obiekt nie może być pusty.");
+        Objects.requireNonNull(userDto, "Obiekt UserDto nie moze byc pusty.");
 
         return userRepository.findById(id)
                 .map(existingUser -> {
