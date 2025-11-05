@@ -1,0 +1,186 @@
+package jwd.przepisnik.controller;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jwd.przepisnik.exception.GlobalExceptionHandler;
+import jwd.przepisnik.exception.UserAlreadyExistsException;
+import jwd.przepisnik.models.User;
+import jwd.przepisnik.service.UserService;
+import jwd.przepisnik.web.dto.UserDto;
+import jwd.przepisnik.web.request.BaseRequest;
+import jwd.przepisnik.web.request.CreateUserRequest;
+
+@ExtendWith(MockitoExtension.class)
+class UserControllerTest {
+
+    @Mock
+    private UserService userService;
+
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService))
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
+        objectMapper = new ObjectMapper();
+    }
+
+    @Test
+    void shouldCreateUser() throws Exception {
+        CreateUserRequest createRequest = new CreateUserRequest();
+        createRequest.setUsername("john");
+        createRequest.setPassword("secret");
+        createRequest.setEmail("john@example.com");
+        createRequest.setName("John");
+        createRequest.setSurname("Doe");
+        createRequest.setRole("USER");
+
+        UUID userId = UUID.randomUUID();
+        User created = new User();
+        created.setId(userId);
+        when(userService.createUser(any(UserDto.class))).thenReturn(created);
+
+        BaseRequest<CreateUserRequest> requestBody = new BaseRequest<>(createRequest);
+
+        mockMvc.perform(post("/api/users/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.id", equalTo(userId.toString())));
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenUserAlreadyExists() throws Exception {
+        CreateUserRequest createRequest = new CreateUserRequest();
+        createRequest.setUsername("john");
+        createRequest.setPassword("secret");
+        createRequest.setEmail("john@example.com");
+        createRequest.setName("John");
+        createRequest.setSurname("Doe");
+        createRequest.setRole("USER");
+
+        when(userService.createUser(any(UserDto.class)))
+                .thenThrow(new UserAlreadyExistsException("Uzytkownik istnieje"));
+
+        BaseRequest<CreateUserRequest> requestBody = new BaseRequest<>(createRequest);
+
+        mockMvc.perform(post("/api/users/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success", is(false)))
+                .andExpect(jsonPath("$.errorMessages[0]", equalTo("Uzytkownik istnieje")));
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenCreatePayloadMissing() throws Exception {
+        mockMvc.perform(post("/api/users/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
+    void shouldReturnUserById() throws Exception {
+        UUID userId = UUID.randomUUID();
+        User user = new User();
+        user.setUsername("john");
+        user.setEmail("john@example.com");
+        user.setName("John");
+        user.setSurname("Doe");
+        user.setRole("USER");
+        when(userService.getUserById(userId)).thenReturn(Optional.of(user));
+
+        mockMvc.perform(get("/api/users/{id}", userId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.username", equalTo("john")));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenUserMissing() throws Exception {
+        UUID userId = UUID.randomUUID();
+        when(userService.getUserById(userId)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/users/{id}", userId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
+    void shouldUpdateUser() throws Exception {
+        UUID userId = UUID.randomUUID();
+        UserDto dto = new UserDto("john", null, "john@example.com", "John", "Doe", "USER");
+        User updated = new User();
+        updated.setUsername("john");
+        when(userService.updateUser(eq(userId), any(UserDto.class))).thenReturn(Optional.of(updated));
+
+        mockMvc.perform(post("/api/users/update/{id}", userId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", equalTo("john")));
+    }
+
+    @Test
+    void shouldReturnNotFoundOnUpdateWhenUserMissing() throws Exception {
+        UUID userId = UUID.randomUUID();
+        UserDto dto = new UserDto("john", null, "john@example.com", "John", "Doe", "USER");
+        when(userService.updateUser(eq(userId), any(UserDto.class))).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/api/users/update/{id}", userId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldDeleteUser() throws Exception {
+        UUID userId = UUID.randomUUID();
+        doNothing().when(userService).deleteUser(userId);
+
+        mockMvc.perform(post("/api/users/delete/{id}", userId))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void shouldPropagateExceptionsOnDelete() throws Exception {
+        UUID userId = UUID.randomUUID();
+        doThrow(new IllegalArgumentException("Problem")).when(userService).deleteUser(userId);
+
+        mockMvc.perform(post("/api/users/delete/{id}", userId))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success", is(false)))
+                .andExpect(jsonPath("$.errorMessages[0]", equalTo("Problem")));
+    }
+}
