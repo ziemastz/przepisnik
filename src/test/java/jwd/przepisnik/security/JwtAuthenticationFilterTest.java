@@ -77,7 +77,7 @@ class JwtAuthenticationFilterTest {
     }
 
     @Test
-    void shouldClearContextWhenUserNotFound() throws ServletException, IOException {
+    void shouldClearContextWhenUserNotFound() {
         when(request.getHeader("Authorization")).thenReturn("Bearer token");
         when(jwtTokenProvider.validateToken("token")).thenReturn(true);
         when(jwtTokenProvider.getUsername("token")).thenReturn("john");

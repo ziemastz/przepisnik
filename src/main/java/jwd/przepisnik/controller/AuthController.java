@@ -42,7 +42,7 @@ public class AuthController {
 
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(credentials.username, credentials.password));
+                    new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword()));
             UserDetails principal = (UserDetails) authentication.getPrincipal();
             String token = tokenProvider.generateToken(principal);
             return ResponseEntity.ok(BaseResponse.success(new LoginResponse(token)));

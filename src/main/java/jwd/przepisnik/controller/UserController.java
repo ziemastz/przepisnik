@@ -42,12 +42,12 @@ public class UserController {
         CreateUserRequest userData = userRequest.getData();
 
         UserDto userDto = new UserDto(
-                userData.username,
-                userData.password,
-                userData.email,
-                userData.name,
-                userData.surname,
-                userData.role);
+                userData.getUsername(),
+                userData.getPassword(),
+                userData.getEmail(),
+                userData.getName(),
+                userData.getSurname(),
+                userData.getRole());
 
         User created = userService.createUser(userDto);
 

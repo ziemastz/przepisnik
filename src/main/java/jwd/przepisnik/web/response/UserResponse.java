@@ -1,12 +1,12 @@
 package jwd.przepisnik.web.response;
 
-import lombok.AllArgsConstructor;
+import lombok.Value;
 
-@AllArgsConstructor
+@Value
 public class UserResponse {
-    public String username;
-    public String email;
-    public String name;
-    public String surname;
-    public String role;
+    String username;
+    String email;
+    String name;
+    String surname;
+    String role;
 }

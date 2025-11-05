@@ -1,9 +1,9 @@
 package jwd.przepisnik.web.response;
 
 import java.util.UUID;
-import lombok.AllArgsConstructor;
+import lombok.Value;
 
-@AllArgsConstructor
+@Value
 public class CreateUserResponse {
-    public UUID id;
+    UUID id;
 }

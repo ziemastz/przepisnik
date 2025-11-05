@@ -1,11 +1,13 @@
 package jwd.przepisnik.web.request;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
+@Data
 public class LoginRequest {
     @NotBlank
-    public String username;
+    String username;
 
     @NotBlank
-    public String password;
+    String password;
 }

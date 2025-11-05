@@ -43,11 +43,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Stateless JWT API, CSRF tokens not required
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(this::configureAuthorization)
                 .formLogin(form -> form.disable())
+                .csrf(csrf -> csrf.disable()) // Stateless JWT API, CSRF tokens not required
                 .httpBasic(basic -> basic.disable());
 
         http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
@@ -56,7 +56,8 @@ public class SecurityConfig {
         return http.build();
     }
 
-    private void configureAuthorization(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth) {
+    private void configureAuthorization(
+            AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth) {
         auth.requestMatchers(PUBLIC_RESOURCES).permitAll();
         auth.requestMatchers(AUTH_ENDPOINT).permitAll();
         auth.requestMatchers(HttpMethod.POST, USER_REGISTRATION_ENDPOINT).permitAll();
@@ -73,4 +74,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-

@@ -49,11 +49,12 @@ class AuthControllerTest {
     @Test
     void shouldAuthenticateAndReturnToken() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.username = "john";
-        loginRequest.password = "secret";
+        loginRequest.setUsername("john");
+        loginRequest.setPassword("secret");
 
         UserDetails principal = User.withUsername("john").password("encoded").authorities("ROLE_USER").build();
-        Authentication authResult = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+        Authentication authResult = new UsernamePasswordAuthenticationToken(principal, null,
+                principal.getAuthorities());
 
         when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(authResult);
         when(jwtTokenProvider.generateToken(principal)).thenReturn("jwt-token");
@@ -81,8 +82,8 @@ class AuthControllerTest {
     @Test
     void shouldReturnUnauthorizedOnBadCredentials() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.username = "john";
-        loginRequest.password = "wrong";
+        loginRequest.setUsername("john");
+        loginRequest.setPassword("wrong");
 
         when(authenticationManager.authenticate(any(Authentication.class)))
                 .thenThrow(new BadCredentialsException("invalid"));

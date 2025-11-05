@@ -1,10 +1,13 @@
 package jwd.przepisnik.web.request;
 
+import lombok.Data;
+
+@Data
 public class CreateUserRequest {
-    public String username;
-    public String password;
-    public String email;
-    public String name;
-    public String surname;
-    public String role;
+    private String username;
+    private String password;
+    private String email;
+    private String name;
+    private String surname;
+    private String role;
 }
