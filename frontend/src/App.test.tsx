@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 import constants from "./constants";
+import App from "./App";
 
 jest.mock("./router", () => ({
     BrowserRouter: ({ children }: { children: ReactNode }) => <div>{children}</div>,
@@ -8,7 +9,6 @@ jest.mock("./router", () => ({
     Route: ({ element }: { element: ReactNode }) => <>{element}</>,
 }));
 
-import App from "./App";
 
 describe("App Component", () => {
     test("renders header, main content, and footer", () => {

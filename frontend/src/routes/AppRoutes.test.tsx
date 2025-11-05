@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
+import AppRoutes from "./AppRoutes";
 
 type CapturedRoute = {
     path: string;
@@ -16,7 +17,6 @@ jest.mock("../router", () => ({
     },
 }));
 
-import AppRoutes from "./AppRoutes";
 
 describe("AppRoutes", () => {
     beforeEach(() => {
