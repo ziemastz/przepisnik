@@ -45,7 +45,17 @@ jobs:
 
       - name: Build backend JAR (with packaged React)
         run: mvn clean install -DskipTests=false
-
+        
+      - name: Analyze with SonarCloud
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=ziemastz_przepisnik
+            -Dsonar.organization=ziemastz
+      
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -79,4 +89,5 @@ jobs:
           app-name: 'przepisnik-web'
           slot-name: 'Production'
           package: '*.jar'
+
           
