@@ -54,28 +54,28 @@ public class UserService {
     }
 
     private void ensureUserIsUnique(UserDto userDto) {
-        userRepository.findByUsername(userDto.username)
+        userRepository.findByUsername(userDto.getUsername())
                 .ifPresent(existing -> {
                     throw new UserAlreadyExistsException(
-                            String.format("Uzytkownik z loginem '%s' juz istnieje.", userDto.username));
+                            String.format("Uzytkownik z loginem '%s' juz istnieje.", userDto.getUsername()));
                 });
 
-        userRepository.findByEmail(userDto.email)
+        userRepository.findByEmail(userDto.getEmail())
                 .ifPresent(existing -> {
                     throw new UserAlreadyExistsException(
-                            String.format("Uzytkownik z e-mailem '%s' juz istnieje.", userDto.email));
+                            String.format("Uzytkownik z e-mailem '%s' juz istnieje.", userDto.getEmail()));
                 });
     }
 
     private void applyUserUpdates(User user, UserDto userDto) {
-        user.setUsername(userDto.username);
-        user.setEmail(userDto.email);
-        user.setName(userDto.name);
-        user.setSurname(userDto.surname);
-        user.setRole(userDto.role);
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
+        user.setRole(userDto.getRole());
 
-        if (hasText(userDto.password)) {
-            user.setPasswordHash(passwordEncoder.encode(userDto.password));
+        if (hasText(userDto.getPassword())) {
+            user.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
         }
     }
 
