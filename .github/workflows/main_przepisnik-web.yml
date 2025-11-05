@@ -42,19 +42,18 @@ jobs:
           mkdir -p src/main/resources/static
           rm -rf src/main/resources/static/*
           cp -r frontend/build/* src/main/resources/static/
-
-      - name: Build backend JAR (with packaged React)
-        run: mvn clean install -DskipTests=false
-        
-      - name: Analyze with SonarCloud
-        uses: SonarSource/sonarcloud-github-action@v2
+          
+      - name: Build, Test & SonarCloud
+        run: |
+            mvn -B clean verify sonar:sonar \
+              -Dsonar.projectKey=ziemastz_przepisnik \
+              -Dsonar.organization=ziemastz \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.java.binaries=target/classes \
+              -Dsonar.token=${{ secrets.SONAR_TOKEN }}
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=ziemastz_przepisnik
-            -Dsonar.organization=ziemastz
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -91,3 +90,4 @@ jobs:
           package: '*.jar'
 
           
+
