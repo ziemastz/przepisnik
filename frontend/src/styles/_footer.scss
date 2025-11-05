@@ -1,0 +1,14 @@
+@use 'mixins' as *;
+@use 'variables' as *;
+
+.footer {
+    @include flex-between;
+    background-color: $color-bg-footer;
+    color: $color-text-footer;
+
+    &_donate,
+    &_rights {
+        margin: 10px;
+        font-size: 14px;
+    }
+}

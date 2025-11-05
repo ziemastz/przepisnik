@@ -1,5 +1,5 @@
-import { Routes, Route } from "../router";
-import HomePage from "../pages/HomePage";
+import { Routes, Route } from '../router';
+import HomePage from '../pages/HomePage';
 
 const AppRoutes = () => {
     return (
