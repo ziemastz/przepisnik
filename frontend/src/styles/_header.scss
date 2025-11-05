@@ -1,0 +1,33 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.header {
+    background-color: $color-primary;
+    padding: 16px 0;
+
+    .header-title {
+        @include container;
+        color: $color-bg;
+        font-size: 24px;
+        text-transform: uppercase;
+        margin: 0;
+
+        @include respond(md) {
+            font-size: 20px;
+        }
+    }
+
+    &_container {
+        @include flex-between;
+    }
+
+    &_logo {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+    }
+
+    .login-container {
+        margin-right: 16px;
+    }
+}
