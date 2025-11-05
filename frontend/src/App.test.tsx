@@ -1,10 +1,23 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import type { ReactNode } from "react";
+import { render, screen } from "@testing-library/react";
+import constants from "./constants";
 
-describe('App Component', () => {
-    test('renders learn react link', () => {
+jest.mock("./router", () => ({
+    BrowserRouter: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Routes: ({ children }: { children: ReactNode }) => <>{children}</>,
+    Route: ({ element }: { element: ReactNode }) => <>{element}</>,
+}));
+
+import App from "./App";
+
+describe("App Component", () => {
+    test("renders header, main content, and footer", () => {
         render(<App />);
-        const linkElement = screen.getByText(/learn react/i);
-        expect(linkElement).toBeInTheDocument();
+
+        expect(screen.getByRole("banner")).toHaveTextContent(constants.titleApp);
+        expect(screen.getByRole("main")).toHaveTextContent("Home Page");
+        expect(screen.getByRole("contentinfo")).toHaveTextContent(
+            constants.footer.rightsText
+        );
     });
 });
