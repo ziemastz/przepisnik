@@ -50,7 +50,8 @@ class UserMapperTest {
     void toEntityShouldRejectBlankPassword() {
         UserDto dto = new UserDto("john", "   ", "john@example.com", "John", "Doe", "USER");
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> userMapper.toEntity(dto));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> userMapper.toEntity(dto));
 
         assertEquals("HasĹ‚o nie moĹĽe byÄ‡ puste.", exception.getMessage());
     }
@@ -67,12 +68,12 @@ class UserMapperTest {
 
         UserDto dto = userMapper.toDto(user);
 
-        assertEquals("john", dto.username);
-        assertNull(dto.password);
-        assertEquals("john@example.com", dto.email);
-        assertEquals("John", dto.name);
-        assertEquals("Doe", dto.surname);
-        assertEquals("USER", dto.role);
+        assertEquals("john", dto.getUsername());
+        assertNull(dto.getPassword());
+        assertEquals("john@example.com", dto.getEmail());
+        assertEquals("John", dto.getName());
+        assertEquals("Doe", dto.getSurname());
+        assertEquals("USER", dto.getRole());
     }
 
     @Test
