@@ -19,15 +19,15 @@ public class UserMapper {
             return null;
         }
 
-        validatePassword(dto.password);
+        validatePassword(dto.getPassword());
 
         User user = new User();
-        user.setUsername(dto.username);
-        user.setPasswordHash(passwordEncoder.encode(dto.password));
-        user.setEmail(dto.email);
-        user.setName(dto.name);
-        user.setSurname(dto.surname);
-        user.setRole(dto.role);
+        user.setUsername(dto.getUsername());
+        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+        user.setEmail(dto.getEmail());
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setRole(dto.getRole());
         return user;
     }
 
