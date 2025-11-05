@@ -47,7 +47,6 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(this::configureAuthorization)
                 .formLogin(form -> form.disable())
-                .csrf(csrf -> csrf.disable()) // Stateless JWT API, CSRF tokens not required
                 .httpBasic(basic -> basic.disable());
 
         http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
