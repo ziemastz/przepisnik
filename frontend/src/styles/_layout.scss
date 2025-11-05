@@ -1,5 +1,5 @@
-@use "variables" as *;
-@use "mixins" as *;
+@use 'variables' as *;
+@use 'mixins' as *;
 
 html,
 body {
@@ -17,15 +17,4 @@ body {
 main {
     flex: 1;
     margin: 5px;
-}
-
-footer {
-    @include flex-between;
-    background-color: $color-secondary;
-    color: $color-text;
-
-    p {
-        margin: 10px;
-        font-size: 14px;
-    }
 }

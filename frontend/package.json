@@ -26,7 +26,7 @@
         "lint": "eslint src --ext js,jsx,ts,tsx",
         "format": "prettier --write src",
         "test": "react-scripts test",
-        "test:local": "react-scripts test --watchAll=false"
+        "localtest": "npm run lint && react-scripts test --watchAll=false --coverage --testPathPattern"
     },
     "eslintConfig": {
         "extends": [
