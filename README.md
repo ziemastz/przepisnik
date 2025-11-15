@@ -39,13 +39,20 @@ Projekt został zrealizowany w ramach pracy dyplomowej i stanowi praktyczne zast
 
 | Warstwa        | Zastosowane technologie |
 |----------------|------------------------|
-| Backend        | Java 17, Spring Boot, Spring Web, Spring Data JPA, Hibernate |
-| Frontend       | React (TypeScript/JavaScript) |
-| Baza danych    | H2 |
-| Bezpieczeństwo | Spring Security |
-| Budowanie      | Maven |
-| CI/CD          | GitHub Actions + Azure Web App |
-| UI | Bootstrap / własne style CSS |
+| 🔙 Backend    | Java 21, Spring Boot, Spring Web, Spring Data JPA, Hibernate |
+| 🎨 Frontend       | React (TypeScript/JavaScript) |
+| 🗄️ Baza danych    | H2 |
+| 🔐 Bezpieczeństwo | Spring Security, JWT Authentication |
+| ⚙️ Budowanie      | Maven, npm |
+| 🧪 Testy | React Testing Library, Jest, Mockito, JUnit 5| 
+| 📊 Analiza jakości kodu | SonarCloud |
+| 🧹 Formatowanie & Linting| ESLint, Prettier|
+| 🚀 CI/CD          | GitHub Actions, SonarCloud Scan, Azure Web App Deployment |
+| 🎨 UI | własne style CSS/SCSS, FontAwesome |
+| 📦 Kontrola wersji| Git, GitHub |
+| 🧰 Narzędzia developerskie | Visual Studio Code, IntelliJ IDEA |
+| 🤖 AI / Asystenci | ChatGPT (OpenAI), Codex — pomoc w dokumentacji, debugowaniu i refaktoryzacji |
+| 🔍 API Testy | Postman |
 
 ---
 
@@ -67,7 +74,7 @@ Podejście: architektura warstwowa (Controller → Service → Repository → En
 | Konfiguracja baz danych | Utworzenie modeli, repozytoriów, migracji (Flyway/Liquibase – opcjonalnie) | ⏳ |
 | Stworzenie podstawowego CRUD (przepisy) | Endpoints REST + testy podstawowe | ⏳ |
 | Dodanie logowania i rejestracji użytkownika | Spring Security + BCrypt | ⏳ |
-| Konfiguracja GitHub Actions (CI) | Automatyczne budowanie projektu | ✅ Zrobione |
+| Konfiguracja GitHub Actions (CI) | Automatyczne budowanie projektu, Integracja CI z SonarCloud | ✅ Zrobione |
 | Publikacja backendu na Azure | Azure Web App / Azure Spring Apps | ✅ Zrobione |
 | Stworzenie projektu React | Inicjalizacja projektu + routing + UI listy przepisów | ⏳ |
 | Integracja backend ↔ frontend | Wyświetlanie danych API w React | ⏳ |
