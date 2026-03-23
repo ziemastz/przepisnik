@@ -1,0 +1,72 @@
+@import "variables";
+
+.button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 9px;
+    cursor: pointer;
+
+    &.primary {
+        background-color: $color-primary;
+        color: $color-bg;
+        border: none;
+
+        &:hover:not(:disabled) {
+            background-color: darken($color-primary, 10%);
+        }
+
+        &:disabled {
+            background-color: lighten($color-primary, 20%);
+            cursor: not-allowed;
+        }
+    }
+
+    &.secondary {
+        background-color: $color-secondary;
+        color: $color-primary;
+        border: none;
+
+        &:hover:not(:disabled) {
+            background-color: darken($color-secondary, 10%);
+        }
+
+        &:disabled {
+            background-color: lighten($color-secondary, 20%);
+            color: lighten($color-primary, 20%);
+            cursor: not-allowed;
+        }
+    }
+    
+    &.dashed {
+        background-color: transparent;
+        color: $color-primary;
+        border: 2px dashed $color-primary;
+
+        &:hover:not(:disabled) {
+            background-color: rgba($color-primary, 0.1);
+        }
+
+        &:disabled {
+            color: lighten($color-primary, 20%);
+            border-color: lighten($color-primary, 20%);
+            cursor: not-allowed;
+        }
+    }
+
+    &.link {
+        background-color: transparent;
+        color: $color-primary;
+        border: none;
+        padding: 0;
+
+        &:hover:not(:disabled) {
+            text-decoration: underline;
+        }
+
+        &:disabled {
+            color: lighten($color-primary, 20%);
+            cursor: not-allowed;
+        }
+    }
+}

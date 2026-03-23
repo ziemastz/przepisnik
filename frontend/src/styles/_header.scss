@@ -1,5 +1,5 @@
-@use 'variables' as *;
-@use 'mixins' as *;
+@import 'variables';
+@import 'mixins';
 
 .header {
     background-color: $color-primary;
@@ -28,6 +28,14 @@
     }
 
     .login-container {
-        margin-right: 16px;
+        display: inline-flex;
+        margin: 0 24px;
+
+        .login-item {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 5px;
+            color: $color-bg;
+        }
     }
 }
