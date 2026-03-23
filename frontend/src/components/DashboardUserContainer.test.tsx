@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import LoginContainer from './LoginContainer';
+import DashboardUserContainer from './DashboardUserContainer';
 
-describe('LoginContainer', () => {
+describe('DashboardUserContainer', () => {
     test('shows user menu when user is marked as logged in', () => {
-        render(<LoginContainer />);
+        render(<DashboardUserContainer />);
 
         expect(screen.getByText('User Menu')).toBeInTheDocument();
     });

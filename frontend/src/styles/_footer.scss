@@ -1,5 +1,5 @@
-@use 'mixins' as *;
-@use 'variables' as *;
+@import 'mixins';
+@import 'variables';
 
 .footer {
     @include flex-between;

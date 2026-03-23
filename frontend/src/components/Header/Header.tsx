@@ -1,5 +1,5 @@
 import constants from '../../constants';
-import LoginContainer from '../LoginContainer';
+import DashboardUserContainer from '../DashboardUserContainer';
 
 const Header = () => {
     return (
@@ -13,7 +13,7 @@ const Header = () => {
                         {constants.titleApp}
                     </h1>
                 </div>
-                <LoginContainer />
+                <DashboardUserContainer />
             </div>
         </header>
     );
