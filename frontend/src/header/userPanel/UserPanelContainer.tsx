@@ -1,8 +1,8 @@
-import constants from '../constants';
-import Button from './Button';
+import constants from '../../constants';
+import Button from '../../shared/button/Button';
 import UserMenu from './UserMenu';
 
-const DashboardUserContainer = () => {
+const UserPanelContainer = () => {
     // Temporary hardcoded login state
     const isLoggedIn = true;
 
@@ -22,4 +22,4 @@ const DashboardUserContainer = () => {
 
     return <div className="login-container">{container}</div>;
 };
-export default DashboardUserContainer;
+export default UserPanelContainer;
