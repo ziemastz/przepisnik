@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -22,7 +23,6 @@ import jwd.przepisnik.security.JwtAuthenticationFilter;
 public class SecurityConfig {
     private static final String[] PUBLIC_RESOURCES = {
             "/",
-            "/h2-console/**",
             "/index.html",
             "/manifest.json",
             "/asset-manifest.json",
@@ -32,6 +32,7 @@ public class SecurityConfig {
     };
 
     private static final String AUTH_ENDPOINT = "/api/auth/**";
+    private static final String H2_CONSOLE_ENDPOINT = "/h2-console/**";
     private static final String USER_REGISTRATION_ENDPOINT = "/api/users/create";
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -46,14 +47,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.ignoringRequestMatchers(
+                new AntPathRequestMatcher("/api/**"),
+                new AntPathRequestMatcher(H2_CONSOLE_ENDPOINT)))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(this::configureAuthorization)
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
 
-        http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
+        http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -62,6 +65,7 @@ public class SecurityConfig {
     private void configureAuthorization(
             AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth) {
         auth.requestMatchers(PUBLIC_RESOURCES).permitAll();
+        auth.requestMatchers(H2_CONSOLE_ENDPOINT).permitAll();
         auth.requestMatchers(AUTH_ENDPOINT).permitAll();
         auth.requestMatchers(HttpMethod.POST, USER_REGISTRATION_ENDPOINT).permitAll();
         auth.anyRequest().authenticated();
