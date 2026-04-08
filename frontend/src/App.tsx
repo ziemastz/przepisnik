@@ -1,18 +1,21 @@
 import { BrowserRouter } from './router';
 import './App.css';
-import Header from './header/Header';
-import Footer from './footer/Footer';
+import Header from './layout/header/Header';
+import Footer from './layout/footer/Footer';
 import AppRoutes from './routes/AppRoutes';
+import { AuthProvider } from './features/auth/AuthContext';
 
 function App() {
     return (
-        <BrowserRouter>
-            <Header />
-            <main>
-                <AppRoutes />
-            </main>
-            <Footer />
-        </BrowserRouter>
+        <AuthProvider>
+            <BrowserRouter>
+                <Header />
+                <main>
+                    <AppRoutes />
+                </main>
+                <Footer />
+            </BrowserRouter>
+        </AuthProvider>
     );
 }
 

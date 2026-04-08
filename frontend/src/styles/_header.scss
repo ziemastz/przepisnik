@@ -29,13 +29,64 @@
 
     .login-container {
         display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 12px;
+        min-height: 48px;
         margin: 0 24px;
+
+        .auth-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: flex-end;
+        }
 
         .login-item {
             font-size: 16px;
             font-weight: bold;
-            padding: 12px 5px;
+            padding: 0 5px;
             color: $color-bg;
+
+            &--user-row {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 10px;
+            }
+        }
+
+        .auth-form {
+            background: rgba(255, 255, 255, 0.14);
+            padding: 12px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            min-width: 220px;
+
+            label {
+                color: $color-bg;
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            input {
+                border: none;
+                border-radius: 6px;
+                padding: 8px;
+            }
+
+            [role='alert'],
+            [role='status'] {
+                font-size: 13px;
+                color: $color-bg;
+            }
+        }
+
+        .user-menu {
+            display: flex;
+            justify-content: flex-end;
         }
     }
 }

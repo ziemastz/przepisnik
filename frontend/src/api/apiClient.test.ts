@@ -1,0 +1,77 @@
+import { apiClient } from './apiClient';
+import { tokenStorage } from './tokenStorage';
+
+describe('apiClient', () => {
+    const fetchMock = jest.fn();
+
+    beforeEach(() => {
+        fetchMock.mockReset();
+        globalThis.fetch = fetchMock as unknown as typeof fetch;
+        window.localStorage.clear();
+    });
+
+    test('returns response data for successful request', async () => {
+        fetchMock.mockResolvedValue({
+            ok: true,
+            status: 200,
+            text: async () => JSON.stringify({ success: true, errorMessages: [], data: { token: 'a' } }),
+        });
+
+        const result = await apiClient.post<{ token: string }, { data: { username: string; password: string } }>(
+            '/api/auth/login',
+            { data: { username: 'john', password: 'secret' } },
+            false,
+        );
+
+        expect(result).toEqual({ token: 'a' });
+    });
+
+    test('adds authorization header for authenticated calls', async () => {
+        tokenStorage.setToken('jwt-123');
+        fetchMock.mockResolvedValue({
+            ok: true,
+            status: 200,
+            text: async () => JSON.stringify({ success: true, errorMessages: [], data: { username: 'john' } }),
+        });
+
+        await apiClient.get<{ username: string }>('/api/users/me', true);
+
+        expect(fetchMock).toHaveBeenCalledWith('/api/users/me', expect.objectContaining({
+            headers: expect.objectContaining({
+                Authorization: 'Bearer jwt-123',
+            }),
+        }));
+    });
+
+    test('throws ApiError when server returns envelope failure', async () => {
+        fetchMock.mockResolvedValue({
+            ok: true,
+            status: 200,
+            text: async () => JSON.stringify({ success: false, errorMessages: ['Validation error'], data: null }),
+        });
+
+        await expect(apiClient.get('/api/users/me', true)).rejects.toEqual(
+            expect.objectContaining({
+                name: 'ApiError',
+                messages: ['Validation error'],
+            }),
+        );
+    });
+
+    test('maps 404 html response to user-friendly backend connectivity error', async () => {
+        fetchMock.mockResolvedValue({
+            ok: false,
+            status: 404,
+            text: async () => '<!DOCTYPE html><html><body>Not found</body></html>',
+        });
+
+        await expect(apiClient.post('/api/users/create', { data: {} }, false)).rejects.toEqual(
+            expect.objectContaining({
+                name: 'ApiError',
+                messages: [
+                    'Nie mozna polaczyc z API. Sprawdz czy backend dziala i czy frontend ma poprawna konfiguracje proxy.',
+                ],
+            }),
+        );
+    });
+});

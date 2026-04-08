@@ -1,4 +1,4 @@
-import constants from '../constants';
+import constants from '../../constants';
 
 const Footer = () => {
     return (
@@ -26,4 +26,5 @@ const Footer = () => {
         </footer>
     );
 };
+
 export default Footer;

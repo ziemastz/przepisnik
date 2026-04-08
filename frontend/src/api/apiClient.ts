@@ -1,0 +1,118 @@
+import { ApiError, ApiResponseEnvelope } from './types';
+import { tokenStorage } from './tokenStorage';
+
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
+interface RequestOptions<TBody> {
+    method?: HttpMethod;
+    body?: TBody;
+    authenticated?: boolean;
+}
+
+interface ParsedResponse<T> {
+    envelope: ApiResponseEnvelope<T> | null;
+    rawText: string;
+}
+
+const buildHeaders = (authenticated: boolean): HeadersInit => {
+    const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+    };
+
+    if (authenticated) {
+        const token = tokenStorage.getToken();
+        if (token) {
+            headers.Authorization = `Bearer ${token}`;
+        }
+    }
+
+    return headers;
+};
+
+const parseEnvelope = async <T>(response: Response): Promise<ParsedResponse<T>> => {
+    const text = await response.text();
+    if (!text) {
+        return {
+            envelope: null,
+            rawText: '',
+        };
+    }
+
+    try {
+        return {
+            envelope: JSON.parse(text) as ApiResponseEnvelope<T>,
+            rawText: text,
+        };
+    } catch {
+        return {
+            envelope: null,
+            rawText: text,
+        };
+    }
+};
+
+const isHtmlLikeResponse = (rawText: string): boolean => {
+    const normalized = rawText.trim().toLowerCase();
+    return normalized.startsWith('<!doctype') || normalized.startsWith('<html') || normalized.startsWith('<');
+};
+
+const toTransportErrorMessage = (status: number, rawText: string): string => {
+    if (status === 404 && isHtmlLikeResponse(rawText)) {
+        return 'Nie mozna polaczyc z API. Sprawdz czy backend dziala i czy frontend ma poprawna konfiguracje proxy.';
+    }
+
+    if (status === 401 && !rawText.trim()) {
+        return 'Serwer odrzucil zapytanie. Sprawdz konfiguracje bezpieczenstwa backendu i sprobuj ponownie.';
+    }
+
+    if (status >= 500) {
+        return 'Serwer jest chwilowo niedostepny. Sprobuj ponownie za moment.';
+    }
+
+    return 'Nie udalo sie wykonac zadania. Sprobuj ponownie.';
+};
+
+const request = async <TData, TBody = undefined>(
+    path: string,
+    options: RequestOptions<TBody> = {},
+): Promise<TData> => {
+    const method = options.method ?? 'GET';
+    const authenticated = options.authenticated ?? false;
+
+    let response: Response;
+
+    try {
+        response = await fetch(path, {
+            method,
+            headers: buildHeaders(authenticated),
+            body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+        });
+    } catch {
+        throw new ApiError(0, ['Nie mozna polaczyc z serwerem. Upewnij sie, ze backend jest uruchomiony.']);
+    }
+
+    const parsedResponse = await parseEnvelope<TData>(response);
+    const envelope = parsedResponse.envelope;
+
+    if (!response.ok || envelope?.success === false) {
+        const messages = envelope?.errorMessages?.length
+            ? envelope.errorMessages
+            : [toTransportErrorMessage(response.status, parsedResponse.rawText)];
+        throw new ApiError(response.status, messages);
+    }
+
+    if (!envelope || envelope.data === null) {
+        throw new ApiError(response.status, ['Missing response payload.']);
+    }
+
+    return envelope.data;
+};
+
+export const apiClient = {
+    get<TData>(path: string, authenticated = false): Promise<TData> {
+        return request<TData>(path, { method: 'GET', authenticated });
+    },
+    post<TData, TBody>(path: string, body: TBody, authenticated = false): Promise<TData> {
+        return request<TData, TBody>(path, { method: 'POST', body, authenticated });
+    },
+};
