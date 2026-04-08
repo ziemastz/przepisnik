@@ -11,9 +11,10 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import jwd.przepisnik.security.JwtAuthenticationEntryPoint;
 import jwd.przepisnik.security.JwtAuthenticationFilter;
@@ -34,6 +35,11 @@ public class SecurityConfig {
     private static final String AUTH_ENDPOINT = "/api/auth/**";
     private static final String H2_CONSOLE_ENDPOINT = "/h2-console/**";
     private static final String USER_REGISTRATION_ENDPOINT = "/api/users/create";
+    private static final RequestMatcher API_REQUESTS = PathPatternRequestMatcher.withDefaults().matcher("/api/**");
+    private static final RequestMatcher H2_CONSOLE_REQUESTS = PathPatternRequestMatcher.withDefaults()
+            .matcher(H2_CONSOLE_ENDPOINT);
+    private static final RequestMatcher CSRF_PROTECTION_MATCHER = request ->
+            !API_REQUESTS.matches(request) && !H2_CONSOLE_REQUESTS.matches(request);
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
@@ -47,9 +53,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.ignoringRequestMatchers(
-                new AntPathRequestMatcher("/api/**"),
-                new AntPathRequestMatcher(H2_CONSOLE_ENDPOINT)))
+            .csrf(csrf -> csrf.requireCsrfProtectionMatcher(CSRF_PROTECTION_MATCHER))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(this::configureAuthorization)
