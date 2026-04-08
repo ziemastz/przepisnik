@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -39,7 +40,9 @@ public class SecurityConfig {
     private static final RequestMatcher H2_CONSOLE_REQUESTS = PathPatternRequestMatcher.withDefaults()
             .matcher(H2_CONSOLE_ENDPOINT);
     private static final RequestMatcher CSRF_PROTECTION_MATCHER = request ->
-            !API_REQUESTS.matches(request) && !H2_CONSOLE_REQUESTS.matches(request);
+            CsrfFilter.DEFAULT_CSRF_MATCHER.matches(request)
+                    && !API_REQUESTS.matches(request)
+                    && !H2_CONSOLE_REQUESTS.matches(request);
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
