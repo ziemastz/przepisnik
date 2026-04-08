@@ -104,6 +104,108 @@ class RecipeControllerTest {
                 .andExpect(jsonPath("$.success", is(false)));
     }
 
+    @Test
+    void shouldGetMyRecipes() throws Exception {
+        Recipe recipe = buildRecipe("john");
+        when(recipeService.getRecipesForUser("john")).thenReturn(List.of(recipe));
+
+        mockMvc.perform(get("/api/recipes/my")
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.length()", equalTo(1)))
+                .andExpect(jsonPath("$.data[0].name", equalTo("Nalesniki")));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenRecipeDoesNotExist() throws Exception {
+        UUID recipeId = UUID.randomUUID();
+        when(recipeService.getRecipeForUser(recipeId, "john")).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/recipes/{id}", recipeId)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
+    void shouldUpdateRecipe() throws Exception {
+        UUID recipeId = UUID.randomUUID();
+        CreateRecipeRequest updateRequest = new CreateRecipeRequest();
+        updateRequest.setName("Nalesniki updated");
+        updateRequest.setPreparationTimeMinutes(25);
+        updateRequest.setServings(5);
+
+        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest();
+        ingredientRequest.setName("Maka");
+        ingredientRequest.setQuantity(new BigDecimal("300.00"));
+        ingredientRequest.setUnit(IngredientUnit.GRAM);
+        updateRequest.setIngredients(List.of(ingredientRequest));
+
+        Recipe updatedRecipe = buildRecipe("john");
+        updatedRecipe.setName("Nalesniki updated");
+        when(recipeService.updateRecipe(eq(recipeId), any(CreateRecipeRequest.class), eq("john")))
+                .thenReturn(Optional.of(updatedRecipe));
+
+        BaseRequest<CreateRecipeRequest> requestBody = new BaseRequest<>(updateRequest);
+
+        mockMvc.perform(post("/api/recipes/update/{id}", recipeId)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.name", equalTo("Nalesniki updated")));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenUpdatingNonExistentRecipe() throws Exception {
+        UUID recipeId = UUID.randomUUID();
+        CreateRecipeRequest updateRequest = new CreateRecipeRequest();
+        updateRequest.setName("Test");
+        updateRequest.setPreparationTimeMinutes(20);
+        updateRequest.setServings(4);
+        updateRequest.setIngredients(List.of());
+
+        when(recipeService.updateRecipe(eq(recipeId), any(CreateRecipeRequest.class), eq("john")))
+                .thenReturn(Optional.empty());
+
+        BaseRequest<CreateRecipeRequest> requestBody = new BaseRequest<>(updateRequest);
+
+        mockMvc.perform(post("/api/recipes/update/{id}", recipeId)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
+    void shouldDeleteRecipe() throws Exception {
+        UUID recipeId = UUID.randomUUID();
+        when(recipeService.deleteRecipe(recipeId, "john")).thenReturn(true);
+
+        mockMvc.perform(post("/api/recipes/delete/{id}", recipeId)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDeletingNonExistentRecipe() throws Exception {
+        UUID recipeId = UUID.randomUUID();
+        when(recipeService.deleteRecipe(recipeId, "john")).thenReturn(false);
+
+        mockMvc.perform(post("/api/recipes/delete/{id}", recipeId)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
     private Recipe buildRecipe(String username) {
         User user = new User();
         user.setId(UUID.randomUUID());

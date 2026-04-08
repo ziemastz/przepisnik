@@ -5,17 +5,26 @@ interface InfoDialogProps {
     message: string;
     confirmLabel: string;
     onConfirm: () => void;
+    onCancel?: () => void;
+    isLoading?: boolean;
 }
 
-const InfoDialog = ({ title, message, confirmLabel, onConfirm }: InfoDialogProps) => {
+const InfoDialog = ({ title, message, confirmLabel, onConfirm, onCancel, isLoading }: InfoDialogProps) => {
     return (
         <div className="dialog-backdrop" role="presentation">
             <div className="dialog-card" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
                 <h3 id="dialog-title">{title}</h3>
                 <p>{message}</p>
-                <Button type="primary" onClick={onConfirm}>
-                    {confirmLabel}
-                </Button>
+                <div className="dialog-buttons">
+                    <Button type="primary" onClick={onConfirm} isDisabled={isLoading}>
+                        {confirmLabel}
+                    </Button>
+                    {onCancel && (
+                        <Button type="secondary" onClick={onCancel} isDisabled={isLoading}>
+                            Anuluj
+                        </Button>
+                    )}
+                </div>
             </div>
         </div>
     );

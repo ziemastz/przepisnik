@@ -12,6 +12,21 @@ jest.mock('../features/auth/pages/RegisterPage', () => ({
     default: () => <div>Register Page</div>,
 }));
 
+jest.mock('../features/recipes/pages/MyRecipesPage', () => ({
+    __esModule: true,
+    default: () => <div>My Recipes Page</div>,
+}));
+
+jest.mock('../features/recipes/pages/RecipeFormPage', () => ({
+    __esModule: true,
+    default: () => <div>Recipe Form Page</div>,
+}));
+
+jest.mock('../shared/ProtectedRoute', () => ({
+    __esModule: true,
+    default: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+}));
+
 type CapturedRoute = {
     path: string;
     element: ReactNode;
@@ -34,13 +49,23 @@ describe('AppRoutes', () => {
         capturedRoutes.length = 0;
     });
 
-    test('defines home, login, register, and fallback routes', () => {
+    test('defines home, login, register, recipes protected routes, and fallback routes', () => {
         render(<AppRoutes />);
 
         expect(screen.getByText('Home Page')).toBeInTheDocument();
         expect(screen.getByText('Login Page')).toBeInTheDocument();
         expect(screen.getByText('Register Page')).toBeInTheDocument();
         expect(screen.getByText('404 - Strona nie istnieje')).toBeInTheDocument();
-        expect(capturedRoutes.map((route) => route.path)).toEqual(['/', '/login', '/register', '*']);
+        expect(screen.getByText('My Recipes Page')).toBeInTheDocument();
+        expect(screen.getAllByText('Recipe Form Page')).toHaveLength(2); // /recipes/new and /recipes/:id/edit
+        
+        const paths = capturedRoutes.map((route) => route.path);
+        expect(paths).toContain('/');
+        expect(paths).toContain('/login');
+        expect(paths).toContain('/register');
+        expect(paths).toContain('/my-recipes');
+        expect(paths).toContain('/recipes/new');
+        expect(paths).toContain('/recipes/:id/edit');
+        expect(paths).toContain('*');
     });
 });
