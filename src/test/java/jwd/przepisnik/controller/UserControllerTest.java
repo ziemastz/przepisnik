@@ -138,6 +138,44 @@ class UserControllerTest {
     }
 
     @Test
+    void shouldReturnCurrentUserByPrincipal() throws Exception {
+        User user = new User();
+        user.setUsername("john");
+        user.setEmail("john@example.com");
+        user.setName("John");
+        user.setSurname("Doe");
+        user.setRole("USER");
+
+        when(userService.getUserByUsername("john")).thenReturn(Optional.of(user));
+
+        mockMvc.perform(get("/api/users/me")
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.username", equalTo("john")));
+    }
+
+    @Test
+    void shouldReturnUnauthorizedWhenPrincipalMissing() throws Exception {
+        mockMvc.perform(get("/api/users/me")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenCurrentUserMissing() throws Exception {
+        when(userService.getUserByUsername("john")).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/users/me")
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
     void shouldUpdateUser() throws Exception {
         UUID userId = UUID.randomUUID();
         UserDto dto = new UserDto("john", null, "john@example.com", "John", "Doe", "USER");

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import Footer from './Footer';
-import constants from '../constants';
+import constants from '../../constants';
 
 describe('Footer', () => {
     test('should render rights text from constants', () => {

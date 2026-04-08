@@ -1,5 +1,6 @@
 package jwd.przepisnik.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -67,7 +68,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:[0-9a-fA-F\\-]{36}}")
     public ResponseEntity<BaseResponse<UserResponse>> getUserById(@PathVariable UUID id) {
         return userService.getUserById(id)
                 .map(user -> {
@@ -82,5 +83,28 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body(BaseResponse.failure("Uzytkownik o podanym ID nie zostal znaleziony.")));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<BaseResponse<UserResponse>> getCurrentUser(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(BaseResponse.failure("Brak uwierzytelnionego uzytkownika."));
+        }
+
+        return userService.getUserByUsername(principal.getName())
+                .map(user -> {
+                    UserResponse userResponse = new UserResponse(
+                            user.getUsername(),
+                            user.getEmail(),
+                            user.getName(),
+                            user.getSurname(),
+                            user.getRole());
+                    return ResponseEntity.ok(BaseResponse.success(userResponse));
+                })
+                .orElseGet(() -> ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(BaseResponse.failure("Nie znaleziono aktualnie zalogowanego uzytkownika.")));
     }
 }

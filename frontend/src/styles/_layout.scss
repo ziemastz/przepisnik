@@ -17,4 +17,157 @@ body {
 main {
     flex: 1;
     margin: 5px;
+
+    .auth-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+        padding: 24px 16px;
+        position: relative;
+
+        .auth-page-container {
+            background: $color-bg;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid rgba($color-primary, 0.15);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+            max-width: 460px;
+            width: 100%;
+
+            h2 {
+                text-align: center;
+                margin-top: 0;
+                margin-bottom: 24px;
+                font-size: 24px;
+                color: $color-text;
+            }
+
+            .auth-form {
+                margin: 0;
+                display: grid;
+                gap: 14px;
+
+                .auth-field {
+                    display: grid;
+                    gap: 6px;
+                }
+
+                label {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: $color-text;
+                }
+
+                input {
+                    width: 100%;
+                    box-sizing: border-box;
+                    border: 1px solid rgba($color-primary, 0.35);
+                    border-radius: 8px;
+                    padding: 10px 12px;
+                    font-size: 16px;
+                    color: $color-text;
+                    background: #fff;
+
+                    &:focus {
+                        outline: 2px solid rgba($color-primary, 0.35);
+                        border-color: $color-primary;
+                    }
+
+                    &:disabled {
+                        background: #f5f5f5;
+                        cursor: not-allowed;
+                    }
+                }
+
+                [role='alert'] {
+                    padding: 10px 12px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    color: #8a1c1c;
+                    background: #ffe5e5;
+                    border: 1px solid #ffc9c9;
+                }
+
+                [role='status'] {
+                    padding: 10px 12px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    color: #1c5d2e;
+                    background: #e6f7eb;
+                    border: 1px solid #c7ebd1;
+                }
+
+                .auth-server-issue {
+                    color: #7a4c00;
+                    background: #fff5e6;
+                    border: 1px solid #ffd8a8;
+                }
+
+                .button {
+                    width: 100%;
+                    justify-self: stretch;
+                }
+            }
+
+            .auth-switch {
+                margin-top: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                color: $color-text;
+
+                .button.link {
+                    width: auto;
+                    color: $color-primary;
+                    font-size: 14px;
+                }
+            }
+
+            @include respond(md) {
+                padding: 24px;
+            }
+        }
+
+        .dialog-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(31, 31, 31, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 20;
+        }
+
+        .dialog-card {
+            width: min(100%, 420px);
+            background: $color-bg;
+            border-radius: 16px;
+            border: 1px solid rgba($color-primary, 0.18);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+            padding: 24px;
+            display: grid;
+            gap: 16px;
+            text-align: center;
+
+            h3 {
+                margin: 0;
+                font-size: 24px;
+                color: $color-text;
+            }
+
+            p {
+                margin: 0;
+                font-size: 15px;
+                line-height: 1.5;
+                color: $color-text;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    }
 }

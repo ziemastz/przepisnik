@@ -1,4 +1,4 @@
-import constants from '../constants';
+import constants from '../../constants';
 import UserPanelContainer from './userPanel/UserPanelContainer';
 
 const Header = () => {
@@ -18,4 +18,5 @@ const Header = () => {
         </header>
     );
 };
+
 export default Header;
