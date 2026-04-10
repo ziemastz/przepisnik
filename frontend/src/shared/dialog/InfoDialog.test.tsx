@@ -34,4 +34,41 @@ describe('InfoDialog', () => {
 
         expect(onConfirm).toHaveBeenCalledTimes(1);
     });
+
+    test('calls onCancel when backdrop is clicked and not loading', () => {
+        const onCancel = jest.fn();
+
+        render(
+            <InfoDialog
+                title="Confirm"
+                message="Are you sure?"
+                confirmLabel="Yes"
+                onConfirm={jest.fn()}
+                onCancel={onCancel}
+            />,
+        );
+
+        fireEvent.click(screen.getByRole('presentation'));
+
+        expect(onCancel).toHaveBeenCalledTimes(1);
+    });
+
+    test('does not call onCancel when backdrop is clicked while loading', () => {
+        const onCancel = jest.fn();
+
+        render(
+            <InfoDialog
+                title="Confirm"
+                message="Are you sure?"
+                confirmLabel="Loading..."
+                onConfirm={jest.fn()}
+                onCancel={onCancel}
+                isLoading
+            />,
+        );
+
+        fireEvent.click(screen.getByRole('presentation'));
+
+        expect(onCancel).not.toHaveBeenCalled();
+    });
 });

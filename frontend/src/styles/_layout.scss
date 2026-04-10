@@ -130,50 +130,51 @@ main {
             }
         }
 
-        .dialog-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(31, 31, 31, 0.45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            z-index: 20;
-        }
+    }
+}
 
-        .dialog-card {
-            width: min(100%, 420px);
-            background: $color-bg;
-            border-radius: 16px;
-            border: 1px solid rgba($color-primary, 0.18);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-            padding: 24px;
-            display: grid;
-            gap: 16px;
-            text-align: center;
+.dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(31, 31, 31, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 1000;
+}
 
-            h3 {
-                margin: 0;
-                font-size: 24px;
-                color: $color-text;
-            }
+.dialog-card {
+    width: min(100%, 420px);
+    background: $color-bg;
+    border-radius: 16px;
+    border: 1px solid rgba($color-primary, 0.18);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+    padding: 24px;
+    display: grid;
+    gap: 16px;
+    text-align: center;
 
-            p {
-                margin: 0;
-                font-size: 15px;
-                line-height: 1.5;
-                color: $color-text;
-            }
+    h3 {
+        margin: 0;
+        font-size: 24px;
+        color: $color-text;
+    }
 
-            .dialog-buttons {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
+    p {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.5;
+        color: $color-text;
+    }
 
-            .button {
-                width: 100%;
-            }
-        }
+    .dialog-buttons {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .button {
+        width: 100%;
     }
 }

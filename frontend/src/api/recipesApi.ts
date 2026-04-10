@@ -66,8 +66,8 @@ export const recipesApi = {
         );
     },
 
-    async deleteRecipe(id: string): Promise<null> {
-        return apiClient.post<null, { data: Record<string, never> }>(
+    async deleteRecipe(id: string): Promise<void> {
+        return apiClient.postVoid<{ data: Record<string, never> }>(
             `/api/recipes/delete/${id}`,
             {
                 data: {},

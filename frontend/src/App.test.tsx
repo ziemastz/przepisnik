@@ -23,6 +23,7 @@ jest.mock('./router', () => ({
     BrowserRouter: ({ children }: { children: ReactNode }) => <div>{children}</div>,
     Routes: ({ children }: { children: ReactNode }) => <>{children}</>,
     Route: ({ element }: { element: ReactNode }) => <>{element}</>,
+    Navigate: () => null,
     useNavigate: () => jest.fn(),
     useLocation: () => ({ pathname: '/', state: null }),
 }));

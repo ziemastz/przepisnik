@@ -218,7 +218,7 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
 
             <div className="recipe-form-actions">
                 <Button type="primary" htmlType="submit" isDisabled={isSubmitting}>
-                    {isSubmitting ? 'Zapisywanie...' : 'Zapisz'}
+                    {isSubmitting ? 'Zapisywanie...' : initialData ? 'Zapisz zmiany' : 'Zapisz'}
                 </Button>
             </div>
         </form>
