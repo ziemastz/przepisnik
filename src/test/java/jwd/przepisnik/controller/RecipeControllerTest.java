@@ -38,6 +38,7 @@ import jwd.przepisnik.web.mapper.RecipeMapper;
 import jwd.przepisnik.web.request.BaseRequest;
 import jwd.przepisnik.web.request.CreateRecipeRequest;
 import jwd.przepisnik.web.request.IngredientAmountRequest;
+import jwd.przepisnik.web.request.UpdateRecipeRequest;
 
 @ExtendWith(MockitoExtension.class)
 class RecipeControllerTest {
@@ -58,16 +59,10 @@ class RecipeControllerTest {
 
     @Test
     void shouldCreateRecipe() throws Exception {
-        CreateRecipeRequest createRequest = new CreateRecipeRequest();
-        createRequest.setName("Nalesniki");
-        createRequest.setPreparationTimeMinutes(20);
-        createRequest.setServings(4);
-
-        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest();
-        ingredientRequest.setName("Maka");
-        ingredientRequest.setQuantity(new BigDecimal("250.00"));
-        ingredientRequest.setUnit(IngredientUnit.GRAM);
-        createRequest.setIngredients(List.of(ingredientRequest));
+        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
+                "Maka", new BigDecimal("250.00"), IngredientUnit.GRAM);
+        CreateRecipeRequest createRequest = new CreateRecipeRequest(
+                "Nalesniki", 20, 4, List.of(ingredientRequest));
 
         Recipe recipe = buildRecipe("john");
         when(recipeService.createRecipe(any(CreateRecipeRequest.class), eq("john"))).thenReturn(recipe);
@@ -101,6 +96,101 @@ class RecipeControllerTest {
         mockMvc.perform(get("/api/recipes/my")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
+    void shouldGetMyRecipes() throws Exception {
+        Recipe recipe = buildRecipe("john");
+        when(recipeService.getRecipesForUser("john")).thenReturn(List.of(recipe));
+
+        mockMvc.perform(get("/api/recipes/my")
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.length()", equalTo(1)))
+                .andExpect(jsonPath("$.data[0].name", equalTo("Nalesniki")));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenRecipeDoesNotExist() throws Exception {
+        UUID recipeId = UUID.randomUUID();
+        when(recipeService.getRecipeForUser(recipeId, "john")).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/recipes/{id}", recipeId)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
+    void shouldUpdateRecipe() throws Exception {
+        UUID recipeId = UUID.randomUUID();
+        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
+                "Maka", new BigDecimal("300.00"), IngredientUnit.GRAM);
+        UpdateRecipeRequest updateRequest = new UpdateRecipeRequest(
+                "Nalesniki updated", 25, 5, List.of(ingredientRequest));
+
+        Recipe updatedRecipe = buildRecipe("john");
+        updatedRecipe.setName("Nalesniki updated");
+        when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
+                .thenReturn(Optional.of(updatedRecipe));
+
+        BaseRequest<UpdateRecipeRequest> requestBody = new BaseRequest<>(updateRequest);
+
+        mockMvc.perform(post("/api/recipes/update/{id}", recipeId)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.name", equalTo("Nalesniki updated")));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenUpdatingNonExistentRecipe() throws Exception {
+        UUID recipeId = UUID.randomUUID();
+        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
+                "Maka", new BigDecimal("100.00"), IngredientUnit.GRAM);
+        UpdateRecipeRequest updateRequest = new UpdateRecipeRequest(
+                "Test", 20, 4, List.of(ingredientRequest));
+
+        when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
+                .thenReturn(Optional.empty());
+
+        BaseRequest<UpdateRecipeRequest> requestBody = new BaseRequest<>(updateRequest);
+
+        mockMvc.perform(post("/api/recipes/update/{id}", recipeId)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
+    void shouldDeleteRecipe() throws Exception {
+        UUID recipeId = UUID.randomUUID();
+        when(recipeService.deleteRecipe(recipeId, "john")).thenReturn(true);
+
+        mockMvc.perform(post("/api/recipes/delete/{id}", recipeId)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDeletingNonExistentRecipe() throws Exception {
+        UUID recipeId = UUID.randomUUID();
+        when(recipeService.deleteRecipe(recipeId, "john")).thenReturn(false);
+
+        mockMvc.perform(post("/api/recipes/delete/{id}", recipeId)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success", is(false)));
     }
 

@@ -55,16 +55,10 @@ class RecipeServiceTest {
         existingIngredient.setName("Maka");
         existingIngredient.setNormalizedName("maka");
 
-        CreateRecipeRequest request = new CreateRecipeRequest();
-        request.setName("Nalesniki");
-        request.setPreparationTimeMinutes(20);
-        request.setServings(4);
-
-        IngredientAmountRequest ingredientAmountRequest = new IngredientAmountRequest();
-        ingredientAmountRequest.setName("Maka");
-        ingredientAmountRequest.setQuantity(new BigDecimal("250.00"));
-        ingredientAmountRequest.setUnit(IngredientUnit.GRAM);
-        request.setIngredients(List.of(ingredientAmountRequest));
+        IngredientAmountRequest ingredientAmountRequest = new IngredientAmountRequest(
+                "Maka", new BigDecimal("250.00"), IngredientUnit.GRAM);
+        CreateRecipeRequest request = new CreateRecipeRequest(
+                "Nalesniki", 20, 4, List.of(ingredientAmountRequest));
 
         when(userRepository.findByUsername("john")).thenReturn(Optional.of(user));
         when(ingredientRepository.findByNormalizedName("maka")).thenReturn(Optional.of(existingIngredient));
@@ -86,16 +80,10 @@ class RecipeServiceTest {
         user.setId(userId);
         user.setUsername("john");
 
-        UpdateRecipeRequest request = new UpdateRecipeRequest();
-        request.setName("Nowa nazwa");
-        request.setPreparationTimeMinutes(10);
-        request.setServings(2);
-
-        IngredientAmountRequest ingredientAmountRequest = new IngredientAmountRequest();
-        ingredientAmountRequest.setName("Sol");
-        ingredientAmountRequest.setQuantity(new BigDecimal("1.00"));
-        ingredientAmountRequest.setUnit(IngredientUnit.TEASPOON);
-        request.setIngredients(List.of(ingredientAmountRequest));
+        IngredientAmountRequest ingredientAmountRequest = new IngredientAmountRequest(
+                "Sol", new BigDecimal("1.00"), IngredientUnit.TEASPOON);
+        UpdateRecipeRequest request = new UpdateRecipeRequest(
+                "Nowa nazwa", 10, 2, List.of(ingredientAmountRequest));
 
         when(userRepository.findByUsername("john")).thenReturn(Optional.of(user));
         when(recipeRepository.findByIdAndAuthorId(recipeId, userId)).thenReturn(Optional.empty());
@@ -111,22 +99,12 @@ class RecipeServiceTest {
         user.setId(UUID.randomUUID());
         user.setUsername("john");
 
-        CreateRecipeRequest request = new CreateRecipeRequest();
-        request.setName("Nalesniki");
-        request.setPreparationTimeMinutes(20);
-        request.setServings(4);
-
-        IngredientAmountRequest flour1 = new IngredientAmountRequest();
-        flour1.setName("Maka");
-        flour1.setQuantity(new BigDecimal("200.00"));
-        flour1.setUnit(IngredientUnit.GRAM);
-
-        IngredientAmountRequest flour2 = new IngredientAmountRequest();
-        flour2.setName("maka");
-        flour2.setQuantity(new BigDecimal("50.00"));
-        flour2.setUnit(IngredientUnit.GRAM);
-
-        request.setIngredients(List.of(flour1, flour2));
+        IngredientAmountRequest flour1 = new IngredientAmountRequest(
+                "Maka", new BigDecimal("200.00"), IngredientUnit.GRAM);
+        IngredientAmountRequest flour2 = new IngredientAmountRequest(
+                "maka", new BigDecimal("50.00"), IngredientUnit.GRAM);
+        CreateRecipeRequest request = new CreateRecipeRequest(
+                "Nalesniki", 20, 4, List.of(flour1, flour2));
 
         when(userRepository.findByUsername("john")).thenReturn(Optional.of(user));
 

@@ -53,13 +53,8 @@ class UserControllerTest {
 
     @Test
     void shouldCreateUser() throws Exception {
-        CreateUserRequest createRequest = new CreateUserRequest();
-        createRequest.setUsername("john");
-        createRequest.setPassword("secret");
-        createRequest.setEmail("john@example.com");
-        createRequest.setName("John");
-        createRequest.setSurname("Doe");
-        createRequest.setRole("USER");
+        CreateUserRequest createRequest = new CreateUserRequest(
+                "john", "secret", "john@example.com", "John", "Doe", "USER");
 
         UUID userId = UUID.randomUUID();
         User created = new User();
@@ -78,13 +73,8 @@ class UserControllerTest {
 
     @Test
     void shouldReturnBadRequestWhenUserAlreadyExists() throws Exception {
-        CreateUserRequest createRequest = new CreateUserRequest();
-        createRequest.setUsername("john");
-        createRequest.setPassword("secret");
-        createRequest.setEmail("john@example.com");
-        createRequest.setName("John");
-        createRequest.setSurname("Doe");
-        createRequest.setRole("USER");
+        CreateUserRequest createRequest = new CreateUserRequest(
+                "john", "secret", "john@example.com", "John", "Doe", "USER");
 
         when(userService.createUser(any(UserDto.class)))
                 .thenThrow(new UserAlreadyExistsException("Uzytkownik istnieje"));

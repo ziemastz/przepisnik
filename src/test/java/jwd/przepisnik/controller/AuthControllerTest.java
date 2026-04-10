@@ -48,9 +48,7 @@ class AuthControllerTest {
 
     @Test
     void shouldAuthenticateAndReturnToken() throws Exception {
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUsername("john");
-        loginRequest.setPassword("secret");
+        LoginRequest loginRequest = new LoginRequest("john", "secret");
 
         UserDetails principal = User.withUsername("john").password("encoded").authorities("ROLE_USER").build();
         Authentication authResult = new UsernamePasswordAuthenticationToken(principal, null,
@@ -81,9 +79,7 @@ class AuthControllerTest {
 
     @Test
     void shouldReturnUnauthorizedOnBadCredentials() throws Exception {
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUsername("john");
-        loginRequest.setPassword("wrong");
+        LoginRequest loginRequest = new LoginRequest("john", "wrong");
 
         when(authenticationManager.authenticate(any(Authentication.class)))
                 .thenThrow(new BadCredentialsException("invalid"));
