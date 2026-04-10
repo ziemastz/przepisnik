@@ -22,7 +22,7 @@ export interface UpdateRecipeRequest {
 
 export interface IngredientAmountResponse {
     name: string;
-    quantity: string;
+    quantity: string | number;
     unit: 'GRAM' | 'ML' | 'PIECE' | 'TABLESPOON' | 'TEASPOON' | 'CUP';
 }
 

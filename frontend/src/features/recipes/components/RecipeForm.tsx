@@ -22,7 +22,7 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
     );
     const [servings, setServings] = useState(initialData?.servings?.toString() ?? '');
     const [ingredients, setIngredients] = useState<IngredientAmountRequest[]>(
-        initialData?.ingredients ?? [{ name: '', quantity: '', unit: 'GRAM' }],
+        initialData?.ingredients.map((ing) => ({ ...ing, quantity: String(ing.quantity) })) ?? [{ name: '', quantity: '', unit: 'GRAM' }],
     );
     const [errors, setErrors] = useState<FormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
