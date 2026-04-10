@@ -2,8 +2,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import UserPanelContainer from './UserPanelContainer';
 import { useAuth } from '../../../features/auth/AuthContext';
 
+const mockNavigate = jest.fn();
+
 jest.mock('../../../router', () => ({
-    useNavigate: () => jest.fn(),
+    useNavigate: () => mockNavigate,
     useLocation: () => ({ pathname: '/', state: null }),
 }));
 
@@ -14,6 +16,9 @@ jest.mock('../../../features/auth/AuthContext', () => ({
 const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 
 describe('UserPanelContainer', () => {
+    beforeEach(() => {
+        mockNavigate.mockClear();
+    });
     test('shows login/register buttons when user is logged out', () => {
         mockedUseAuth.mockReturnValue({
             user: null,
@@ -76,5 +81,43 @@ describe('UserPanelContainer', () => {
         render(<UserPanelContainer />);
 
         expect(screen.getByText('Sprawdzanie sesji...')).toBeInTheDocument();
+    });
+
+    test('navigates to /login with from state when Log In is clicked', () => {
+        mockedUseAuth.mockReturnValue({
+            user: null,
+            isAuthenticated: false,
+            isInitializing: false,
+            errorMessage: null,
+            serverIssueMessage: null,
+            clearError: jest.fn(),
+            login: jest.fn(),
+            register: jest.fn(),
+            logout: jest.fn(),
+        });
+
+        render(<UserPanelContainer />);
+        fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
+
+        expect(mockNavigate).toHaveBeenCalledWith('/login', expect.any(Object));
+    });
+
+    test('navigates to /register with from state when Register is clicked', () => {
+        mockedUseAuth.mockReturnValue({
+            user: null,
+            isAuthenticated: false,
+            isInitializing: false,
+            errorMessage: null,
+            serverIssueMessage: null,
+            clearError: jest.fn(),
+            login: jest.fn(),
+            register: jest.fn(),
+            logout: jest.fn(),
+        });
+
+        render(<UserPanelContainer />);
+        fireEvent.click(screen.getByRole('button', { name: 'Register' }));
+
+        expect(mockNavigate).toHaveBeenCalledWith('/register', expect.any(Object));
     });
 });

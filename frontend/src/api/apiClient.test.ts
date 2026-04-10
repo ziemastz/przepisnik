@@ -84,4 +84,62 @@ describe('apiClient', () => {
 
         await expect(apiClient.postVoid('/api/recipes/delete/123', { data: {} }, true)).resolves.toBeUndefined();
     });
+
+    test('throws ApiError with status 0 when fetch network call fails', async () => {
+        fetchMock.mockRejectedValue(new Error('Network down'));
+
+        await expect(apiClient.get('/api/users/me', false)).rejects.toEqual(
+            expect.objectContaining({
+                name: 'ApiError',
+                status: 0,
+            }),
+        );
+    });
+
+    test('maps 401 with empty body to security config error message', async () => {
+        fetchMock.mockResolvedValue({
+            ok: false,
+            status: 401,
+            text: async () => '',
+        });
+
+        await expect(apiClient.get('/api/users/me', true)).rejects.toEqual(
+            expect.objectContaining({
+                name: 'ApiError',
+                messages: [
+                    'Serwer odrzucil zapytanie. Sprawdz konfiguracje bezpieczenstwa backendu i sprobuj ponownie.',
+                ],
+            }),
+        );
+    });
+
+    test('maps 500 response to server unavailable message', async () => {
+        fetchMock.mockResolvedValue({
+            ok: false,
+            status: 500,
+            text: async () => JSON.stringify({ success: false, errorMessages: [], data: null }),
+        });
+
+        await expect(apiClient.get('/api/users/me', false)).rejects.toEqual(
+            expect.objectContaining({
+                name: 'ApiError',
+                messages: ['Serwer jest chwilowo niedostepny. Sprobuj ponownie za moment.'],
+            }),
+        );
+    });
+
+    test('throws ApiError when response ok but envelope data is null without allowEmptyData', async () => {
+        fetchMock.mockResolvedValue({
+            ok: true,
+            status: 200,
+            text: async () => JSON.stringify({ success: true, errorMessages: [], data: null }),
+        });
+
+        await expect(apiClient.get('/api/users/me', false)).rejects.toEqual(
+            expect.objectContaining({
+                name: 'ApiError',
+                messages: ['Missing response payload.'],
+            }),
+        );
+    });
 });
