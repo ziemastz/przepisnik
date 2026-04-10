@@ -85,6 +85,16 @@ describe('apiClient', () => {
         await expect(apiClient.postVoid('/api/recipes/delete/123', { data: {} }, true)).resolves.toBeUndefined();
     });
 
+    test('allows empty body (HTTP 204) for successful void request', async () => {
+        fetchMock.mockResolvedValue({
+            ok: true,
+            status: 204,
+            text: async () => '',
+        });
+
+        await expect(apiClient.postVoid('/api/recipes/delete/123', { data: {} }, true)).resolves.toBeUndefined();
+    });
+
     test('throws ApiError with status 0 when fetch network call fails', async () => {
         fetchMock.mockRejectedValue(new Error('Network down'));
 

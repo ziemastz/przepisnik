@@ -26,7 +26,7 @@ class ReactControllerIntegrationTest {
 
     @Test
     void shouldForwardNestedSpaRoutesToIndexHtml() throws Exception {
-        mockMvc.perform(get("/my-recipes"))
+        mockMvc.perform(get("/my-recipes/some-child"))
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("/index.html"));
     }

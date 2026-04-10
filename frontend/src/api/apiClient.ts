@@ -104,6 +104,9 @@ const request = async <TData, TBody = undefined>(
     }
 
     if (!envelope) {
+        if (allowEmptyData) {
+            return null as TData;
+        }
         throw new ApiError(response.status, ['Missing response payload.']);
     }
 
