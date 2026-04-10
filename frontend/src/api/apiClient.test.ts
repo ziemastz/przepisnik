@@ -74,4 +74,14 @@ describe('apiClient', () => {
             }),
         );
     });
+
+    test('allows empty data payload for successful void request', async () => {
+        fetchMock.mockResolvedValue({
+            ok: true,
+            status: 200,
+            text: async () => JSON.stringify({ success: true, errorMessages: [], data: null }),
+        });
+
+        await expect(apiClient.postVoid('/api/recipes/delete/123', { data: {} }, true)).resolves.toBeUndefined();
+    });
 });

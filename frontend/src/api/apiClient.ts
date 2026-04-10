@@ -7,6 +7,7 @@ interface RequestOptions<TBody> {
     method?: HttpMethod;
     body?: TBody;
     authenticated?: boolean;
+    allowEmptyData?: boolean;
 }
 
 interface ParsedResponse<T> {
@@ -78,6 +79,7 @@ const request = async <TData, TBody = undefined>(
 ): Promise<TData> => {
     const method = options.method ?? 'GET';
     const authenticated = options.authenticated ?? false;
+    const allowEmptyData = options.allowEmptyData ?? false;
 
     let response: Response;
 
@@ -101,7 +103,15 @@ const request = async <TData, TBody = undefined>(
         throw new ApiError(response.status, messages);
     }
 
-    if (!envelope || envelope.data === null) {
+    if (!envelope) {
+        throw new ApiError(response.status, ['Missing response payload.']);
+    }
+
+    if (envelope.data === null) {
+        if (allowEmptyData) {
+            return null as TData;
+        }
+
         throw new ApiError(response.status, ['Missing response payload.']);
     }
 
@@ -114,5 +124,13 @@ export const apiClient = {
     },
     post<TData, TBody>(path: string, body: TBody, authenticated = false): Promise<TData> {
         return request<TData, TBody>(path, { method: 'POST', body, authenticated });
+    },
+    postVoid<TBody>(path: string, body: TBody, authenticated = false): Promise<void> {
+        return request<null, TBody>(path, {
+            method: 'POST',
+            body,
+            authenticated,
+            allowEmptyData: true,
+        }).then(() => undefined);
     },
 };

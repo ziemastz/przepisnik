@@ -76,8 +76,10 @@ public class RecipeService {
                 .map(existingRecipe -> {
                     existingRecipe.setName(request.name().trim());
                     existingRecipe.setPreparationTimeMinutes(request.preparationTimeMinutes());
-                    existingRecipe.setServings(request.servings());
-                    existingRecipe.replaceIngredients(buildRecipeIngredients(request.ingredients()));
+                    existingRecipe.setServings(request.servings());                    // Clear old ingredients and flush so Hibernate emits the DELETEs
+                    // before the INSERTs for the new set — prevents unique constraint violations.
+                    existingRecipe.getIngredients().clear();
+                    recipeRepository.flush();                    existingRecipe.replaceIngredients(buildRecipeIngredients(request.ingredients()));
                     return recipeRepository.save(existingRecipe);
                 });
     }

@@ -13,6 +13,9 @@ const MyRecipesPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const recipePendingDeletion = deleteConfirmId
+        ? recipes.find((recipe) => recipe.id === deleteConfirmId) ?? null
+        : null;
 
     useEffect(() => {
         loadRecipes();
@@ -40,6 +43,7 @@ const MyRecipesPage = () => {
     };
 
     const handleDeleteClick = (id: string) => {
+        setError(null);
         setDeleteConfirmId(id);
     };
 
@@ -48,8 +52,9 @@ const MyRecipesPage = () => {
 
         try {
             setIsDeleting(true);
+            setError(null);
             await recipesApi.deleteRecipe(deleteConfirmId);
-            setRecipes(recipes.filter((r) => r.id !== deleteConfirmId));
+            setRecipes((currentRecipes) => currentRecipes.filter((recipe) => recipe.id !== deleteConfirmId));
             setDeleteConfirmId(null);
         } catch (err) {
             const message =
@@ -98,7 +103,9 @@ const MyRecipesPage = () => {
                 {deleteConfirmId ? (
                     <InfoDialog
                         title="Usunąć przepis?"
-                        message="Ta operacja nie może być cofnięta."
+                        message={recipePendingDeletion
+                            ? `Czy na pewno usunąć przepis \"${recipePendingDeletion.name}\"? Tej operacji nie można cofnąć.`
+                            : 'Czy na pewno usunąć ten przepis? Tej operacji nie można cofnąć.'}
                         confirmLabel={isDeleting ? 'Usuwanie...' : 'Usuń'}
                         onConfirm={handleConfirmDelete}
                         isLoading={isDeleting}
