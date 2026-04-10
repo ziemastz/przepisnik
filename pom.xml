@@ -30,6 +30,10 @@
 	<properties>
 		<java.version>25</java.version>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<!-- CVE fixes (2026-04-10, session 20260410091117) -->
+		<spring-security.version>6.5.9</spring-security.version>
+		<tomcat.version>10.1.52</tomcat.version>
+		<assertj.version>3.27.7</assertj.version>
 	</properties>
 	<dependencies>
 		<dependency>
