@@ -43,11 +43,11 @@ public class RecipeController {
                     .body(BaseResponse.failure("Brak uwierzytelnionego uzytkownika."));
         }
 
-        if (recipeRequest == null || recipeRequest.getData() == null) {
+        if (recipeRequest == null || recipeRequest.data() == null) {
             return ResponseEntity.badRequest().body(BaseResponse.failure("Missing recipe data."));
         }
 
-        Recipe createdRecipe = recipeService.createRecipe(recipeRequest.getData(), principal.getName());
+        Recipe createdRecipe = recipeService.createRecipe(recipeRequest.data(), principal.getName());
         return ResponseEntity.ok(BaseResponse.success(recipeMapper.toResponse(createdRecipe)));
     }
 
@@ -85,11 +85,11 @@ public class RecipeController {
                     .body(BaseResponse.failure("Brak uwierzytelnionego uzytkownika."));
         }
 
-        if (recipeRequest == null || recipeRequest.getData() == null) {
+        if (recipeRequest == null || recipeRequest.data() == null) {
             return ResponseEntity.badRequest().body(BaseResponse.failure("Missing recipe data."));
         }
 
-        return recipeService.updateRecipe(id, recipeRequest.getData(), principal.getName())
+        return recipeService.updateRecipe(id, recipeRequest.data(), principal.getName())
                 .map(recipe -> ResponseEntity.ok(BaseResponse.success(recipeMapper.toResponse(recipe))))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(BaseResponse.failure("Przepis o podanym ID nie zostal znaleziony.")));

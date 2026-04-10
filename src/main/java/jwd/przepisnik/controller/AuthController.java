@@ -33,16 +33,16 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<BaseResponse<LoginResponse>> login(
             @Valid @RequestBody BaseRequest<LoginRequest> loginRequest) {
-        if (loginRequest == null || loginRequest.getData() == null) {
+        if (loginRequest == null || loginRequest.data() == null) {
             return ResponseEntity.badRequest()
                     .body(BaseResponse.failure("Missing login data."));
         }
 
-        LoginRequest credentials = loginRequest.getData();
+        LoginRequest credentials = loginRequest.data();
 
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword()));
+                    new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password()));
             UserDetails principal = (UserDetails) authentication.getPrincipal();
             String token = tokenProvider.generateToken(principal);
             return ResponseEntity.ok(BaseResponse.success(new LoginResponse(token)));

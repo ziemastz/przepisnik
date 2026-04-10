@@ -65,6 +65,9 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+			<!-- TODO: Lombok 1.18.x emits a JVM warning about sun.misc.Unsafe::objectFieldOffset
+			     being removed in a future release. This is managed by Spring Boot BOM.
+			     Monitor Lombok 2.x for a fix, or switch fully to Java records. -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

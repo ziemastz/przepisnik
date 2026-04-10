@@ -45,11 +45,11 @@ public class RecipeService {
         User author = requireUser(username);
 
         Recipe recipe = new Recipe();
-        recipe.setName(request.getName().trim());
-        recipe.setPreparationTimeMinutes(request.getPreparationTimeMinutes());
-        recipe.setServings(request.getServings());
+        recipe.setName(request.name().trim());
+        recipe.setPreparationTimeMinutes(request.preparationTimeMinutes());
+        recipe.setServings(request.servings());
         recipe.setAuthor(author);
-        recipe.replaceIngredients(buildRecipeIngredients(request.getIngredients()));
+        recipe.replaceIngredients(buildRecipeIngredients(request.ingredients()));
 
         return recipeRepository.save(recipe);
     }
@@ -74,10 +74,10 @@ public class RecipeService {
 
         return recipeRepository.findByIdAndAuthorId(recipeId, author.getId())
                 .map(existingRecipe -> {
-                    existingRecipe.setName(request.getName().trim());
-                    existingRecipe.setPreparationTimeMinutes(request.getPreparationTimeMinutes());
-                    existingRecipe.setServings(request.getServings());
-                    existingRecipe.replaceIngredients(buildRecipeIngredients(request.getIngredients()));
+                    existingRecipe.setName(request.name().trim());
+                    existingRecipe.setPreparationTimeMinutes(request.preparationTimeMinutes());
+                    existingRecipe.setServings(request.servings());
+                    existingRecipe.replaceIngredients(buildRecipeIngredients(request.ingredients()));
                     return recipeRepository.save(existingRecipe);
                 });
     }
@@ -104,7 +104,7 @@ public class RecipeService {
         List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
         for (IngredientAmountRequest ingredientRequest : ingredientRequests) {
-            String displayName = ingredientRequest.getName().trim();
+            String displayName = ingredientRequest.name().trim();
             String normalizedName = normalizeIngredientName(displayName);
 
             if (!seenIngredients.add(normalizedName)) {
@@ -116,8 +116,8 @@ public class RecipeService {
 
             RecipeIngredient recipeIngredient = new RecipeIngredient();
             recipeIngredient.setIngredient(ingredient);
-            recipeIngredient.setQuantity(ingredientRequest.getQuantity());
-            recipeIngredient.setUnit(ingredientRequest.getUnit());
+            recipeIngredient.setQuantity(ingredientRequest.quantity());
+            recipeIngredient.setUnit(ingredientRequest.unit());
             recipeIngredients.add(recipeIngredient);
         }
 

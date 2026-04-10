@@ -7,21 +7,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Data;
 
-@Data
-public class UpdateRecipeRequest {
-    @NotBlank
-    private String name;
-
-    @NotNull
-    @Positive
-    private Integer preparationTimeMinutes;
-
-    @NotNull
-    @Positive
-    private Integer servings;
-
-    @NotEmpty
-    private List<@Valid IngredientAmountRequest> ingredients;
+public record UpdateRecipeRequest(
+        @NotBlank String name,
+        @NotNull @Positive Integer preparationTimeMinutes,
+        @NotNull @Positive Integer servings,
+        @NotEmpty List<@Valid IngredientAmountRequest> ingredients) {
 }

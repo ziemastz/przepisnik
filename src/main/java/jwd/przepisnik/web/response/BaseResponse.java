@@ -1,15 +1,13 @@
 package jwd.przepisnik.web.response;
 
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Value;
 
-@Value
-@AllArgsConstructor
-public class BaseResponse<T> {
-    boolean isSuccess;
-    List<String> errorMessages;
-    T data;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record BaseResponse<T>(
+        @JsonProperty("success") boolean isSuccess,
+        List<String> errorMessages,
+        T data) {
 
     public static <T> BaseResponse<T> success(T data) {
         return new BaseResponse<>(

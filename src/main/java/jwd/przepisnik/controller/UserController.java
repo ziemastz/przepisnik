@@ -35,20 +35,20 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<BaseResponse<CreateUserResponse>> createUser(
             @Valid @RequestBody BaseRequest<CreateUserRequest> userRequest) {
-        if (userRequest == null || userRequest.getData() == null) {
+        if (userRequest == null || userRequest.data() == null) {
             return ResponseEntity.badRequest()
                     .body(BaseResponse.failure("Missing user data."));
         }
 
-        CreateUserRequest userData = userRequest.getData();
+        CreateUserRequest userData = userRequest.data();
 
         UserDto userDto = new UserDto(
-                userData.getUsername(),
-                userData.getPassword(),
-                userData.getEmail(),
-                userData.getName(),
-                userData.getSurname(),
-                userData.getRole());
+                userData.username(),
+                userData.password(),
+                userData.email(),
+                userData.name(),
+                userData.surname(),
+                userData.role());
 
         User created = userService.createUser(userDto);
 

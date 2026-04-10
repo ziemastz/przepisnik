@@ -59,16 +59,10 @@ class RecipeControllerTest {
 
     @Test
     void shouldCreateRecipe() throws Exception {
-        CreateRecipeRequest createRequest = new CreateRecipeRequest();
-        createRequest.setName("Nalesniki");
-        createRequest.setPreparationTimeMinutes(20);
-        createRequest.setServings(4);
-
-        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest();
-        ingredientRequest.setName("Maka");
-        ingredientRequest.setQuantity(new BigDecimal("250.00"));
-        ingredientRequest.setUnit(IngredientUnit.GRAM);
-        createRequest.setIngredients(List.of(ingredientRequest));
+        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
+                "Maka", new BigDecimal("250.00"), IngredientUnit.GRAM);
+        CreateRecipeRequest createRequest = new CreateRecipeRequest(
+                "Nalesniki", 20, 4, List.of(ingredientRequest));
 
         Recipe recipe = buildRecipe("john");
         when(recipeService.createRecipe(any(CreateRecipeRequest.class), eq("john"))).thenReturn(recipe);
@@ -134,16 +128,10 @@ class RecipeControllerTest {
     @Test
     void shouldUpdateRecipe() throws Exception {
         UUID recipeId = UUID.randomUUID();
-        UpdateRecipeRequest updateRequest = new UpdateRecipeRequest();
-        updateRequest.setName("Nalesniki updated");
-        updateRequest.setPreparationTimeMinutes(25);
-        updateRequest.setServings(5);
-
-        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest();
-        ingredientRequest.setName("Maka");
-        ingredientRequest.setQuantity(new BigDecimal("300.00"));
-        ingredientRequest.setUnit(IngredientUnit.GRAM);
-        updateRequest.setIngredients(List.of(ingredientRequest));
+        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
+                "Maka", new BigDecimal("300.00"), IngredientUnit.GRAM);
+        UpdateRecipeRequest updateRequest = new UpdateRecipeRequest(
+                "Nalesniki updated", 25, 5, List.of(ingredientRequest));
 
         Recipe updatedRecipe = buildRecipe("john");
         updatedRecipe.setName("Nalesniki updated");
@@ -164,15 +152,10 @@ class RecipeControllerTest {
     @Test
     void shouldReturnNotFoundWhenUpdatingNonExistentRecipe() throws Exception {
         UUID recipeId = UUID.randomUUID();
-        UpdateRecipeRequest updateRequest = new UpdateRecipeRequest();
-        updateRequest.setName("Test");
-        updateRequest.setPreparationTimeMinutes(20);
-        updateRequest.setServings(4);
-        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest();
-        ingredientRequest.setName("Maka");
-        ingredientRequest.setQuantity(new BigDecimal("100.00"));
-        ingredientRequest.setUnit(IngredientUnit.GRAM);
-        updateRequest.setIngredients(List.of(ingredientRequest));
+        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
+                "Maka", new BigDecimal("100.00"), IngredientUnit.GRAM);
+        UpdateRecipeRequest updateRequest = new UpdateRecipeRequest(
+                "Test", 20, 4, List.of(ingredientRequest));
 
         when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
                 .thenReturn(Optional.empty());
