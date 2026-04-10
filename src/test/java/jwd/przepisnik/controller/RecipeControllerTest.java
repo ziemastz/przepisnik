@@ -38,6 +38,7 @@ import jwd.przepisnik.web.mapper.RecipeMapper;
 import jwd.przepisnik.web.request.BaseRequest;
 import jwd.przepisnik.web.request.CreateRecipeRequest;
 import jwd.przepisnik.web.request.IngredientAmountRequest;
+import jwd.przepisnik.web.request.UpdateRecipeRequest;
 
 @ExtendWith(MockitoExtension.class)
 class RecipeControllerTest {
@@ -133,7 +134,7 @@ class RecipeControllerTest {
     @Test
     void shouldUpdateRecipe() throws Exception {
         UUID recipeId = UUID.randomUUID();
-        CreateRecipeRequest updateRequest = new CreateRecipeRequest();
+        UpdateRecipeRequest updateRequest = new UpdateRecipeRequest();
         updateRequest.setName("Nalesniki updated");
         updateRequest.setPreparationTimeMinutes(25);
         updateRequest.setServings(5);
@@ -146,10 +147,10 @@ class RecipeControllerTest {
 
         Recipe updatedRecipe = buildRecipe("john");
         updatedRecipe.setName("Nalesniki updated");
-        when(recipeService.updateRecipe(eq(recipeId), any(CreateRecipeRequest.class), eq("john")))
+        when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
                 .thenReturn(Optional.of(updatedRecipe));
 
-        BaseRequest<CreateRecipeRequest> requestBody = new BaseRequest<>(updateRequest);
+        BaseRequest<UpdateRecipeRequest> requestBody = new BaseRequest<>(updateRequest);
 
         mockMvc.perform(post("/api/recipes/update/{id}", recipeId)
                 .principal(() -> "john")
@@ -163,16 +164,20 @@ class RecipeControllerTest {
     @Test
     void shouldReturnNotFoundWhenUpdatingNonExistentRecipe() throws Exception {
         UUID recipeId = UUID.randomUUID();
-        CreateRecipeRequest updateRequest = new CreateRecipeRequest();
+        UpdateRecipeRequest updateRequest = new UpdateRecipeRequest();
         updateRequest.setName("Test");
         updateRequest.setPreparationTimeMinutes(20);
         updateRequest.setServings(4);
-        updateRequest.setIngredients(List.of());
+        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest();
+        ingredientRequest.setName("Maka");
+        ingredientRequest.setQuantity(new BigDecimal("100.00"));
+        ingredientRequest.setUnit(IngredientUnit.GRAM);
+        updateRequest.setIngredients(List.of(ingredientRequest));
 
-        when(recipeService.updateRecipe(eq(recipeId), any(CreateRecipeRequest.class), eq("john")))
+        when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
                 .thenReturn(Optional.empty());
 
-        BaseRequest<CreateRecipeRequest> requestBody = new BaseRequest<>(updateRequest);
+        BaseRequest<UpdateRecipeRequest> requestBody = new BaseRequest<>(updateRequest);
 
         mockMvc.perform(post("/api/recipes/update/{id}", recipeId)
                 .principal(() -> "john")
