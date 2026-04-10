@@ -168,7 +168,11 @@ class RecipeControllerTest {
         updateRequest.setName("Test");
         updateRequest.setPreparationTimeMinutes(20);
         updateRequest.setServings(4);
-        updateRequest.setIngredients(List.of());
+        IngredientAmountRequest ingredientRequest = new IngredientAmountRequest();
+        ingredientRequest.setName("Maka");
+        ingredientRequest.setQuantity(new BigDecimal("100.00"));
+        ingredientRequest.setUnit(IngredientUnit.GRAM);
+        updateRequest.setIngredients(List.of(ingredientRequest));
 
         when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
                 .thenReturn(Optional.empty());
