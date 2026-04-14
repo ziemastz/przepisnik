@@ -30,6 +30,9 @@ public class Recipe {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String description;
+
     @Column(nullable = false)
     private Integer preparationTimeMinutes;
 

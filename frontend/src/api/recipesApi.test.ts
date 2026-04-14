@@ -14,6 +14,7 @@ const mockedApiClient = apiClient as jest.Mocked<typeof apiClient>;
 const mockRecipe = {
     id: 'abc',
     name: 'Nalesniki',
+    description: 'Usmaz nalesniki na patelni.',
     preparationTimeMinutes: 20,
     servings: 2,
     author: 'jan',
@@ -32,6 +33,7 @@ describe('recipesApi', () => {
 
         const payload = {
             name: 'Nalesniki',
+            description: 'Usmaz nalesniki na patelni.',
             preparationTimeMinutes: 20,
             servings: 2,
             ingredients: [{ name: 'Maka', quantity: '250', unit: 'GRAM' as const }],
@@ -71,6 +73,7 @@ describe('recipesApi', () => {
 
         const payload = {
             name: 'Updated',
+            description: 'Nowy opis przygotowania.',
             preparationTimeMinutes: 20,
             servings: 2,
             ingredients: [],

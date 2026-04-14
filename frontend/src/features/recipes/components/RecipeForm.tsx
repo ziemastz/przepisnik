@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { RecipeResponse, CreateRecipeRequest, IngredientAmountRequest } from '../../../api/recipesApi';
+import {
+    RecipeResponse,
+    CreateRecipeRequest,
+    IngredientAmountRequest,
+} from '../../../api/recipesApi';
 import Button from '../../../shared/button/Button';
 
 interface RecipeFormProps {
@@ -9,6 +13,7 @@ interface RecipeFormProps {
 
 interface FormErrors {
     name?: string;
+    description?: string;
     preparationTimeMinutes?: string;
     servings?: string;
     ingredients?: string;
@@ -17,12 +22,15 @@ interface FormErrors {
 
 const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
     const [name, setName] = useState(initialData?.name ?? '');
+    const [description, setDescription] = useState(initialData?.description ?? '');
     const [preparationTimeMinutes, setPreparationTimeMinutes] = useState(
         initialData?.preparationTimeMinutes?.toString() ?? '',
     );
     const [servings, setServings] = useState(initialData?.servings?.toString() ?? '');
     const [ingredients, setIngredients] = useState<IngredientAmountRequest[]>(
-        initialData?.ingredients.map((ing) => ({ ...ing, quantity: String(ing.quantity) })) ?? [{ name: '', quantity: '', unit: 'GRAM' }],
+        initialData?.ingredients.map((ing) => ({ ...ing, quantity: String(ing.quantity) })) ?? [
+            { name: '', quantity: '', unit: 'GRAM' },
+        ],
     );
     const [errors, setErrors] = useState<FormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,6 +40,10 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
 
         if (!name.trim()) {
             newErrors.name = 'Nazwa przepisu jest wymagana.';
+        }
+
+        if (!description.trim()) {
+            newErrors.description = 'Opis przygotowania jest wymagany.';
         }
 
         const prepTime = parseInt(preparationTimeMinutes);
@@ -91,9 +103,15 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
         try {
             setIsSubmitting(true);
             setErrors({});
-            const validIngredients = ingredients.filter((ing) => ing.name.trim());
+            const validIngredients = ingredients
+                .filter((ing) => ing.name.trim())
+                .map((ing) => ({
+                    ...ing,
+                    quantity: ing.quantity.trim().replace(',', '.'),
+                }));
             const data: CreateRecipeRequest = {
                 name: name.trim(),
+                description: description.trim(),
                 preparationTimeMinutes: parseInt(preparationTimeMinutes),
                 servings: parseInt(servings),
                 ingredients: validIngredients,
@@ -108,7 +126,11 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
 
     return (
         <form onSubmit={handleSubmit} className="recipe-form">
-            {errors.submit && <div role="alert" className="recipe-form-submit-error">{errors.submit}</div>}
+            {errors.submit && (
+                <div role="alert" className="recipe-form-submit-error">
+                    {errors.submit}
+                </div>
+            )}
 
             <div className="auth-field">
                 <label htmlFor="recipe-name">Nazwa przepisu *</label>
@@ -120,7 +142,11 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                     placeholder="np. Nalesniki"
                     disabled={isSubmitting}
                 />
-                {errors.name && <div role="alert" className="recipe-field-error">{errors.name}</div>}
+                {errors.name && (
+                    <div role="alert" className="recipe-field-error">
+                        {errors.name}
+                    </div>
+                )}
             </div>
 
             <div className="recipe-form-row">
@@ -154,7 +180,9 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                         disabled={isSubmitting}
                     />
                     {errors.servings && (
-                        <div role="alert" className="recipe-field-error">{errors.servings}</div>
+                        <div role="alert" className="recipe-field-error">
+                            {errors.servings}
+                        </div>
                     )}
                 </div>
             </div>
@@ -162,7 +190,9 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
             <div className="recipe-ingredients-section">
                 <label>Składniki *</label>
                 {errors.ingredients && (
-                    <div role="alert" className="recipe-field-error">{errors.ingredients}</div>
+                    <div role="alert" className="recipe-field-error">
+                        {errors.ingredients}
+                    </div>
                 )}
                 <div className="recipe-ingredients-list">
                     {ingredients.map((ingredient, index) => (
@@ -170,34 +200,36 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                             <input
                                 type="text"
                                 value={ingredient.name}
-                                onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
+                                onChange={(e) =>
+                                    handleIngredientChange(index, 'name', e.target.value)
+                                }
                                 placeholder="Nazwa składnika"
                                 disabled={isSubmitting}
                             />
                             <input
                                 type="text"
                                 value={ingredient.quantity}
-                                onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)}
+                                onChange={(e) =>
+                                    handleIngredientChange(index, 'quantity', e.target.value)
+                                }
                                 placeholder="Ilość"
                                 disabled={isSubmitting}
                             />
                             <select
                                 value={ingredient.unit}
                                 onChange={(e) =>
-                                    handleIngredientChange(
-                                        index,
-                                        'unit',
-                                        e.target.value,
-                                    )
+                                    handleIngredientChange(index, 'unit', e.target.value)
                                 }
                                 disabled={isSubmitting}
                             >
                                 <option value="GRAM">gram</option>
+                                <option value="KG">kg</option>
                                 <option value="ML">ml</option>
+                                <option value="L">l</option>
                                 <option value="PIECE">szt.</option>
                                 <option value="TABLESPOON">łyżka</option>
                                 <option value="TEASPOON">łyżeczka</option>
-                                <option value="CUP">filiżanka</option>
+                                <option value="CUP">szklanka</option>
                             </select>
                             {ingredients.length > 1 && (
                                 <Button
@@ -215,7 +247,22 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                     + Dodaj składnik
                 </Button>
             </div>
-
+            <div className="auth-field">
+                <label htmlFor="recipe-description">Opis przygotowania *</label>
+                <textarea
+                    id="recipe-description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Opisz kroki przygotowania potrawy"
+                    rows={4}
+                    disabled={isSubmitting}
+                />
+                {errors.description && (
+                    <div role="alert" className="recipe-field-error">
+                        {errors.description}
+                    </div>
+                )}
+            </div>
             <div className="recipe-form-actions">
                 <Button type="primary" htmlType="submit" isDisabled={isSubmitting}>
                     {isSubmitting ? 'Zapisywanie...' : initialData ? 'Zapisz zmiany' : 'Zapisz'}

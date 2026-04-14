@@ -21,6 +21,7 @@ const mockedRecipesApi = recipesApi as jest.Mocked<typeof recipesApi>;
 const makeRecipe = (overrides: Partial<RecipeResponse> = {}): RecipeResponse => ({
     id: 'r1',
     name: 'Nalesniki',
+    description: 'Usmaz nalesniki i podawaj na cieplo.',
     preparationTimeMinutes: 20,
     servings: 2,
     author: 'jan',

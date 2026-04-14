@@ -46,6 +46,7 @@ public class RecipeService {
 
         Recipe recipe = new Recipe();
         recipe.setName(request.name().trim());
+        recipe.setDescription(request.description().trim());
         recipe.setPreparationTimeMinutes(request.preparationTimeMinutes());
         recipe.setServings(request.servings());
         recipe.setAuthor(author);
@@ -75,6 +76,7 @@ public class RecipeService {
         return recipeRepository.findByIdAndAuthorId(recipeId, author.getId())
                 .map(existingRecipe -> {
                     existingRecipe.setName(request.name().trim());
+                    existingRecipe.setDescription(request.description().trim());
                     existingRecipe.setPreparationTimeMinutes(request.preparationTimeMinutes());
                     existingRecipe.setServings(request.servings());
                     // Clear old ingredients and flush so Hibernate emits the DELETEs
