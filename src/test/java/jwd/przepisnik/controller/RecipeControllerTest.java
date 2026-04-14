@@ -132,6 +132,31 @@ class RecipeControllerTest {
     }
 
     @Test
+    void shouldReturnUnauthorizedWhenCreatingRecipeWithoutPrincipal() throws Exception {
+        mockMvc.perform(post("/api/recipes/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                                                                                                {
+                                                                                                        "data": {
+                                                                                                                "name": "Test",
+                                                                                                                "description": "Opis testowy",
+                                                                                                                "preparationTimeMinutes": 20,
+                                                                                                                "servings": 4,
+                                                                                                                "ingredients": [
+                                                                                                                        {
+                                                                                                                                "name": "Maka",
+                                                                                                                                "quantity": 100,
+                                                                                                                                "unit": "GRAM"
+                                                                                                                        }
+                                                                                                                ]
+                                                                                                        }
+                                                                                                }
+                        """))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
     void shouldGetMyRecipes() throws Exception {
         Recipe recipe = buildRecipe("john");
         when(recipeService.getRecipesForUser("john")).thenReturn(List.of(recipe));
@@ -182,6 +207,16 @@ class RecipeControllerTest {
                 .andExpect(jsonPath("$.data.name", equalTo("Nalesniki updated")))
                 .andExpect(jsonPath("$.data.description", equalTo("Nowy sposob przygotowania.")));
     }
+
+        @Test
+        void shouldReturnBadRequestWhenCreatingRecipeWithMissingData() throws Exception {
+                mockMvc.perform(post("/api/recipes/create")
+                                .principal(() -> "john")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{}"))
+                                .andExpect(status().isBadRequest())
+                                .andExpect(jsonPath("$.success", is(false)));
+        }
 
                 @Test
                 void shouldUpdateRecipeWhenQuantityUsesCommaDecimalSeparator() throws Exception {
@@ -239,6 +274,45 @@ class RecipeControllerTest {
                 .andExpect(jsonPath("$.success", is(false)));
     }
 
+        @Test
+        void shouldReturnUnauthorizedWhenUpdatingRecipeWithoutPrincipal() throws Exception {
+                UUID recipeId = UUID.randomUUID();
+
+                mockMvc.perform(post("/api/recipes/update/{id}", recipeId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                                                                                                                .content("""
+                                                                                                                                                                                                {
+                                                                                                                                                                                                        "data": {
+                                                                                                                                                                                                                "name": "Test",
+                                                                                                                                                                                                                "description": "Opis testowy",
+                                                                                                                                                                                                                "preparationTimeMinutes": 20,
+                                                                                                                                                                                                                "servings": 4,
+                                                                                                                                                                                                                "ingredients": [
+                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                "name": "Maka",
+                                                                                                                                                                                                                                "quantity": 100,
+                                                                                                                                                                                                                                "unit": "GRAM"
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                ]
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                }
+                                                                                                                                                                                                """))
+                                .andExpect(status().isUnauthorized())
+                                .andExpect(jsonPath("$.success", is(false)));
+        }
+
+        @Test
+        void shouldReturnBadRequestWhenUpdatingRecipeWithMissingData() throws Exception {
+                UUID recipeId = UUID.randomUUID();
+
+                mockMvc.perform(post("/api/recipes/update/{id}", recipeId)
+                                .principal(() -> "john")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{}"))
+                                .andExpect(status().isBadRequest())
+                                .andExpect(jsonPath("$.success", is(false)));
+        }
+
     @Test
     void shouldDeleteRecipe() throws Exception {
         UUID recipeId = UUID.randomUUID();
@@ -262,6 +336,16 @@ class RecipeControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success", is(false)));
     }
+
+        @Test
+        void shouldReturnUnauthorizedWhenDeletingRecipeWithoutPrincipal() throws Exception {
+                UUID recipeId = UUID.randomUUID();
+
+                mockMvc.perform(post("/api/recipes/delete/{id}", recipeId)
+                                .contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isUnauthorized())
+                                .andExpect(jsonPath("$.success", is(false)));
+        }
 
     private Recipe buildRecipe(String username) {
         User user = new User();
