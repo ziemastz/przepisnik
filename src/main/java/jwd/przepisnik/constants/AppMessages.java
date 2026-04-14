@@ -50,6 +50,7 @@ public final class AppMessages {
         private Security() {
         }
 
+        public static final String BEARER_SCHEME = "Bearer";
         public static final String BEARER_PREFIX = "Bearer ";
         public static final String AUTHORIZATION_HEADER = "Authorization";
         public static final String DEFAULT_ROLE = "USER";
