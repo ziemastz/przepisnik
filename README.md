@@ -120,6 +120,23 @@ Aplikacja będzie dostępna pod adresem:
 (lub http://localhost:3000
  dla samego frontendu w trybie dev)
 
+## Produkcja na Azure
+
+Lokalnie i produkcyjnie aplikacja używa teraz tego samego pliku `application.properties` i plikowej bazy H2.
+
+Domyślny URL bazy:
+
+```text
+jdbc:h2:file:${HOME:./data}/przepisnikdb;DB_CLOSE_ON_EXIT=FALSE
+```
+
+W Azure App Service nie musisz ustawiać profilu ani osobnego URL bazy, jeśli chcesz użyć domyślnej konfiguracji z `application.properties`.
+
+To oznacza:
+- restart aplikacji na Azure nie powinien usuwać danych,
+- redeploy nie powinien usuwać danych, o ile App Service zachowuje storage `HOME`,
+- aplikacja powinna działać na jednej instancji App Service, bo plikowa H2 nie jest dobrym wyborem dla scale-out na wiele instancji.
+
 # 👤 Autor
 
 Tomasz Z
