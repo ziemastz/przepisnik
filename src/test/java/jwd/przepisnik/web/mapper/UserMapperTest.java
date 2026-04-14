@@ -54,7 +54,7 @@ class UserMapperTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> userMapper.toEntity(dto));
 
-        assertEquals(AppMessages.Service.PASSWORD_EMPTY, exception.getMessage());
+        assertEquals(AppMessages.Service.USER_SECRET_REQUIRED, exception.getMessage());
     }
 
     @Test

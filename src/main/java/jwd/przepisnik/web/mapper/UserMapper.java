@@ -48,7 +48,7 @@ public class UserMapper {
 
     private void validatePassword(String password) {
         if (password == null || password.isBlank()) {
-            throw new IllegalArgumentException(AppMessages.Service.PASSWORD_EMPTY);
+            throw new IllegalArgumentException(AppMessages.Service.USER_SECRET_REQUIRED);
         }
     }
 }
