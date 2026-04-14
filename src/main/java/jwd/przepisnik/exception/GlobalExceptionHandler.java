@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import java.util.List;
+import jwd.przepisnik.constants.AppMessages;
 import jwd.przepisnik.web.response.BaseResponse;
 
 @RestControllerAdvice
@@ -16,7 +17,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponse<Object>> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult().getFieldErrors().stream()
-                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+            .map(fieldError -> fieldError.getField() + AppMessages.FIELD_ERROR_SEPARATOR + fieldError.getDefaultMessage())
                 .toList();
 
         return ResponseEntity.badRequest()
@@ -26,7 +27,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<BaseResponse<Object>> handleHttpMessageNotReadableException(
             HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(BaseResponse.failure("Invalid request payload."));
+        return ResponseEntity.badRequest().body(BaseResponse.failure(AppMessages.INVALID_REQUEST_PAYLOAD));
     }
     
     @ExceptionHandler(UserAlreadyExistsException.class)

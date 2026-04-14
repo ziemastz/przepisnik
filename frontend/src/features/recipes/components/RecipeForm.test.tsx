@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import RecipeForm from './RecipeForm';
 import { RecipeResponse } from '../../../api/recipesApi';
+import { ApiError } from '../../../api/types';
 
 const fillValidForm = () => {
     fireEvent.change(screen.getByLabelText('Nazwa przepisu *'), { target: { value: 'Zupa' } });
@@ -67,6 +68,19 @@ describe('RecipeForm', () => {
         expect(screen.getByText('Czas przygotowania musi być liczbą większą od 0.')).toBeInTheDocument();
         expect(screen.getByText('Liczba porcji musi być liczbą większą od 0.')).toBeInTheDocument();
         expect(screen.getByText('Dodaj co najmniej jeden składnik.')).toBeInTheDocument();
+    });
+
+    test('clears name validation error after user enters value', async () => {
+        render(<RecipeForm onSubmit={jest.fn()} />);
+
+        fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
+        expect(await screen.findByText('Nazwa przepisu jest wymagana.')).toBeInTheDocument();
+
+        const nameInput = screen.getByLabelText('Nazwa przepisu *');
+        fireEvent.change(nameInput, { target: { value: 'Pierogi' } });
+
+        expect(screen.queryByText('Nazwa przepisu jest wymagana.')).not.toBeInTheDocument();
+        expect(nameInput).not.toHaveClass('field-invalid');
     });
 
     test('shows duplicate ingredient error when two ingredients share the same name', async () => {
@@ -159,11 +173,55 @@ describe('RecipeForm', () => {
         render(<RecipeForm onSubmit={onSubmit} />);
 
         fillValidForm();
+        const quantityInputs = screen.getAllByPlaceholderText('Ilość');
+        fireEvent.change(quantityInputs[0], { target: { value: '100' } });
         fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
 
         await waitFor(() => {
             expect(screen.getByRole('alert')).toHaveTextContent('Coś poszło nie tak. Spróbuj ponownie.');
         });
+    });
+
+    test('maps backend ingredient quantity error to the row field', async () => {
+        const onSubmit = jest
+            .fn()
+            .mockRejectedValue(new ApiError(400, ['data.ingredients[0].quantity: nie może mieć wartości null']));
+
+        render(<RecipeForm onSubmit={onSubmit} />);
+
+        fillValidForm();
+        const quantityInput = screen.getAllByPlaceholderText('Ilość')[0];
+        fireEvent.change(quantityInput, { target: { value: '1' } });
+
+        fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
+
+        await waitFor(() => {
+            expect(screen.getByText('Ilosc skladnika jest wymagana.')).toBeInTheDocument();
+        });
+
+        expect(quantityInput).toHaveClass('field-invalid');
+    });
+
+    test('clears ingredient quantity error when user enters value', async () => {
+        const onSubmit = jest
+            .fn()
+            .mockRejectedValue(new ApiError(400, ['data.ingredients[0].quantity: nie może mieć wartości null']));
+
+        render(<RecipeForm onSubmit={onSubmit} />);
+
+        fillValidForm();
+        const quantityInput = screen.getAllByPlaceholderText('Ilość')[0];
+        fireEvent.change(quantityInput, { target: { value: '1' } });
+        fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
+
+        await waitFor(() => {
+            expect(screen.getByText('Ilosc skladnika jest wymagana.')).toBeInTheDocument();
+        });
+
+        fireEvent.change(quantityInput, { target: { value: '250' } });
+
+        expect(screen.queryByText('Ilosc skladnika jest wymagana.')).not.toBeInTheDocument();
+        expect(quantityInput).not.toHaveClass('field-invalid');
     });
 
     test('remove button is not shown when only one ingredient exists', () => {

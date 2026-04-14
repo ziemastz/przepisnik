@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jwd.przepisnik.constants.AppMessages;
 import jwd.przepisnik.exception.UserAlreadyExistsException;
 import jwd.przepisnik.models.User;
 import jwd.przepisnik.repository.UserRepository;
@@ -26,7 +27,7 @@ public class UserService {
     }
 
     public User createUser(UserDto userDto) {
-        Objects.requireNonNull(userDto, "Obiekt UserDto nie moze byc pusty.");
+        Objects.requireNonNull(userDto, AppMessages.Service.USER_DTO_REQUIRED);
 
         ensureUserIsUnique(userDto);
 
@@ -36,7 +37,7 @@ public class UserService {
     }
 
     public Optional<User> updateUser(UUID id, UserDto userDto) {
-        Objects.requireNonNull(userDto, "Obiekt UserDto nie moze byc pusty.");
+        Objects.requireNonNull(userDto, AppMessages.Service.USER_DTO_REQUIRED);
 
         return userRepository.findById(id)
                 .map(existingUser -> {
@@ -61,13 +62,13 @@ public class UserService {
         userRepository.findByUsername(userDto.username())
                 .ifPresent(existing -> {
                     throw new UserAlreadyExistsException(
-                            String.format("Uzytkownik z loginem '%s' juz istnieje.", userDto.username()));
+                            String.format(AppMessages.Service.USERNAME_EXISTS_PATTERN, userDto.username()));
                 });
 
         userRepository.findByEmail(userDto.email())
                 .ifPresent(existing -> {
                     throw new UserAlreadyExistsException(
-                            String.format("Uzytkownik z e-mailem '%s' juz istnieje.", userDto.email()));
+                            String.format(AppMessages.Service.EMAIL_EXISTS_PATTERN, userDto.email()));
                 });
     }
 

@@ -4,16 +4,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import jwd.przepisnik.constants.ApiPaths;
+
 @Controller
 public class ReactController {
 
-    @GetMapping("/")
+    @GetMapping(ApiPaths.React.ROOT)
     public String index() {
-        return "forward:/index.html";
+        return ApiPaths.React.FORWARD_INDEX;
     }
 
-    @GetMapping("/{path:^(?!api|static|h2-console)(?!.*\\.).*$}/**")
+    @GetMapping(ApiPaths.React.SPA_FALLBACK)
     public String forwardSpaRoutes(@PathVariable String path) {
-        return "forward:/index.html";
+        return ApiPaths.React.FORWARD_INDEX;
     }
 }

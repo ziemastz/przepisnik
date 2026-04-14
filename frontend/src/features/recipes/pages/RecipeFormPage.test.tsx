@@ -37,15 +37,15 @@ jest.mock('../components/RecipeForm', () => ({
         <div>
             {initialData && <span data-testid="initial-name">{initialData.name}</span>}
             <button
-                onClick={() =>
+                onClick={() => {
                     void onSubmit({
                         name: 'Test recipe',
                         description: 'Test preparation description',
                         preparationTimeMinutes: 30,
                         servings: 4,
                         ingredients: [],
-                    })
-                }
+                    }).catch(() => undefined);
+                }}
             >
                 Submit
             </button>
@@ -95,20 +95,17 @@ describe('RecipeFormPage', () => {
             await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/my-recipes'));
         });
 
-        test('shows error message when createRecipe fails', async () => {
+        test('does not navigate when createRecipe fails', async () => {
             mockedRecipesApi.createRecipe.mockRejectedValue(new Error('fail'));
 
             render(<RecipeFormPage />);
             fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
 
-            await waitFor(() =>
-                expect(screen.getByRole('alert')).toHaveTextContent(
-                    'Nie udało się zapisać przepisu.',
-                ),
-            );
+            await waitFor(() => expect(mockedRecipesApi.createRecipe).toHaveBeenCalled());
+            expect(mockNavigate).not.toHaveBeenCalled();
         });
 
-        test('shows ApiError message when createRecipe fails with ApiError', async () => {
+        test('does not navigate when createRecipe fails with ApiError', async () => {
             mockedRecipesApi.createRecipe.mockRejectedValue(
                 new ApiError(400, ['Nieprawidłowe dane']),
             );
@@ -116,9 +113,8 @@ describe('RecipeFormPage', () => {
             render(<RecipeFormPage />);
             fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
 
-            await waitFor(() =>
-                expect(screen.getByRole('alert')).toHaveTextContent('Nieprawidłowe dane'),
-            );
+            await waitFor(() => expect(mockedRecipesApi.createRecipe).toHaveBeenCalled());
+            expect(mockNavigate).not.toHaveBeenCalled();
         });
     });
 
@@ -181,7 +177,7 @@ describe('RecipeFormPage', () => {
             );
         });
 
-        test('shows error when updateRecipe fails', async () => {
+        test('does not navigate when updateRecipe fails', async () => {
             mockedRecipesApi.getRecipeById.mockResolvedValue(mockRecipe);
             mockedRecipesApi.updateRecipe.mockRejectedValue(new Error('update fail'));
 
@@ -190,11 +186,8 @@ describe('RecipeFormPage', () => {
             await screen.findByText('Edytuj przepis');
             fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
 
-            await waitFor(() =>
-                expect(screen.getByRole('alert')).toHaveTextContent(
-                    'Nie udało się zapisać przepisu.',
-                ),
-            );
+            await waitFor(() => expect(mockedRecipesApi.updateRecipe).toHaveBeenCalled());
+            expect(mockNavigate).not.toHaveBeenCalled();
         });
     });
 });

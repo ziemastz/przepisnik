@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import jwd.przepisnik.constants.AppMessages;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private static final String HEADER_PREFIX = "Bearer ";
+    private static final String HEADER_PREFIX = AppMessages.Security.BEARER_PREFIX;
 
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
@@ -57,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String resolveToken(HttpServletRequest request) {
-        String header = request.getHeader("Authorization");
+        String header = request.getHeader(AppMessages.Security.AUTHORIZATION_HEADER);
         if (StringUtils.hasText(header) && header.startsWith(HEADER_PREFIX)) {
             return header.substring(HEADER_PREFIX.length());
         }

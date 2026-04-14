@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jwd.przepisnik.constants.AppMessages;
 import jwd.przepisnik.models.User;
 
 public class UserPrincipal implements UserDetails {
@@ -25,8 +26,10 @@ public class UserPrincipal implements UserDetails {
     }
 
     public static UserPrincipal from(User user) {
-        String role = user.getRole() != null ? user.getRole() : "USER";
-        String normalizedRole = role.startsWith("ROLE_") ? role : "ROLE_" + role.toUpperCase(Locale.ROOT);
+        String role = user.getRole() != null ? user.getRole() : AppMessages.Security.DEFAULT_ROLE;
+        String normalizedRole = role.startsWith(AppMessages.Security.ROLE_PREFIX)
+                ? role
+                : AppMessages.Security.ROLE_PREFIX + role.toUpperCase(Locale.ROOT);
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(normalizedRole));
         return new UserPrincipal(user.getId(), user.getUsername(), user.getPasswordHash(), authorities);
     }

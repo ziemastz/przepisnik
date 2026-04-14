@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jwd.przepisnik.constants.AppMessages;
 import jwd.przepisnik.models.Ingredient;
 import jwd.przepisnik.models.Recipe;
 import jwd.przepisnik.models.RecipeIngredient;
@@ -40,7 +41,7 @@ public class RecipeService {
 
     @Transactional
     public Recipe createRecipe(CreateRecipeRequest request, String username) {
-        Objects.requireNonNull(request, "Recipe request cannot be null.");
+        Objects.requireNonNull(request, AppMessages.Service.RECIPE_REQUEST_REQUIRED);
 
         User author = requireUser(username);
 
@@ -69,7 +70,7 @@ public class RecipeService {
 
     @Transactional
     public Optional<Recipe> updateRecipe(UUID recipeId, UpdateRecipeRequest request, String username) {
-        Objects.requireNonNull(request, "Recipe request cannot be null.");
+        Objects.requireNonNull(request, AppMessages.Service.RECIPE_REQUEST_REQUIRED);
 
         User author = requireUser(username);
 
@@ -102,7 +103,7 @@ public class RecipeService {
 
     private User requireUser(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("Authenticated user was not found."));
+                .orElseThrow(() -> new IllegalArgumentException(AppMessages.Service.AUTH_USER_NOT_FOUND));
     }
 
     private List<RecipeIngredient> buildRecipeIngredients(List<IngredientAmountRequest> ingredientRequests) {
@@ -114,7 +115,7 @@ public class RecipeService {
             String normalizedName = normalizeIngredientName(displayName);
 
             if (!seenIngredients.add(normalizedName)) {
-                throw new IllegalArgumentException("Ingredient names must be unique within a recipe.");
+                throw new IllegalArgumentException(AppMessages.Service.INGREDIENT_NAMES_UNIQUE);
             }
 
             Ingredient ingredient = ingredientRepository.findByNormalizedName(normalizedName)

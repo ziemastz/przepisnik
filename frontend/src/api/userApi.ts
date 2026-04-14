@@ -1,5 +1,6 @@
 import { apiClient } from './apiClient';
 import { tokenStorage } from './tokenStorage';
+import constants from '../constants';
 
 export interface LoginPayload {
     email: string;
@@ -49,7 +50,7 @@ const normalizeUser = (user: CurrentUserResponse): AuthUser => ({
 export const userApi = {
     async login(payload: LoginPayload): Promise<AuthUser> {
         const loginResult = await apiClient.post<LoginResponse, { data: { username: string; password: string } }>(
-            '/api/auth/login',
+            constants.api.auth.login,
             {
                 data: {
                     username: payload.email,
@@ -65,7 +66,7 @@ export const userApi = {
 
     async register(payload: RegisterPayload): Promise<RegisterResponse> {
         return apiClient.post<RegisterResponse, { data: { username: string; password: string; email: string; name: string; surname: string; role: string } }>(
-            '/api/users/create',
+            constants.api.auth.usersCreate,
             {
                 data: {
                     username: payload.email,
@@ -73,7 +74,7 @@ export const userApi = {
                     email: payload.email,
                     name: payload.name,
                     surname: payload.surname ?? '',
-                    role: 'USER',
+                    role: constants.api.auth.roleUser,
                 },
             },
             false,
@@ -81,7 +82,7 @@ export const userApi = {
     },
 
     async getCurrentUser(): Promise<AuthUser> {
-        const current = await apiClient.get<CurrentUserResponse>('/api/users/me', true);
+        const current = await apiClient.get<CurrentUserResponse>(constants.api.auth.usersMe, true);
         return normalizeUser(current);
     },
 

@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { ApiError } from '../../api/types';
 import { AuthUser, LoginPayload, RegisterPayload, userApi } from '../../api/userApi';
 import { tokenStorage } from '../../api/tokenStorage';
+import constants from '../../constants';
 
 interface AuthContextState {
     user: AuthUser | null;
@@ -26,7 +27,7 @@ const toErrorMessage = (error: unknown): string => {
         return error.message;
     }
 
-    return 'Wystapil nieoczekiwany blad.';
+    return constants.auth.generic.unexpectedError;
 };
 
 const isServerIssueError = (error: unknown, message: string): boolean => {
@@ -88,7 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setErrorMessage(message);
 
             if (isServerIssueError(error, message)) {
-                setServerIssueMessage('Wykryto problem z serwerem. Sprawdz polaczenie z backendem i sprobuj ponownie.');
+                setServerIssueMessage(constants.auth.generic.serverIssue);
             }
 
             throw error;
@@ -104,7 +105,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setErrorMessage(message);
 
             if (isServerIssueError(error, message)) {
-                setServerIssueMessage('Wykryto problem z serwerem. Sprawdz polaczenie z backendem i sprobuj ponownie.');
+                setServerIssueMessage(constants.auth.generic.serverIssue);
             }
 
             throw error;
@@ -138,7 +139,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
-        throw new Error('useAuth must be used within AuthProvider.');
+        throw new Error(constants.auth.generic.providerUsageError);
     }
 
     return context;

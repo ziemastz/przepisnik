@@ -17,6 +17,7 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import jwd.przepisnik.constants.ApiPaths;
 import jwd.przepisnik.security.JwtAuthenticationEntryPoint;
 import jwd.przepisnik.security.JwtAuthenticationFilter;
 
@@ -24,19 +25,19 @@ import jwd.przepisnik.security.JwtAuthenticationFilter;
 @EnableConfigurationProperties(JwtProperties.class)
 public class SecurityConfig {
     private static final String[] PUBLIC_RESOURCES = {
-            "/",
-            "/index.html",
-            "/manifest.json",
-            "/asset-manifest.json",
-            "/robots.txt",
-            "/static/**",
-            "/favicon.ico"
+            ApiPaths.HOME,
+            ApiPaths.INDEX_HTML,
+            ApiPaths.MANIFEST_JSON,
+            ApiPaths.ASSET_MANIFEST_JSON,
+            ApiPaths.ROBOTS_TXT,
+            ApiPaths.STATIC_ALL,
+            ApiPaths.FAVICON_ICO
     };
 
-    private static final String AUTH_ENDPOINT = "/api/auth/**";
-    private static final String H2_CONSOLE_ENDPOINT = "/h2-console/**";
-    private static final String USER_REGISTRATION_ENDPOINT = "/api/users/create";
-    private static final RequestMatcher API_REQUESTS = PathPatternRequestMatcher.withDefaults().matcher("/api/**");
+        private static final String AUTH_ENDPOINT = ApiPaths.Auth.ALL;
+        private static final String H2_CONSOLE_ENDPOINT = ApiPaths.H2_CONSOLE_ALL;
+        private static final String USER_REGISTRATION_ENDPOINT = ApiPaths.Users.CREATE_FULL;
+        private static final RequestMatcher API_REQUESTS = PathPatternRequestMatcher.withDefaults().matcher(ApiPaths.API_ALL);
     private static final RequestMatcher H2_CONSOLE_REQUESTS = PathPatternRequestMatcher.withDefaults()
             .matcher(H2_CONSOLE_ENDPOINT);
     private static final RequestMatcher CSRF_PROTECTION_MATCHER = request ->

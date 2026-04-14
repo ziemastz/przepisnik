@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jwd.przepisnik.constants.AppMessages;
 import jwd.przepisnik.repository.IngredientRepository;
 import jwd.przepisnik.web.response.IngredientSuggestionResponse;
 
@@ -37,7 +38,7 @@ public class IngredientService {
 
     private String normalizeQuery(String query) {
         if (query == null || query.isBlank()) {
-            throw new IllegalArgumentException("Query cannot be empty.");
+            throw new IllegalArgumentException(AppMessages.Service.INGREDIENT_QUERY_EMPTY);
         }
 
         return query.trim().toLowerCase(Locale.ROOT);
@@ -49,7 +50,7 @@ public class IngredientService {
         }
 
         if (limit < 1) {
-            throw new IllegalArgumentException("Limit must be greater than zero.");
+            throw new IllegalArgumentException(AppMessages.Service.INGREDIENT_LIMIT_POSITIVE);
         }
 
         return Math.min(limit, MAX_LIMIT);
