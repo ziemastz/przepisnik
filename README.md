@@ -23,13 +23,20 @@ https://przepisnik-web-dmbwcwe2etdke5ge.westeurope-01.azurewebsites.net/
 ## 📌 Opis projektu
 **Przepiśnik** to aplikacja, która pozwala na łatwe przechowywanie, organizowanie i wyszukiwanie przepisów kulinarnych. 
 
-Główne funkcjonalności:
+Aktualnie zaimplementowane funkcjonalności:
+- rejestracja i logowanie użytkowników (JWT),
 - dodawanie własnych przepisów,
 - edycja i usuwanie istniejących przepisów,
-- wyszukiwanie po nazwie lub składnikach,
-- podział na kategorie,
-- możliwość dodawania zdjęć potraw,
-- rejestracja i logowanie użytkowników.
+- lista „Moje przepisy” dla zalogowanego użytkownika,
+- zarządzanie składnikami przepisu (nazwa, ilość, jednostka),
+- podpowiedzi składników (endpoint wyszukiwania składników),
+- obsługa błędów i walidacji po stronie backendu i frontendu.
+
+Funkcjonalności planowane / w trakcie rozwoju:
+- kalkulator wartości odżywczych (B/T/W),
+- kategorie przepisów,
+- zdjęcia potraw,
+- rozbudowane wyszukiwanie i filtrowanie przepisów.
 
 Projekt został zrealizowany w ramach pracy dyplomowej i stanowi praktyczne zastosowanie technologii Java (Spring Boot) oraz React.
 
@@ -39,7 +46,7 @@ Projekt został zrealizowany w ramach pracy dyplomowej i stanowi praktyczne zast
 
 | Warstwa        | Zastosowane technologie |
 |----------------|------------------------|
-| 🔙 Backend    | Java 21, Spring Boot, Spring Web, Spring Data JPA, Hibernate |
+| 🔙 Backend    | Java 25, Spring Boot, Spring Web, Spring Data JPA, Hibernate, Flyway |
 | 🎨 Frontend       | React (TypeScript/JavaScript) |
 | 🗄️ Baza danych    | H2 |
 | 🔐 Bezpieczeństwo | Spring Security, JWT Authentication |
@@ -67,19 +74,23 @@ Podejście: architektura warstwowa (Controller → Service → Repository → En
 
 ## 🚧 Postęp prac (to-do / done)
 
+Stan na 2026-04-14
+
 | Etap | Opis | Status |
 |------|------|--------|
 | Utworzenie repozytorium projektu i README.md | Założenie repo i wstępny opis projektu | ✅ Zrobione |
-| Utworzenie aplikacji Spring Boot | Dodanie podstawowych modułów (Web, JPA, Security, Validation) | ✅ Zrobione|
-| Konfiguracja baz danych | Utworzenie modeli, repozytoriów, migracji (Flyway/Liquibase – opcjonalnie) | ⏳ |
-| Stworzenie podstawowego CRUD (przepisy) | Endpoints REST + testy podstawowe | ⏳ |
-| Dodanie logowania i rejestracji użytkownika | Spring Security + BCrypt | ⏳ |
+| Utworzenie aplikacji Spring Boot | Dodanie podstawowych modułów (Web, JPA, Security, Validation) | ✅ Zrobione |
+| Konfiguracja baz danych | Modele, repozytoria, migracje Flyway (V1, V2) | ✅ Zrobione |
+| Stworzenie podstawowego CRUD (przepisy) | Endpoints REST + testy kontrolerów i serwisów | ✅ Zrobione |
+| Dodanie logowania i rejestracji użytkownika | Spring Security + JWT | ✅ Zrobione |
 | Konfiguracja GitHub Actions (CI) | Automatyczne budowanie projektu, Integracja CI z SonarCloud | ✅ Zrobione |
 | Publikacja backendu na Azure | Azure Web App / Azure Spring Apps | ✅ Zrobione |
-| Stworzenie projektu React | Inicjalizacja projektu + routing + UI listy przepisów | ⏳ |
-| Integracja backend ↔ frontend | Wyświetlanie danych API w React | ⏳ |
+| Stworzenie projektu React | Inicjalizacja projektu + routing + podstawowe widoki auth i przepisy | ✅ Zrobione |
+| Integracja backend ↔ frontend | Integracja API (auth, user, recipes, ingredients) | ✅ Zrobione |
 | Budowanie frontendu wewnątrz Spring Boot | Włączenie React `npm build` → `static/` w Spring | ✅ Zrobione |
-| Finalne testy i optymalizacje | UX, poprawki wizualne, walidacje | ⏳ |
+| Testy automatyczne | Testy backendu (JUnit/Mockito) i frontendu (Jest/RTL) | ✅ Zrobione |
+| Finalne testy i optymalizacje UX/UI | Dopracowanie strony głównej i warstwy wizualnej | ⏳ |
+| Funkcje rozszerzone | B/T/W, kategorie, zdjęcia, rozbudowane wyszukiwanie | ⬜ |
 | Dokumentacja do pracy dyplomowej | Opis architektury, technologii, wniosków | ⏳ |
 
 Legenda:  
@@ -108,7 +119,7 @@ mvn spring-boot:run
 ```
 Frontend znajduje się w folderze `/frontend`:
 ```bash
-# Uruchamianie aplikacji fronted (React.js)
+# Uruchamianie aplikacji frontend (React.js)
 cd frontend
 npm install
 npm start
