@@ -1,5 +1,6 @@
 import { ApiError, ApiResponseEnvelope } from './types';
 import { tokenStorage } from './tokenStorage';
+import constants from '../constants';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -17,13 +18,13 @@ interface ParsedResponse<T> {
 
 const buildHeaders = (authenticated: boolean): HeadersInit => {
     const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
+        [constants.api.headers.contentType]: constants.api.headers.contentTypeValue,
     };
 
     if (authenticated) {
         const token = tokenStorage.getToken();
         if (token) {
-            headers.Authorization = `Bearer ${token}`;
+            headers[constants.api.headers.authorization] = `${constants.api.headers.bearerPrefix}${token}`;
         }
     }
 
@@ -59,18 +60,18 @@ const isHtmlLikeResponse = (rawText: string): boolean => {
 
 const toTransportErrorMessage = (status: number, rawText: string): string => {
     if (status === 404 && isHtmlLikeResponse(rawText)) {
-        return 'Nie mozna polaczyc z API. Sprawdz czy backend dziala i czy frontend ma poprawna konfiguracje proxy.';
+        return constants.api.errors.noApiConnection;
     }
 
     if (status === 401 && !rawText.trim()) {
-        return 'Serwer odrzucil zapytanie. Sprawdz konfiguracje bezpieczenstwa backendu i sprobuj ponownie.';
+        return constants.api.errors.unauthorizedConfig;
     }
 
     if (status >= 500) {
-        return 'Serwer jest chwilowo niedostepny. Sprobuj ponownie za moment.';
+        return constants.api.errors.serverUnavailable;
     }
 
-    return 'Nie udalo sie wykonac zadania. Sprobuj ponownie.';
+    return constants.api.errors.requestFailed;
 };
 
 const request = async <TData, TBody = undefined>(
@@ -90,7 +91,7 @@ const request = async <TData, TBody = undefined>(
             body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
         });
     } catch {
-        throw new ApiError(0, ['Nie mozna polaczyc z serwerem. Upewnij sie, ze backend jest uruchomiony.']);
+        throw new ApiError(0, [constants.api.errors.noServerConnection]);
     }
 
     const parsedResponse = await parseEnvelope<TData>(response);
@@ -107,7 +108,7 @@ const request = async <TData, TBody = undefined>(
         if (allowEmptyData) {
             return null as TData;
         }
-        throw new ApiError(response.status, ['Missing response payload.']);
+        throw new ApiError(response.status, [constants.api.errors.missingPayload]);
     }
 
     if (envelope.data === null) {
@@ -115,7 +116,7 @@ const request = async <TData, TBody = undefined>(
             return null as TData;
         }
 
-        throw new ApiError(response.status, ['Missing response payload.']);
+        throw new ApiError(response.status, [constants.api.errors.missingPayload]);
     }
 
     return envelope.data;

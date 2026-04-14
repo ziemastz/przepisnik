@@ -5,6 +5,7 @@ import { ApiError } from '../../../api/types';
 import RecipeList from '../components/RecipeList';
 import Button from '../../../shared/button/Button';
 import InfoDialog from '../../../shared/dialog/InfoDialog';
+import constants from '../../../constants';
 
 const MyRecipesPage = () => {
     const navigate = useNavigate();
@@ -30,8 +31,8 @@ const MyRecipesPage = () => {
         } catch (err) {
             const message =
                 err instanceof ApiError
-                    ? (err.messages[0] ?? 'Nie udało się załadować przepisów.')
-                    : 'Nie udało się załadować przepisów.';
+                    ? (err.messages[0] ?? constants.recipes.list.loadError)
+                    : constants.recipes.list.loadError;
             setError(message);
         } finally {
             setIsLoading(false);
@@ -61,8 +62,8 @@ const MyRecipesPage = () => {
         } catch (err) {
             const message =
                 err instanceof ApiError
-                    ? (err.messages[0] ?? 'Nie udało się usunąć przepisu.')
-                    : 'Nie udało się usunąć przepisu.';
+                    ? (err.messages[0] ?? constants.recipes.list.deleteError)
+                    : constants.recipes.list.deleteError;
             setError(message);
         } finally {
             setIsDeleting(false);
@@ -70,16 +71,16 @@ const MyRecipesPage = () => {
     };
 
     const handleAddRecipe = () => {
-        navigate('/recipes/new');
+        navigate(constants.routes.recipeNew);
     };
 
     return (
         <div className="recipes-page">
             <div className="recipes-page-container">
                 <div className="recipes-header">
-                    <h2>Moje przepisy</h2>
+                    <h2>{constants.recipes.list.title}</h2>
                     <Button type="primary" onClick={handleAddRecipe}>
-                        + Dodaj przepis
+                        {constants.recipes.list.addButton}
                     </Button>
                 </div>
 
@@ -90,12 +91,12 @@ const MyRecipesPage = () => {
                 )}
 
                 {isLoading ? (
-                    <div className="recipes-loading">Ładowanie...</div>
+                    <div className="recipes-loading">{constants.recipes.list.loading}</div>
                 ) : recipes.length === 0 ? (
                     <div className="recipes-empty">
-                        <p>Nie masz jeszcze żadnych przepisów.</p>
+                        <p>{constants.recipes.list.empty}</p>
                         <Button type="primary" onClick={handleAddRecipe}>
-                            Dodaj pierwszy przepis
+                            {constants.recipes.list.addFirstButton}
                         </Button>
                     </div>
                 ) : (
@@ -108,13 +109,13 @@ const MyRecipesPage = () => {
 
                 {deleteConfirmId ? (
                     <InfoDialog
-                        title="Usunąć przepis?"
+                        title={constants.recipes.list.deleteDialogTitle}
                         message={
                             recipePendingDeletion
-                                ? `Czy na pewno usunąć przepis "${recipePendingDeletion.name}"? Tej operacji nie można cofnąć.`
-                                : 'Czy na pewno usunąć ten przepis? Tej operacji nie można cofnąć.'
+                                ? constants.recipes.list.deleteDialogMessageWithName.replace('{name}', recipePendingDeletion.name)
+                                : constants.recipes.list.deleteDialogMessageGeneric
                         }
-                        confirmLabel={isDeleting ? 'Usuwanie...' : 'Usuń'}
+                        confirmLabel={isDeleting ? constants.recipes.list.deleting : constants.recipes.list.deleteConfirm}
                         onConfirm={handleConfirmDelete}
                         isLoading={isDeleting}
                         onCancel={() => setDeleteConfirmId(null)}

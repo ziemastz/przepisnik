@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import jwd.przepisnik.constants.AppMessages;
 import jwd.przepisnik.models.User;
 import jwd.przepisnik.web.dto.UserDto;
 
@@ -53,7 +54,7 @@ class UserMapperTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> userMapper.toEntity(dto));
 
-        assertEquals("HasĹ‚o nie moĹĽe byÄ‡ puste.", exception.getMessage());
+        assertEquals(AppMessages.Service.USER_SECRET_REQUIRED, exception.getMessage());
     }
 
     @Test

@@ -4,6 +4,7 @@ import RegisterForm from '../RegisterForm';
 import Button from '../../../shared/button/Button';
 import { sanitizeAuthOrigin } from '../../../shared/auth/authNavigation';
 import InfoDialog from '../../../shared/dialog/InfoDialog';
+import constants from '../../../constants';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -17,26 +18,26 @@ const RegisterPage = () => {
     };
 
     const handleGoToLogin = () => {
-        navigate('/login', { state: { from } });
+        navigate(constants.routes.login, { state: { from } });
     };
 
     return (
         <div className="auth-page">
             <div className="auth-page-container">
-                <h2>Zarejestruj się</h2>
+                <h2>{constants.auth.register.title}</h2>
                 <RegisterForm onSuccess={handleSuccess} />
                 <div className="auth-switch">
-                    <span>Masz już konto?</span>
+                    <span>{constants.auth.register.hasAccount}</span>
                     <Button type="link" onClick={handleGoToLogin}>
-                        Zaloguj się
+                        {constants.auth.register.loginCta}
                     </Button>
                 </div>
             </div>
             {isSuccessDialogOpen ? (
                 <InfoDialog
-                    title="Konto utworzone"
-                    message="Rejestracja zakończyła się sukcesem. Przejdź do logowania, aby zalogować się na nowe konto."
-                    confirmLabel="Przejdź do logowania"
+                    title={constants.auth.register.successTitle}
+                    message={constants.auth.register.successMessage}
+                    confirmLabel={constants.auth.register.successConfirmLabel}
                     onConfirm={handleGoToLogin}
                 />
             ) : null}

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import jwd.przepisnik.constants.ApiPaths;
+import jwd.przepisnik.constants.AppMessages;
 import jwd.przepisnik.models.Recipe;
 import jwd.przepisnik.service.RecipeService;
 import jwd.przepisnik.web.mapper.RecipeMapper;
@@ -24,7 +26,7 @@ import jwd.przepisnik.web.response.BaseResponse;
 import jwd.przepisnik.web.response.RecipeResponse;
 
 @RestController
-@RequestMapping("/api/recipes")
+@RequestMapping(ApiPaths.Recipes.BASE)
 public class RecipeController {
     private final RecipeService recipeService;
     private final RecipeMapper recipeMapper;
@@ -34,79 +36,79 @@ public class RecipeController {
         this.recipeMapper = recipeMapper;
     }
 
-    @PostMapping("/create")
+    @PostMapping(ApiPaths.Recipes.CREATE)
     public ResponseEntity<BaseResponse<RecipeResponse>> createRecipe(
             @Valid @RequestBody BaseRequest<CreateRecipeRequest> recipeRequest,
             Principal principal) {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(BaseResponse.failure("Brak uwierzytelnionego uzytkownika."));
+                    .body(BaseResponse.failure(AppMessages.Controller.AUTH_USER_MISSING));
         }
 
         if (recipeRequest == null || recipeRequest.data() == null) {
-            return ResponseEntity.badRequest().body(BaseResponse.failure("Missing recipe data."));
+            return ResponseEntity.badRequest().body(BaseResponse.failure(AppMessages.Controller.MISSING_RECIPE_DATA));
         }
 
         Recipe createdRecipe = recipeService.createRecipe(recipeRequest.data(), principal.getName());
         return ResponseEntity.ok(BaseResponse.success(recipeMapper.toResponse(createdRecipe)));
     }
 
-    @GetMapping("/{id:[0-9a-fA-F\\-]{36}}")
+    @GetMapping(ApiPaths.Recipes.BY_ID)
     public ResponseEntity<BaseResponse<RecipeResponse>> getRecipeById(@PathVariable UUID id, Principal principal) {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(BaseResponse.failure("Brak uwierzytelnionego uzytkownika."));
+                    .body(BaseResponse.failure(AppMessages.Controller.AUTH_USER_MISSING));
         }
 
         return recipeService.getRecipeForUser(id, principal.getName())
                 .map(recipe -> ResponseEntity.ok(BaseResponse.success(recipeMapper.toResponse(recipe))))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(BaseResponse.failure("Przepis o podanym ID nie zostal znaleziony.")));
+                        .body(BaseResponse.failure(AppMessages.Controller.RECIPE_BY_ID_NOT_FOUND)));
     }
 
-    @GetMapping("/my")
+    @GetMapping(ApiPaths.Recipes.MY)
     public ResponseEntity<BaseResponse<List<RecipeResponse>>> getMyRecipes(Principal principal) {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(BaseResponse.failure("Brak uwierzytelnionego uzytkownika."));
+                    .body(BaseResponse.failure(AppMessages.Controller.AUTH_USER_MISSING));
         }
 
         List<Recipe> recipes = recipeService.getRecipesForUser(principal.getName());
         return ResponseEntity.ok(BaseResponse.success(recipeMapper.toResponses(recipes)));
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping(ApiPaths.Recipes.UPDATE_BY_ID)
     public ResponseEntity<BaseResponse<RecipeResponse>> updateRecipe(
             @PathVariable UUID id,
             @Valid @RequestBody BaseRequest<UpdateRecipeRequest> recipeRequest,
             Principal principal) {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(BaseResponse.failure("Brak uwierzytelnionego uzytkownika."));
+                    .body(BaseResponse.failure(AppMessages.Controller.AUTH_USER_MISSING));
         }
 
         if (recipeRequest == null || recipeRequest.data() == null) {
-            return ResponseEntity.badRequest().body(BaseResponse.failure("Missing recipe data."));
+            return ResponseEntity.badRequest().body(BaseResponse.failure(AppMessages.Controller.MISSING_RECIPE_DATA));
         }
 
         return recipeService.updateRecipe(id, recipeRequest.data(), principal.getName())
                 .map(recipe -> ResponseEntity.ok(BaseResponse.success(recipeMapper.toResponse(recipe))))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(BaseResponse.failure("Przepis o podanym ID nie zostal znaleziony.")));
+                        .body(BaseResponse.failure(AppMessages.Controller.RECIPE_BY_ID_NOT_FOUND)));
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping(ApiPaths.Recipes.DELETE_BY_ID)
     public ResponseEntity<BaseResponse<Object>> deleteRecipe(@PathVariable UUID id, Principal principal) {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(BaseResponse.failure("Brak uwierzytelnionego uzytkownika."));
+                    .body(BaseResponse.failure(AppMessages.Controller.AUTH_USER_MISSING));
         }
 
         boolean deleted = recipeService.deleteRecipe(id, principal.getName());
 
         if (!deleted) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(BaseResponse.failure("Przepis o podanym ID nie zostal znaleziony."));
+                    .body(BaseResponse.failure(AppMessages.Controller.RECIPE_BY_ID_NOT_FOUND));
         }
 
         return ResponseEntity.ok(BaseResponse.success(null));

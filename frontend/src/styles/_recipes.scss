@@ -269,6 +269,16 @@
                 color: #a7a7a7;
                 opacity: 1;
             }
+
+            &.field-invalid {
+                border-color: #d94141;
+                background: #fff6f6;
+
+                &:focus {
+                    outline: 2px solid rgba(217, 65, 65, 0.3);
+                    border-color: #d94141;
+                }
+            }
         }
 
         textarea {
@@ -344,6 +354,26 @@
                 color: #a7a7a7;
                 opacity: 1;
             }
+
+            &.field-invalid {
+                border-color: #d94141;
+                background: #fff6f6;
+
+                &:focus {
+                    outline: 2px solid rgba(217, 65, 65, 0.3);
+                    border-color: #d94141;
+                }
+            }
+        }
+
+        .recipe-ingredient-error {
+            grid-column: 1 / -1;
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #8a1c1c;
+            background: #ffe5e5;
+            border: 1px solid #ffc9c9;
         }
 
         .button {

@@ -1,4 +1,5 @@
 import { apiClient } from './apiClient';
+import constants from '../constants';
 
 export interface IngredientAmountRequest {
     name: string;
@@ -43,7 +44,7 @@ export interface RecipeResponse {
 export const recipesApi = {
     async createRecipe(payload: CreateRecipeRequest): Promise<RecipeResponse> {
         return apiClient.post<RecipeResponse, { data: CreateRecipeRequest }>(
-            '/api/recipes/create',
+            constants.api.recipes.create,
             {
                 data: payload,
             },
@@ -52,16 +53,16 @@ export const recipesApi = {
     },
 
     async getMyRecipes(): Promise<RecipeResponse[]> {
-        return apiClient.get<RecipeResponse[]>('/api/recipes/my', true);
+        return apiClient.get<RecipeResponse[]>(constants.api.recipes.my, true);
     },
 
     async getRecipeById(id: string): Promise<RecipeResponse> {
-        return apiClient.get<RecipeResponse>(`/api/recipes/${id}`, true);
+        return apiClient.get<RecipeResponse>(constants.api.recipes.byId(id), true);
     },
 
     async updateRecipe(id: string, payload: UpdateRecipeRequest): Promise<RecipeResponse> {
         return apiClient.post<RecipeResponse, { data: UpdateRecipeRequest }>(
-            `/api/recipes/update/${id}`,
+            constants.api.recipes.update(id),
             {
                 data: payload,
             },
@@ -71,7 +72,7 @@ export const recipesApi = {
 
     async deleteRecipe(id: string): Promise<void> {
         return apiClient.postVoid<{ data: Record<string, never> }>(
-            `/api/recipes/delete/${id}`,
+            constants.api.recipes.delete(id),
             {
                 data: {},
             },

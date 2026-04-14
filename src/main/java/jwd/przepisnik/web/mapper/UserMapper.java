@@ -3,6 +3,7 @@ package jwd.przepisnik.web.mapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import jwd.przepisnik.constants.AppMessages;
 import jwd.przepisnik.models.User;
 import jwd.przepisnik.web.dto.UserDto;
 
@@ -47,7 +48,7 @@ public class UserMapper {
 
     private void validatePassword(String password) {
         if (password == null || password.isBlank()) {
-            throw new IllegalArgumentException("HasĹ‚o nie moĹĽe byÄ‡ puste.");
+            throw new IllegalArgumentException(AppMessages.Service.USER_SECRET_REQUIRED);
         }
     }
 }

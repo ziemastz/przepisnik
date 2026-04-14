@@ -34,8 +34,8 @@ describe('UserPanelContainer', () => {
 
         render(<UserPanelContainer />);
 
-        expect(screen.getByRole('button', { name: 'Log In' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Register' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Zaloguj' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Zarejestruj' })).toBeInTheDocument();
     });
 
     test('shows user data and logout action when authenticated', () => {
@@ -83,7 +83,7 @@ describe('UserPanelContainer', () => {
         expect(screen.getByText('Sprawdzanie sesji...')).toBeInTheDocument();
     });
 
-    test('navigates to /login with from state when Log In is clicked', () => {
+    test('navigates to /login with from state when Zaloguj is clicked', () => {
         mockedUseAuth.mockReturnValue({
             user: null,
             isAuthenticated: false,
@@ -97,12 +97,12 @@ describe('UserPanelContainer', () => {
         });
 
         render(<UserPanelContainer />);
-        fireEvent.click(screen.getByRole('button', { name: 'Log In' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Zaloguj' }));
 
         expect(mockNavigate).toHaveBeenCalledWith('/login', expect.any(Object));
     });
 
-    test('navigates to /register with from state when Register is clicked', () => {
+    test('navigates to /register with from state when Zarejestruj is clicked', () => {
         mockedUseAuth.mockReturnValue({
             user: null,
             isAuthenticated: false,
@@ -116,7 +116,7 @@ describe('UserPanelContainer', () => {
         });
 
         render(<UserPanelContainer />);
-        fireEvent.click(screen.getByRole('button', { name: 'Register' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Zarejestruj' }));
 
         expect(mockNavigate).toHaveBeenCalledWith('/register', expect.any(Object));
     });

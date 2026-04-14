@@ -1,5 +1,6 @@
 import { RecipeResponse } from '../../../api/recipesApi';
 import Button from '../../../shared/button/Button';
+import constants from '../../../constants';
 
 interface RecipeListProps {
     recipes: RecipeResponse[];
@@ -15,12 +16,12 @@ const RecipeList = ({ recipes, onEdit, onDelete }: RecipeListProps) => {
                     <div className="recipe-card-header">
                         <h3>{recipe.name}</h3>
                         <div className="recipe-card-meta">
-                            <span className="recipe-time">⏱ {recipe.preparationTimeMinutes} min</span>
-                            <span className="recipe-servings">🍽 {recipe.servings} porcji</span>
+                            <span className="recipe-time">⏱ {recipe.preparationTimeMinutes} {constants.recipes.list.timeSuffix}</span>
+                            <span className="recipe-servings">🍽 {recipe.servings} {constants.recipes.list.servingsSuffix}</span>
                         </div>
                     </div>
                     <div className="recipe-card-body">
-                        <p className="recipe-ingredients-label">Składniki:</p>
+                        <p className="recipe-ingredients-label">{constants.recipes.list.ingredientsLabel}</p>
                         <ul className="recipe-ingredients">
                             {recipe.ingredients.map((ing, idx) => (
                                 <li key={idx}>
@@ -32,15 +33,15 @@ const RecipeList = ({ recipes, onEdit, onDelete }: RecipeListProps) => {
                     <div className="recipe-card-footer">
                         <div className="recipe-timestamps">
                             <span className="recipe-created">
-                                Utworzony: {new Date(recipe.createdAt).toLocaleDateString('pl-PL')}
+                                {constants.recipes.list.createdPrefix} {new Date(recipe.createdAt).toLocaleDateString(constants.recipes.list.dateLocale)}
                             </span>
                         </div>
                         <div className="recipe-actions">
                             <Button type="primary" onClick={() => onEdit(recipe.id)}>
-                                Edytuj
+                                {constants.recipes.list.editButton}
                             </Button>
                             <Button type="secondary" onClick={() => onDelete(recipe.id)}>
-                                Usuń
+                                {constants.recipes.list.deleteButton}
                             </Button>
                         </div>
                     </div>

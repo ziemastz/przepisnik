@@ -5,15 +5,16 @@ import RegisterPage from '../features/auth/pages/RegisterPage';
 import ProtectedRoute from '../shared/ProtectedRoute';
 import MyRecipesPage from '../features/recipes/pages/MyRecipesPage';
 import RecipeFormPage from '../features/recipes/pages/RecipeFormPage';
+import constants from '../constants';
 
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path={constants.routes.home} element={<HomePage />} />
+            <Route path={constants.routes.login} element={<LoginPage />} />
+            <Route path={constants.routes.register} element={<RegisterPage />} />
             <Route
-                path="/my-recipes"
+                path={constants.routes.myRecipes}
                 element={
                     <ProtectedRoute>
                         <MyRecipesPage />
@@ -21,7 +22,7 @@ const AppRoutes = () => {
                 }
             />
             <Route
-                path="/recipes/new"
+                path={constants.routes.recipeNew}
                 element={
                     <ProtectedRoute>
                         <RecipeFormPage />
@@ -29,7 +30,7 @@ const AppRoutes = () => {
                 }
             />
             <Route
-                path="/recipes/:id/edit"
+                path={constants.routes.recipeEdit}
                 element={
                     <ProtectedRoute>
                         <RecipeFormPage />
@@ -37,7 +38,7 @@ const AppRoutes = () => {
                 }
             />
             {/* Fallback route for unknown paths */}
-            <Route path="*" element={<h2>404 - Strona nie istnieje</h2>} />
+            <Route path="*" element={<h2>{constants.routes.notFoundText}</h2>} />
         </Routes>
     );
 };

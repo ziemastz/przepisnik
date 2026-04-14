@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
+import jwd.przepisnik.constants.AppMessages;
+
 public class LenientBigDecimalDeserializer extends JsonDeserializer<BigDecimal> {
 
     @Override
@@ -32,7 +34,7 @@ public class LenientBigDecimalDeserializer extends JsonDeserializer<BigDecimal> 
         } catch (NumberFormatException ex) {
             throw InvalidFormatException.from(
                     parser,
-                    "Invalid decimal number format. Use e.g. 0.5 or 0,5.",
+                    AppMessages.Json.INVALID_DECIMAL_FORMAT,
                     rawValue,
                     BigDecimal.class);
         }
