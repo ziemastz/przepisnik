@@ -14,6 +14,9 @@ const constants = {
         header: {
             logout: 'Wyloguj',
             addRecipe: '+ Przepis',
+            login: 'Zaloguj',
+            register: 'Zarejestruj',
+            welcomePrefix: 'Witaj,',
         },
     },
     routes: {
