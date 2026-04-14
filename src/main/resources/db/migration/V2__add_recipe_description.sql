@@ -1,0 +1,2 @@
+ALTER TABLE recipes
+ADD COLUMN description TEXT NOT NULL DEFAULT '';

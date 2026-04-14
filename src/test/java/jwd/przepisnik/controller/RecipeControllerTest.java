@@ -62,7 +62,7 @@ class RecipeControllerTest {
         IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
                 "Maka", new BigDecimal("250.00"), IngredientUnit.GRAM);
         CreateRecipeRequest createRequest = new CreateRecipeRequest(
-                "Nalesniki", 20, 4, List.of(ingredientRequest));
+                "Nalesniki", "Wymieszaj skladniki i usmaz.", 20, 4, List.of(ingredientRequest));
 
         Recipe recipe = buildRecipe("john");
         when(recipeService.createRecipe(any(CreateRecipeRequest.class), eq("john"))).thenReturn(recipe);
@@ -75,7 +75,39 @@ class RecipeControllerTest {
                 .content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", is(true)))
-                .andExpect(jsonPath("$.data.name", equalTo("Nalesniki")));
+                .andExpect(jsonPath("$.data.name", equalTo("Nalesniki")))
+                .andExpect(jsonPath("$.data.description", equalTo("Wymieszaj skladniki i usmaz.")));
+    }
+
+    @Test
+    void shouldCreateRecipeWhenQuantityUsesCommaDecimalSeparator() throws Exception {
+        Recipe recipe = buildRecipe("john");
+        when(recipeService.createRecipe(any(CreateRecipeRequest.class), eq("john"))).thenReturn(recipe);
+
+        String requestBody = """
+                {
+                  "data": {
+                    "name": "Nalesniki",
+                    "description": "Wymieszaj skladniki i usmaz.",
+                    "preparationTimeMinutes": 20,
+                    "servings": 4,
+                    "ingredients": [
+                      {
+                        "name": "Maka",
+                        "quantity": "0,5",
+                        "unit": "GRAM"
+                      }
+                    ]
+                  }
+                }
+                """;
+
+        mockMvc.perform(post("/api/recipes/create")
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)));
     }
 
     @Test
@@ -131,10 +163,11 @@ class RecipeControllerTest {
         IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
                 "Maka", new BigDecimal("300.00"), IngredientUnit.GRAM);
         UpdateRecipeRequest updateRequest = new UpdateRecipeRequest(
-                "Nalesniki updated", 25, 5, List.of(ingredientRequest));
+                "Nalesniki updated", "Nowy sposob przygotowania.", 25, 5, List.of(ingredientRequest));
 
         Recipe updatedRecipe = buildRecipe("john");
         updatedRecipe.setName("Nalesniki updated");
+        updatedRecipe.setDescription("Nowy sposob przygotowania.");
         when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
                 .thenReturn(Optional.of(updatedRecipe));
 
@@ -146,8 +179,44 @@ class RecipeControllerTest {
                 .content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", is(true)))
-                .andExpect(jsonPath("$.data.name", equalTo("Nalesniki updated")));
+                .andExpect(jsonPath("$.data.name", equalTo("Nalesniki updated")))
+                .andExpect(jsonPath("$.data.description", equalTo("Nowy sposob przygotowania.")));
     }
+
+                @Test
+                void shouldUpdateRecipeWhenQuantityUsesCommaDecimalSeparator() throws Exception {
+                                UUID recipeId = UUID.randomUUID();
+                                Recipe updatedRecipe = buildRecipe("john");
+                                updatedRecipe.setName("Nalesniki updated");
+                                updatedRecipe.setDescription("Nowy sposob przygotowania.");
+                                when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
+                                                                .thenReturn(Optional.of(updatedRecipe));
+
+                                String requestBody = """
+                                                                {
+                                                                        "data": {
+                                                                                "name": "Nalesniki updated",
+                                                                                "description": "Nowy sposob przygotowania.",
+                                                                                "preparationTimeMinutes": 25,
+                                                                                "servings": 5,
+                                                                                "ingredients": [
+                                                                                        {
+                                                                                                "name": "Maka",
+                                                                                                "quantity": "0,5",
+                                                                                                "unit": "GRAM"
+                                                                                        }
+                                                                                ]
+                                                                        }
+                                                                }
+                                                                """;
+
+                                mockMvc.perform(post("/api/recipes/update/{id}", recipeId)
+                                                                .principal(() -> "john")
+                                                                .contentType(MediaType.APPLICATION_JSON)
+                                                                .content(requestBody))
+                                                                .andExpect(status().isOk())
+                                                                .andExpect(jsonPath("$.success", is(true)));
+                }
 
     @Test
     void shouldReturnNotFoundWhenUpdatingNonExistentRecipe() throws Exception {
@@ -155,7 +224,7 @@ class RecipeControllerTest {
         IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
                 "Maka", new BigDecimal("100.00"), IngredientUnit.GRAM);
         UpdateRecipeRequest updateRequest = new UpdateRecipeRequest(
-                "Test", 20, 4, List.of(ingredientRequest));
+                "Test", "Opis testowy", 20, 4, List.of(ingredientRequest));
 
         when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
                 .thenReturn(Optional.empty());
@@ -213,6 +282,7 @@ class RecipeControllerTest {
         Recipe recipe = new Recipe();
         recipe.setId(UUID.randomUUID());
         recipe.setName("Nalesniki");
+        recipe.setDescription("Wymieszaj skladniki i usmaz.");
         recipe.setPreparationTimeMinutes(20);
         recipe.setServings(4);
         recipe.setAuthor(user);

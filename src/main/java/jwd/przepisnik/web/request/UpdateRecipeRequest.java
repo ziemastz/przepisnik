@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Positive;
 
 public record UpdateRecipeRequest(
         @NotBlank String name,
+        @NotBlank String description,
         @NotNull @Positive Integer preparationTimeMinutes,
         @NotNull @Positive Integer servings,
         @NotEmpty List<@Valid IngredientAmountRequest> ingredients) {

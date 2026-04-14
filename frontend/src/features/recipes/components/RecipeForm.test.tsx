@@ -4,6 +4,9 @@ import { RecipeResponse } from '../../../api/recipesApi';
 
 const fillValidForm = () => {
     fireEvent.change(screen.getByLabelText('Nazwa przepisu *'), { target: { value: 'Zupa' } });
+    fireEvent.change(screen.getByLabelText('Opis przygotowania *'), {
+        target: { value: 'Gotuj wszystkie skladniki przez 30 minut.' },
+    });
     fireEvent.change(screen.getByLabelText('Czas przygotowania (min) *'), { target: { value: '30' } });
     fireEvent.change(screen.getByLabelText('Liczba porcji *'), { target: { value: '4' } });
     // ingredient name placeholder input
@@ -18,6 +21,7 @@ describe('RecipeForm', () => {
         const initialData: RecipeResponse = {
             id: '4a6be7d2-4141-4dc3-a93f-6754959534d2',
             name: 'Nalesniki',
+            description: 'Usmaz cienkie nalesniki na patelni.',
             preparationTimeMinutes: 20,
             servings: 2,
             author: 'jan',
@@ -43,6 +47,7 @@ describe('RecipeForm', () => {
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining({
                 name: 'Nalesniki bezglutenowe',
+                description: 'Usmaz cienkie nalesniki na patelni.',
                 ingredients: [
                     expect.objectContaining({
                         quantity: '250',
@@ -58,6 +63,7 @@ describe('RecipeForm', () => {
         fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
 
         await screen.findByText('Nazwa przepisu jest wymagana.');
+        expect(screen.getByText('Opis przygotowania jest wymagany.')).toBeInTheDocument();
         expect(screen.getByText('Czas przygotowania musi być liczbą większą od 0.')).toBeInTheDocument();
         expect(screen.getByText('Liczba porcji musi być liczbą większą od 0.')).toBeInTheDocument();
         expect(screen.getByText('Dodaj co najmniej jeden składnik.')).toBeInTheDocument();
@@ -67,6 +73,9 @@ describe('RecipeForm', () => {
         render(<RecipeForm onSubmit={jest.fn()} />);
 
         fireEvent.change(screen.getByLabelText('Nazwa przepisu *'), { target: { value: 'Zupa' } });
+        fireEvent.change(screen.getByLabelText('Opis przygotowania *'), {
+            target: { value: 'Opis przygotowania.' },
+        });
         fireEvent.change(screen.getByLabelText('Czas przygotowania (min) *'), { target: { value: '30' } });
         fireEvent.change(screen.getByLabelText('Liczba porcji *'), { target: { value: '2' } });
 
@@ -125,6 +134,24 @@ describe('RecipeForm', () => {
                 ingredients: [expect.objectContaining({ quantity: '100', unit: 'ML' })],
             }));
         });
+    });
+
+    test('shows all supported ingredient units in selector', () => {
+        render(<RecipeForm onSubmit={jest.fn()} />);
+
+        const select = screen.getAllByRole('combobox')[0] as HTMLSelectElement;
+        const optionValues = Array.from(select.options).map((option) => option.value);
+
+        expect(optionValues).toEqual([
+            'GRAM',
+            'KG',
+            'ML',
+            'L',
+            'PIECE',
+            'TABLESPOON',
+            'TEASPOON',
+            'CUP',
+        ]);
     });
 
     test('shows submit error message when onSubmit throws', async () => {

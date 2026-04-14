@@ -243,13 +243,15 @@
             color: $color-text;
         }
 
-        input {
+        input,
+        textarea {
             width: 100%;
             box-sizing: border-box;
             border: 1px solid rgba($color-primary, 0.35);
             border-radius: 8px;
             padding: 10px 12px;
             font-size: 16px;
+            font-family: inherit;
             color: $color-text;
             background: #fff;
 
@@ -262,6 +264,17 @@
                 background: #f5f5f5;
                 cursor: not-allowed;
             }
+
+            &::placeholder {
+                color: #a7a7a7;
+                opacity: 1;
+            }
+        }
+
+        textarea {
+            min-height: 112px;
+            line-height: 1.45;
+            resize: vertical;
         }
     }
 
@@ -325,6 +338,11 @@
             &:disabled {
                 background: #f5f5f5;
                 cursor: not-allowed;
+            }
+
+            &::placeholder {
+                color: #a7a7a7;
+                opacity: 1;
             }
         }
 

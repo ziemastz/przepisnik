@@ -7,6 +7,7 @@ import java.util.UUID;
 public record RecipeResponse(
         UUID id,
         String name,
+        String description,
         Integer preparationTimeMinutes,
         Integer servings,
         String author,

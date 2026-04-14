@@ -3,11 +3,12 @@ import { apiClient } from './apiClient';
 export interface IngredientAmountRequest {
     name: string;
     quantity: string;
-    unit: 'GRAM' | 'ML' | 'PIECE' | 'TABLESPOON' | 'TEASPOON' | 'CUP';
+    unit: 'GRAM' | 'KG' | 'ML' | 'L' | 'PIECE' | 'TABLESPOON' | 'TEASPOON' | 'CUP';
 }
 
 export interface CreateRecipeRequest {
     name: string;
+    description: string;
     preparationTimeMinutes: number;
     servings: number;
     ingredients: IngredientAmountRequest[];
@@ -15,6 +16,7 @@ export interface CreateRecipeRequest {
 
 export interface UpdateRecipeRequest {
     name: string;
+    description: string;
     preparationTimeMinutes: number;
     servings: number;
     ingredients: IngredientAmountRequest[];
@@ -23,12 +25,13 @@ export interface UpdateRecipeRequest {
 export interface IngredientAmountResponse {
     name: string;
     quantity: string | number;
-    unit: 'GRAM' | 'ML' | 'PIECE' | 'TABLESPOON' | 'TEASPOON' | 'CUP';
+    unit: 'GRAM' | 'KG' | 'ML' | 'L' | 'PIECE' | 'TABLESPOON' | 'TEASPOON' | 'CUP';
 }
 
 export interface RecipeResponse {
     id: string;
     name: string;
+    description: string;
     preparationTimeMinutes: number;
     servings: number;
     author: string;

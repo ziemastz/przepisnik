@@ -25,7 +25,13 @@ jest.mock('../components/RecipeForm', () => ({
         onSubmit,
         initialData,
     }: {
-        onSubmit: (data: { name: string; preparationTimeMinutes: number; servings: number; ingredients: [] }) => Promise<void>;
+        onSubmit: (data: {
+            name: string;
+            description: string;
+            preparationTimeMinutes: number;
+            servings: number;
+            ingredients: [];
+        }) => Promise<void>;
         initialData: RecipeResponse | null;
     }) => (
         <div>
@@ -34,6 +40,7 @@ jest.mock('../components/RecipeForm', () => ({
                 onClick={() =>
                     void onSubmit({
                         name: 'Test recipe',
+                        description: 'Test preparation description',
                         preparationTimeMinutes: 30,
                         servings: 4,
                         ingredients: [],
@@ -53,6 +60,7 @@ const mockedUseParams = useParams as jest.MockedFunction<typeof useParams>;
 const mockRecipe: RecipeResponse = {
     id: 'recipe-1',
     name: 'Nalesniki',
+    description: 'Usmaz nalesniki na patelni.',
     preparationTimeMinutes: 20,
     servings: 2,
     author: 'jan',
