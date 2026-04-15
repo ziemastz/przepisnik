@@ -59,6 +59,13 @@ export const recipesApi = {
         return apiClient.get<RecipeResponse[]>(constants.api.recipes.my, true);
     },
 
+    async getPublicRecipes(query?: string): Promise<RecipeResponse[]> {
+        const url = query
+            ? `${constants.api.recipes.public}?query=${encodeURIComponent(query)}`
+            : constants.api.recipes.public;
+        return apiClient.get<RecipeResponse[]>(url, false);
+    },
+
     async getRecipeById(id: string): Promise<RecipeResponse> {
         return apiClient.get<RecipeResponse>(constants.api.recipes.byId(id), true);
     },

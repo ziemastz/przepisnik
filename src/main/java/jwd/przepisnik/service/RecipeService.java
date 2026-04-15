@@ -69,6 +69,12 @@ public class RecipeService {
         return recipeRepository.findAllByAuthorIdOrderByCreatedAtDesc(author.getId());
     }
 
+    @Transactional(readOnly = true)
+    public List<Recipe> getPublicRecipes(String query) {
+        String normalized = (query == null || query.isBlank()) ? null : query.trim();
+        return recipeRepository.findPublicRecipes(normalized);
+    }
+
     @Transactional
     public Optional<Recipe> updateRecipe(UUID recipeId, UpdateRecipeRequest request, String username) {
         Objects.requireNonNull(request, AppMessages.Service.RECIPE_REQUEST_REQUIRED);

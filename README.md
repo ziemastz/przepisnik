@@ -29,8 +29,7 @@ Aktualnie zaimplementowane funkcjonalności:
 - edycja i usuwanie istniejących przepisów,
 - lista „Moje przepisy” dla zalogowanego użytkownika,
 - zarządzanie składnikami przepisu (nazwa, ilość, jednostka),
-- podpowiedzi składników (endpoint wyszukiwania składników),
-- obsługa błędów i walidacji po stronie backendu i frontendu.
+- podpowiedzi składników (endpoint wyszukiwania składników),- **strona główna z listą publicznych przepisów i wyszukiwarką** (bez logowania),- obsługa błędów i walidacji po stronie backendu i frontendu.
 
 Funkcjonalności planowane / w trakcie rozwoju:
 - kalkulator wartości odżywczych (B/T/W),
@@ -74,7 +73,7 @@ Podejście: architektura warstwowa (Controller → Service → Repository → En
 
 ## 🚧 Postęp prac (to-do / done)
 
-Stan na 2026-04-14
+Stan na 2026-04-15
 
 | Etap | Opis | Status |
 |------|------|--------|
@@ -89,6 +88,7 @@ Stan na 2026-04-14
 | Integracja backend ↔ frontend | Integracja API (auth, user, recipes, ingredients) | ✅ Zrobione |
 | Budowanie frontendu wewnątrz Spring Boot | Włączenie React `npm build` → `static/` w Spring | ✅ Zrobione |
 | Testy automatyczne | Testy backendu (JUnit/Mockito) i frontendu (Jest/RTL) | ✅ Zrobione |
+| Strona główna z wyszukiwarką | Publiczny endpoint `GET /api/recipes/public`, strona główna z kartami przepisów i wyszukiwarką | ✅ Zrobione |
 | Finalne testy i optymalizacje UX/UI | Dopracowanie strony głównej i warstwy wizualnej | ⏳ |
 | Funkcje rozszerzone | B/T/W, kategorie, zdjęcia, rozbudowane wyszukiwanie | ⬜ |
 | Dokumentacja do pracy dyplomowej | Opis architektury, technologii, wniosków | ⏳ |

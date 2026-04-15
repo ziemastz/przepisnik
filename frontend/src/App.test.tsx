@@ -19,6 +19,14 @@ jest.mock('./layout/footer/Footer', () => ({
     },
 }));
 
+jest.mock('./pages/HomePage', () => ({
+    __esModule: true,
+    default: () => {
+        const mockConstants = jest.requireActual('./constants').default;
+        return <div>{mockConstants.home.title}</div>;
+    },
+}));
+
 jest.mock('./router', () => ({
     BrowserRouter: ({ children }: { children: ReactNode }) => <div>{children}</div>,
     Routes: ({ children }: { children: ReactNode }) => <>{children}</>,
@@ -33,7 +41,7 @@ describe('App Component', () => {
         render(<App />);
 
         expect(screen.getByRole('banner')).toHaveTextContent(constants.titleApp);
-        expect(screen.getByRole('main')).toHaveTextContent('Home Page');
+        expect(screen.getByRole('main')).toHaveTextContent(constants.home.title);
         expect(screen.getByRole('contentinfo')).toHaveTextContent(constants.footer.rightsText);
     });
 });

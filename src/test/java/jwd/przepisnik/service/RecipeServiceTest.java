@@ -44,6 +44,39 @@ class RecipeServiceTest {
     private RecipeService recipeService;
 
     @Test
+    void getPublicRecipesShouldPassNullQueryWhenBlank() {
+        when(recipeRepository.findPublicRecipes(null)).thenReturn(List.of());
+
+        List<Recipe> result = recipeService.getPublicRecipes("   ");
+
+        assertEquals(0, result.size());
+        verify(recipeRepository).findPublicRecipes(null);
+    }
+
+    @Test
+    void getPublicRecipesShouldPassNullQueryWhenNull() {
+        when(recipeRepository.findPublicRecipes(null)).thenReturn(List.of());
+
+        List<Recipe> result = recipeService.getPublicRecipes(null);
+
+        assertEquals(0, result.size());
+        verify(recipeRepository).findPublicRecipes(null);
+    }
+
+    @Test
+    void getPublicRecipesShouldPassTrimmedQueryToRepository() {
+        Recipe recipe = new Recipe();
+        recipe.setName("Nalesniki");
+        when(recipeRepository.findPublicRecipes("nale")).thenReturn(List.of(recipe));
+
+        List<Recipe> result = recipeService.getPublicRecipes("  nale  ");
+
+        assertEquals(1, result.size());
+        assertEquals("Nalesniki", result.get(0).getName());
+        verify(recipeRepository).findPublicRecipes("nale");
+    }
+
+    @Test
     void createRecipeShouldReuseExistingIngredientByNormalizedName() {
         User user = new User();
         UUID userId = UUID.randomUUID();
