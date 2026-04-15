@@ -24,6 +24,7 @@ const makeRecipe = (overrides: Partial<RecipeResponse> = {}): RecipeResponse => 
     description: 'Usmaz nalesniki i podawaj na cieplo.',
     preparationTimeMinutes: 20,
     servings: 2,
+    isPrivate: false,
     author: 'jan',
     createdAt: '2026-04-10T10:00:00',
     updatedAt: '2026-04-10T10:00:00',

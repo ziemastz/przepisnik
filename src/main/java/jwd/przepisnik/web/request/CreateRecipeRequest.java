@@ -13,5 +13,6 @@ public record CreateRecipeRequest(
         @NotBlank String description,
         @NotNull @Positive Integer preparationTimeMinutes,
         @NotNull @Positive Integer servings,
+        Boolean isPrivate,
         @NotEmpty List<@Valid IngredientAmountRequest> ingredients) {
 }

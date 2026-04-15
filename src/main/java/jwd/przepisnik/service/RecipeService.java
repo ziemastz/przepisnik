@@ -50,6 +50,7 @@ public class RecipeService {
         recipe.setDescription(request.description().trim());
         recipe.setPreparationTimeMinutes(request.preparationTimeMinutes());
         recipe.setServings(request.servings());
+        recipe.setPrivateRecipe(Boolean.TRUE.equals(request.isPrivate()));
         recipe.setAuthor(author);
         recipe.replaceIngredients(buildRecipeIngredients(request.ingredients()));
 
@@ -80,6 +81,7 @@ public class RecipeService {
                     existingRecipe.setDescription(request.description().trim());
                     existingRecipe.setPreparationTimeMinutes(request.preparationTimeMinutes());
                     existingRecipe.setServings(request.servings());
+                    existingRecipe.setPrivateRecipe(Boolean.TRUE.equals(request.isPrivate()));
                     // Clear old ingredients and flush so Hibernate emits the DELETEs
                     // before the INSERTs for the new set — prevents unique constraint violations.
                     existingRecipe.getIngredients().clear();

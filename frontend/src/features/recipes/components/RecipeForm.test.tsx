@@ -25,6 +25,7 @@ describe('RecipeForm', () => {
             description: 'Usmaz cienkie nalesniki na patelni.',
             preparationTimeMinutes: 20,
             servings: 2,
+            isPrivate: false,
             author: 'jan',
             createdAt: '2026-04-10T10:00:00',
             updatedAt: '2026-04-10T10:00:00',
@@ -49,6 +50,7 @@ describe('RecipeForm', () => {
             expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining({
                 name: 'Nalesniki bezglutenowe',
                 description: 'Usmaz cienkie nalesniki na patelni.',
+                isPrivate: false,
                 ingredients: [
                     expect.objectContaining({
                         quantity: '250',
@@ -228,5 +230,32 @@ describe('RecipeForm', () => {
         render(<RecipeForm onSubmit={jest.fn()} />);
 
         expect(screen.queryByRole('button', { name: '✕' })).not.toBeInTheDocument();
+    });
+
+    test('submits recipe as public by default', async () => {
+        const onSubmit = jest.fn().mockResolvedValue(undefined);
+        render(<RecipeForm onSubmit={onSubmit} />);
+
+        fillValidForm();
+        fireEvent.change(screen.getAllByPlaceholderText('Ilość')[0], { target: { value: '100' } });
+        fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining({ isPrivate: false }));
+        });
+    });
+
+    test('submits recipe as private when checkbox is selected', async () => {
+        const onSubmit = jest.fn().mockResolvedValue(undefined);
+        render(<RecipeForm onSubmit={onSubmit} />);
+
+        fillValidForm();
+        fireEvent.change(screen.getAllByPlaceholderText('Ilość')[0], { target: { value: '100' } });
+        fireEvent.click(screen.getByLabelText('Prywatność przepisu'));
+        fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining({ isPrivate: true }));
+        });
     });
 });

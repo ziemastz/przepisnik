@@ -22,6 +22,7 @@ public class RecipeMapper {
                 recipe.getDescription(),
                 recipe.getPreparationTimeMinutes(),
                 recipe.getServings(),
+                recipe.isPrivateRecipe(),
                 recipe.getAuthor().getUsername(),
                 recipe.getCreatedAt(),
                 recipe.getUpdatedAt(),

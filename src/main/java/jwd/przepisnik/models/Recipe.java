@@ -39,6 +39,9 @@ public class Recipe {
     @Column(nullable = false)
     private Integer servings;
 
+    @Column(name = "is_private", nullable = false)
+    private boolean privateRecipe = false;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id", nullable = false)
     private User author;

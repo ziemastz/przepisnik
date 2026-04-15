@@ -12,6 +12,7 @@ export interface CreateRecipeRequest {
     description: string;
     preparationTimeMinutes: number;
     servings: number;
+    isPrivate: boolean;
     ingredients: IngredientAmountRequest[];
 }
 
@@ -20,6 +21,7 @@ export interface UpdateRecipeRequest {
     description: string;
     preparationTimeMinutes: number;
     servings: number;
+    isPrivate: boolean;
     ingredients: IngredientAmountRequest[];
 }
 
@@ -35,6 +37,7 @@ export interface RecipeResponse {
     description: string;
     preparationTimeMinutes: number;
     servings: number;
+    isPrivate: boolean;
     author: string;
     createdAt: string;
     updatedAt: string;

@@ -10,6 +10,7 @@ public record RecipeResponse(
         String description,
         Integer preparationTimeMinutes,
         Integer servings,
+        Boolean isPrivate,
         String author,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,

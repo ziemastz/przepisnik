@@ -96,6 +96,7 @@ const constants = {
                 name: 'Nazwa przepisu *',
                 preparationTime: 'Czas przygotowania (min) *',
                 servings: 'Liczba porcji *',
+                privacy: 'Prywatno\u015B\u0107 przepisu',
                 ingredients: 'Sk\u0142adniki *',
                 description: 'Opis przygotowania *',
             },
