@@ -76,6 +76,7 @@ public class SecurityConfig {
         auth.requestMatchers(H2_CONSOLE_ENDPOINT).permitAll();
         auth.requestMatchers(AUTH_ENDPOINT).permitAll();
         auth.requestMatchers(HttpMethod.POST, USER_REGISTRATION_ENDPOINT).permitAll();
+        auth.requestMatchers(HttpMethod.GET, ApiPaths.Recipes.PUBLIC_FULL).permitAll();
         auth.requestMatchers(API_REQUESTS).authenticated();
         auth.anyRequest().permitAll();
     }

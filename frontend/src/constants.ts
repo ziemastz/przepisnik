@@ -1,7 +1,16 @@
 const constants = {
     titleApp: 'Przepi\u015Bnik',
     home: {
-        title: 'Home Page',
+        title: 'Odkryj przepisy',
+        subtitle: 'Przegl\u0105daj publiczne przepisy kulinarne naszej spo\u0142eczno\u015Bci.',
+        searchPlaceholder: 'Szukaj przepis\u00F3w\u2026',
+        searchButton: 'Szukaj',
+        clearButton: 'Wyczy\u015B\u0107',
+        loading: '\u0141adowanie przepis\u00F3w\u2026',
+        empty: 'Nie znaleziono \u017Cadnych publicznych przepis\u00F3w.',
+        emptySearch: 'Brak wynik\u00F3w dla podanej frazy.',
+        loadError: 'Nie uda\u0142o si\u0119 za\u0142adowa\u0107 przepis\u00F3w.',
+        authorPrefix: 'Autor:',
     },
     footer: {
         rightsText: '\u00A9 2025 Przepi\u015Bnik. All rights reserved.',
@@ -160,6 +169,7 @@ const constants = {
         recipes: {
             create: '/api/recipes/create',
             my: '/api/recipes/my',
+            public: '/api/recipes/public',
             byId: (id: string) => `/api/recipes/${id}`,
             update: (id: string) => `/api/recipes/update/${id}`,
             delete: (id: string) => `/api/recipes/delete/${id}`,

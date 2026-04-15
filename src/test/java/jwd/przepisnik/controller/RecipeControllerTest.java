@@ -317,6 +317,38 @@ class RecipeControllerTest {
         }
 
     @Test
+    void shouldReturnPublicRecipes() throws Exception {
+        Recipe recipe = buildRecipe("alice");
+        when(recipeService.getPublicRecipes(null)).thenReturn(List.of(recipe));
+
+        mockMvc.perform(get("/api/recipes/public"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data[0].name", equalTo("Nalesniki")));
+    }
+
+    @Test
+    void shouldReturnFilteredPublicRecipesWithQuery() throws Exception {
+        Recipe recipe = buildRecipe("alice");
+        when(recipeService.getPublicRecipes("nale")).thenReturn(List.of(recipe));
+
+        mockMvc.perform(get("/api/recipes/public").param("query", "nale"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data[0].name", equalTo("Nalesniki")));
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoPublicRecipesMatch() throws Exception {
+        when(recipeService.getPublicRecipes("xyz")).thenReturn(List.of());
+
+        mockMvc.perform(get("/api/recipes/public").param("query", "xyz"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data").isEmpty());
+    }
+
+    @Test
     void shouldDeleteRecipe() throws Exception {
         UUID recipeId = UUID.randomUUID();
         when(recipeService.deleteRecipe(recipeId, "john")).thenReturn(true);

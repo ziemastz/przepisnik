@@ -2,6 +2,11 @@ import type { ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import AppRoutes from './AppRoutes';
 
+jest.mock('../pages/HomePage', () => ({
+    __esModule: true,
+    default: () => <div>Home Page</div>,
+}));
+
 jest.mock('../features/auth/pages/LoginPage', () => ({
     __esModule: true,
     default: () => <div>Login Page</div>,

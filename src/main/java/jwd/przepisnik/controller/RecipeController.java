@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import jwd.przepisnik.constants.ApiPaths;
 import jwd.przepisnik.constants.AppMessages;
@@ -34,6 +35,13 @@ public class RecipeController {
     public RecipeController(RecipeService recipeService, RecipeMapper recipeMapper) {
         this.recipeService = recipeService;
         this.recipeMapper = recipeMapper;
+    }
+
+    @GetMapping(ApiPaths.Recipes.PUBLIC)
+    public ResponseEntity<BaseResponse<List<RecipeResponse>>> getPublicRecipes(
+            @RequestParam(required = false) String query) {
+        List<Recipe> recipes = recipeService.getPublicRecipes(query);
+        return ResponseEntity.ok(BaseResponse.success(recipeMapper.toResponses(recipes)));
     }
 
     @PostMapping(ApiPaths.Recipes.CREATE)
