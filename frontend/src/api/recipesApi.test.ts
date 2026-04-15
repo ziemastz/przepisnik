@@ -36,6 +36,7 @@ describe('recipesApi', () => {
             description: 'Usmaz nalesniki na patelni.',
             preparationTimeMinutes: 20,
             servings: 2,
+            isPrivate: false,
             ingredients: [{ name: 'Maka', quantity: '250', unit: 'GRAM' as const }],
         };
 
@@ -76,6 +77,7 @@ describe('recipesApi', () => {
             description: 'Nowy opis przygotowania.',
             preparationTimeMinutes: 20,
             servings: 2,
+            isPrivate: false,
             ingredients: [],
         };
 

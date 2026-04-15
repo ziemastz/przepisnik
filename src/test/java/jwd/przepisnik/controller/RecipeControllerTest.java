@@ -62,7 +62,7 @@ class RecipeControllerTest {
         IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
                 "Maka", new BigDecimal("250.00"), IngredientUnit.GRAM);
         CreateRecipeRequest createRequest = new CreateRecipeRequest(
-                "Nalesniki", "Wymieszaj skladniki i usmaz.", 20, 4, List.of(ingredientRequest));
+                "Nalesniki", "Wymieszaj skladniki i usmaz.", 20, 4, null, List.of(ingredientRequest));
 
         Recipe recipe = buildRecipe("john");
         when(recipeService.createRecipe(any(CreateRecipeRequest.class), eq("john"))).thenReturn(recipe);
@@ -76,7 +76,8 @@ class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", is(true)))
                 .andExpect(jsonPath("$.data.name", equalTo("Nalesniki")))
-                .andExpect(jsonPath("$.data.description", equalTo("Wymieszaj skladniki i usmaz.")));
+                .andExpect(jsonPath("$.data.description", equalTo("Wymieszaj skladniki i usmaz.")))
+                .andExpect(jsonPath("$.data.isPrivate", is(false)));
     }
 
     @Test
@@ -188,11 +189,12 @@ class RecipeControllerTest {
         IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
                 "Maka", new BigDecimal("300.00"), IngredientUnit.GRAM);
         UpdateRecipeRequest updateRequest = new UpdateRecipeRequest(
-                "Nalesniki updated", "Nowy sposob przygotowania.", 25, 5, List.of(ingredientRequest));
+                "Nalesniki updated", "Nowy sposob przygotowania.", 25, 5, true, List.of(ingredientRequest));
 
         Recipe updatedRecipe = buildRecipe("john");
         updatedRecipe.setName("Nalesniki updated");
         updatedRecipe.setDescription("Nowy sposob przygotowania.");
+        updatedRecipe.setPrivateRecipe(true);
         when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
                 .thenReturn(Optional.of(updatedRecipe));
 
@@ -205,7 +207,8 @@ class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", is(true)))
                 .andExpect(jsonPath("$.data.name", equalTo("Nalesniki updated")))
-                .andExpect(jsonPath("$.data.description", equalTo("Nowy sposob przygotowania.")));
+                .andExpect(jsonPath("$.data.description", equalTo("Nowy sposob przygotowania.")))
+                .andExpect(jsonPath("$.data.isPrivate", is(true)));
     }
 
         @Test
@@ -259,7 +262,7 @@ class RecipeControllerTest {
         IngredientAmountRequest ingredientRequest = new IngredientAmountRequest(
                 "Maka", new BigDecimal("100.00"), IngredientUnit.GRAM);
         UpdateRecipeRequest updateRequest = new UpdateRecipeRequest(
-                "Test", "Opis testowy", 20, 4, List.of(ingredientRequest));
+                "Test", "Opis testowy", 20, 4, null, List.of(ingredientRequest));
 
         when(recipeService.updateRecipe(eq(recipeId), any(UpdateRecipeRequest.class), eq("john")))
                 .thenReturn(Optional.empty());
@@ -369,6 +372,7 @@ class RecipeControllerTest {
         recipe.setDescription("Wymieszaj skladniki i usmaz.");
         recipe.setPreparationTimeMinutes(20);
         recipe.setServings(4);
+        recipe.setPrivateRecipe(false);
         recipe.setAuthor(user);
         recipe.setIngredients(List.of(recipeIngredient));
         recipe.setCreatedAt(LocalDateTime.now());

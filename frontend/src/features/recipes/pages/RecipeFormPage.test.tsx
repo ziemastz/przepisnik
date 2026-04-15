@@ -30,6 +30,7 @@ jest.mock('../components/RecipeForm', () => ({
             description: string;
             preparationTimeMinutes: number;
             servings: number;
+            isPrivate: boolean;
             ingredients: [];
         }) => Promise<void>;
         initialData: RecipeResponse | null;
@@ -43,6 +44,7 @@ jest.mock('../components/RecipeForm', () => ({
                         description: 'Test preparation description',
                         preparationTimeMinutes: 30,
                         servings: 4,
+                        isPrivate: false,
                         ingredients: [],
                     }).catch(() => undefined);
                 }}
@@ -63,6 +65,7 @@ const mockRecipe: RecipeResponse = {
     description: 'Usmaz nalesniki na patelni.',
     preparationTimeMinutes: 20,
     servings: 2,
+    isPrivate: false,
     author: 'jan',
     createdAt: '2026-04-10T10:00:00',
     updatedAt: '2026-04-10T10:00:00',

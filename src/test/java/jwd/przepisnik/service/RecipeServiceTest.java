@@ -58,7 +58,7 @@ class RecipeServiceTest {
         IngredientAmountRequest ingredientAmountRequest = new IngredientAmountRequest(
                 "Maka", new BigDecimal("250.00"), IngredientUnit.GRAM);
         CreateRecipeRequest request = new CreateRecipeRequest(
-                "Nalesniki", "Wymieszaj skladniki i usmaz.", 20, 4, List.of(ingredientAmountRequest));
+                "Nalesniki", "Wymieszaj skladniki i usmaz.", 20, 4, null, List.of(ingredientAmountRequest));
 
         when(userRepository.findByUsername("john")).thenReturn(Optional.of(user));
         when(ingredientRepository.findByNormalizedName("maka")).thenReturn(Optional.of(existingIngredient));
@@ -68,6 +68,7 @@ class RecipeServiceTest {
 
         assertEquals("Nalesniki", created.getName());
         assertEquals("Wymieszaj skladniki i usmaz.", created.getDescription());
+        assertEquals(false, created.isPrivateRecipe());
         assertEquals(1, created.getIngredients().size());
         assertEquals(existingIngredient.getId(), created.getIngredients().get(0).getIngredient().getId());
         verify(ingredientRepository).findByNormalizedName("maka");
@@ -84,7 +85,7 @@ class RecipeServiceTest {
         IngredientAmountRequest ingredientAmountRequest = new IngredientAmountRequest(
                 "Sol", new BigDecimal("1.00"), IngredientUnit.TEASPOON);
         UpdateRecipeRequest request = new UpdateRecipeRequest(
-                "Nowa nazwa", "Dopraw i podawaj.", 10, 2, List.of(ingredientAmountRequest));
+                "Nowa nazwa", "Dopraw i podawaj.", 10, 2, null, List.of(ingredientAmountRequest));
 
         when(userRepository.findByUsername("john")).thenReturn(Optional.of(user));
         when(recipeRepository.findByIdAndAuthorId(recipeId, userId)).thenReturn(Optional.empty());
@@ -105,7 +106,7 @@ class RecipeServiceTest {
         IngredientAmountRequest flour2 = new IngredientAmountRequest(
                 "maka", new BigDecimal("50.00"), IngredientUnit.GRAM);
         CreateRecipeRequest request = new CreateRecipeRequest(
-                "Nalesniki", "Opis przygotowania", 20, 4, List.of(flour1, flour2));
+                "Nalesniki", "Opis przygotowania", 20, 4, null, List.of(flour1, flour2));
 
         when(userRepository.findByUsername("john")).thenReturn(Optional.of(user));
 
@@ -138,7 +139,7 @@ class RecipeServiceTest {
         IngredientAmountRequest ingredientAmountRequest = new IngredientAmountRequest(
                 "Sol", new BigDecimal("1.00"), IngredientUnit.TEASPOON);
         UpdateRecipeRequest request = new UpdateRecipeRequest(
-                "Nowy przepis", "Nowy opis przygotowania", 10, 2, List.of(ingredientAmountRequest));
+                "Nowy przepis", "Nowy opis przygotowania", 10, 2, true, List.of(ingredientAmountRequest));
 
         when(userRepository.findByUsername("john")).thenReturn(Optional.of(user));
         when(recipeRepository.findByIdAndAuthorId(recipeId, userId)).thenReturn(Optional.of(existingRecipe));
@@ -149,5 +150,6 @@ class RecipeServiceTest {
 
         assertTrue(result.isPresent());
         assertEquals("Nowy opis przygotowania", result.get().getDescription());
+                assertTrue(result.get().isPrivateRecipe());
     }
 }

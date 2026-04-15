@@ -5,7 +5,10 @@ import {
     IngredientAmountRequest,
 } from '../../../api/recipesApi';
 import { ApiError } from '../../../api/types';
-import { parseBackendFieldError, prettifyValidationMessage } from '../../../shared/forms/validation';
+import {
+    parseBackendFieldError,
+    prettifyValidationMessage,
+} from '../../../shared/forms/validation';
 import Button from '../../../shared/button/Button';
 import constants from '../../../constants';
 
@@ -24,7 +27,10 @@ interface FormErrors {
     submit?: string;
 }
 
-const toIngredientFieldMessage = (field: 'name' | 'quantity' | 'unit', baseMessage: string): string => {
+const toIngredientFieldMessage = (
+    field: 'name' | 'quantity' | 'unit',
+    baseMessage: string,
+): string => {
     if (field === 'quantity' && baseMessage === constants.recipes.form.errors.requiredField) {
         return constants.recipes.form.errors.ingredientQuantityRequired;
     }
@@ -41,7 +47,10 @@ const getRecipeValidationErrors = (
     ingredientIndexMap: number[],
 ): FormErrors => {
     const mapped: FormErrors = {};
-    const ingredientItems: Record<number, Partial<Record<'name' | 'quantity' | 'unit', string>>> = {};
+    const ingredientItems: Record<
+        number,
+        Partial<Record<'name' | 'quantity' | 'unit', string>>
+    > = {};
 
     for (const message of messages) {
         const parsed = parseBackendFieldError(message);
@@ -90,7 +99,11 @@ const getRecipeValidationErrors = (
         const ingredientIndex = ingredientIndexMap[sourceIndex] ?? sourceIndex;
         const normalizedField = third.toLowerCase();
 
-        if (normalizedField !== 'name' && normalizedField !== 'quantity' && normalizedField !== 'unit') {
+        if (
+            normalizedField !== 'name' &&
+            normalizedField !== 'quantity' &&
+            normalizedField !== 'unit'
+        ) {
             mapped.ingredients = parsed.message;
             continue;
         }
@@ -118,6 +131,7 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
         initialData?.preparationTimeMinutes?.toString() ?? '',
     );
     const [servings, setServings] = useState(initialData?.servings?.toString() ?? '');
+    const [isPrivate, setIsPrivate] = useState(initialData?.isPrivate ?? false);
     const [ingredients, setIngredients] = useState<IngredientAmountRequest[]>(
         initialData?.ingredients.map((ing) => ({ ...ing, quantity: String(ing.quantity) })) ?? [
             { name: '', quantity: '', unit: 'GRAM' },
@@ -126,7 +140,9 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const clearFieldError = (field: 'name' | 'description' | 'preparationTimeMinutes' | 'servings') => {
+    const clearFieldError = (
+        field: 'name' | 'description' | 'preparationTimeMinutes' | 'servings',
+    ) => {
         setErrors((current) => {
             if (!current[field] && !current.submit) {
                 return current;
@@ -171,7 +187,10 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
 
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
-        const ingredientItems: Record<number, Partial<Record<'name' | 'quantity' | 'unit', string>>> = {};
+        const ingredientItems: Record<
+            number,
+            Partial<Record<'name' | 'quantity' | 'unit', string>>
+        > = {};
 
         if (!name.trim()) {
             newErrors.name = constants.recipes.form.errors.nameRequired;
@@ -259,7 +278,10 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                 return current;
             }
 
-            const nextIngredientItems: Record<number, Partial<Record<'name' | 'quantity' | 'unit', string>>> = {};
+            const nextIngredientItems: Record<
+                number,
+                Partial<Record<'name' | 'quantity' | 'unit', string>>
+            > = {};
             Object.entries(ingredientItems ?? {}).forEach(([key, value]) => {
                 const numericKey = Number(key);
                 if (Number.isNaN(numericKey) || numericKey === index) {
@@ -325,12 +347,16 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                 description: description.trim(),
                 preparationTimeMinutes: parseInt(preparationTimeMinutes),
                 servings: parseInt(servings),
+                isPrivate,
                 ingredients: validIngredients,
             };
             await onSubmit(data);
         } catch (err) {
             if (err instanceof ApiError) {
-                const validationErrors = getRecipeValidationErrors(err.messages, ingredientIndexMap);
+                const validationErrors = getRecipeValidationErrors(
+                    err.messages,
+                    ingredientIndexMap,
+                );
                 if (Object.keys(validationErrors).length > 0) {
                     setErrors(validationErrors);
                     return;
@@ -387,7 +413,9 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
 
             <div className="recipe-form-row">
                 <div className="auth-field">
-                    <label htmlFor="recipe-time">{constants.recipes.form.labels.preparationTime}</label>
+                    <label htmlFor="recipe-time">
+                        {constants.recipes.form.labels.preparationTime}
+                    </label>
                     <input
                         id="recipe-time"
                         type="number"
@@ -412,7 +440,9 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                 </div>
 
                 <div className="auth-field">
-                    <label htmlFor="recipe-servings">{constants.recipes.form.labels.servings}</label>
+                    <label htmlFor="recipe-servings">
+                        {constants.recipes.form.labels.servings}
+                    </label>
                     <input
                         id="recipe-servings"
                         type="number"
@@ -437,6 +467,19 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                 </div>
             </div>
 
+            <div className="auth-field recipe-checkbox-field">
+                <label htmlFor="recipe-private" className="recipe-checkbox-inline">
+                    <span>{constants.recipes.form.labels.privacy}</span>
+                    <input
+                        id="recipe-private"
+                        type="checkbox"
+                        checked={isPrivate}
+                        onChange={(e) => setIsPrivate(e.target.checked)}
+                        disabled={isSubmitting}
+                    />
+                </label>
+            </div>
+
             <div className="recipe-ingredients-section">
                 <label>{constants.recipes.form.labels.ingredients}</label>
                 {errors.ingredients && (
@@ -454,7 +497,11 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                                     handleIngredientChange(index, 'name', e.target.value)
                                 }
                                 placeholder={constants.recipes.form.placeholders.ingredientName}
-                                className={getIngredientFieldError(index, 'name') ? 'field-invalid' : undefined}
+                                className={
+                                    getIngredientFieldError(index, 'name')
+                                        ? 'field-invalid'
+                                        : undefined
+                                }
                                 aria-invalid={Boolean(getIngredientFieldError(index, 'name'))}
                                 disabled={isSubmitting}
                             />
@@ -465,7 +512,11 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                                     handleIngredientChange(index, 'quantity', e.target.value)
                                 }
                                 placeholder={constants.recipes.form.placeholders.ingredientQuantity}
-                                className={getIngredientFieldError(index, 'quantity') ? 'field-invalid' : undefined}
+                                className={
+                                    getIngredientFieldError(index, 'quantity')
+                                        ? 'field-invalid'
+                                        : undefined
+                                }
                                 aria-invalid={Boolean(getIngredientFieldError(index, 'quantity'))}
                                 disabled={isSubmitting}
                             />
@@ -474,7 +525,11 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                                 onChange={(e) =>
                                     handleIngredientChange(index, 'unit', e.target.value)
                                 }
-                                className={getIngredientFieldError(index, 'unit') ? 'field-invalid' : undefined}
+                                className={
+                                    getIngredientFieldError(index, 'unit')
+                                        ? 'field-invalid'
+                                        : undefined
+                                }
                                 aria-invalid={Boolean(getIngredientFieldError(index, 'unit'))}
                                 disabled={isSubmitting}
                             >
@@ -483,8 +538,12 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                                 <option value="ML">{constants.recipes.form.units.ML}</option>
                                 <option value="L">{constants.recipes.form.units.L}</option>
                                 <option value="PIECE">{constants.recipes.form.units.PIECE}</option>
-                                <option value="TABLESPOON">{constants.recipes.form.units.TABLESPOON}</option>
-                                <option value="TEASPOON">{constants.recipes.form.units.TEASPOON}</option>
+                                <option value="TABLESPOON">
+                                    {constants.recipes.form.units.TABLESPOON}
+                                </option>
+                                <option value="TEASPOON">
+                                    {constants.recipes.form.units.TEASPOON}
+                                </option>
                                 <option value="CUP">{constants.recipes.form.units.CUP}</option>
                             </select>
                             {ingredients.length > 1 && (
@@ -513,7 +572,9 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                 </Button>
             </div>
             <div className="auth-field">
-                <label htmlFor="recipe-description">{constants.recipes.form.labels.description}</label>
+                <label htmlFor="recipe-description">
+                    {constants.recipes.form.labels.description}
+                </label>
                 <textarea
                     id="recipe-description"
                     value={description}
@@ -540,8 +601,8 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                     {isSubmitting
                         ? constants.recipes.form.buttons.saving
                         : initialData
-                            ? constants.recipes.form.buttons.saveChanges
-                            : constants.recipes.form.buttons.save}
+                          ? constants.recipes.form.buttons.saveChanges
+                          : constants.recipes.form.buttons.save}
                 </Button>
             </div>
         </form>
