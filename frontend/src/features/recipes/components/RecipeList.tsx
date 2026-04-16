@@ -25,7 +25,7 @@ const RecipeList = ({ recipes, onEdit, onDelete }: RecipeListProps) => {
                         <ul className="recipe-ingredients">
                             {recipe.ingredients.map((ing, idx) => (
                                 <li key={idx}>
-                                    {ing.name} - {ing.quantity} {ing.unit}
+                                    {ing.name} - {ing.quantity} {constants.recipes.form.units[ing.unit]}
                                 </li>
                             ))}
                         </ul>
