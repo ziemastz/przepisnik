@@ -77,6 +77,6 @@ describe('RecipeList', () => {
         );
 
         expect(screen.getByText(/Cukier/)).toBeInTheDocument();
-        expect(screen.getByText(/TABLESPOON/)).toBeInTheDocument();
+        expect(screen.getByText(/\u0142y\u017Cka/)).toBeInTheDocument();
     });
 });

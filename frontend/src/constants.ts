@@ -139,7 +139,7 @@ const constants = {
                 submitFallback: 'Co\u015B posz\u0142o nie tak. Spr\u00F3buj ponownie.',
             },
             units: {
-                GRAM: 'gram',
+                GRAM: 'g',
                 KG: 'kg',
                 ML: 'ml',
                 L: 'l',
