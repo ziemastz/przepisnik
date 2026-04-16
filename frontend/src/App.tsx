@@ -9,11 +9,13 @@ function App() {
     return (
         <AuthProvider>
             <BrowserRouter>
-                <Header />
-                <main>
-                    <AppRoutes />
-                </main>
-                <Footer />
+                <div className="app-shell">
+                    <Header />
+                    <main>
+                        <AppRoutes />
+                    </main>
+                    <Footer />
+                </div>
             </BrowserRouter>
         </AuthProvider>
     );
