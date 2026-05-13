@@ -133,10 +133,18 @@ const RecipePreviewPage = () => {
                 <div className="recipe-preview-header">
                     <h1>{recipe.name}</h1>
                     <div className="recipe-preview-meta">
-                        <span>⏱ {recipe.preparationTimeMinutes} {constants.recipes.list.timeSuffix}</span>
-                        <span>🍽 {recipe.servings} {constants.recipes.list.servingsSuffix}</span>
-                        <span>{constants.home.authorPrefix} {recipe.author}</span>
-                        <span>{constants.recipes.list.createdPrefix} {createdDate}</span>
+                        <span>
+                            ⏱ {recipe.preparationTimeMinutes} {constants.recipes.list.timeSuffix}
+                        </span>
+                        <span>
+                            🍽 {recipe.servings} {constants.recipes.list.servingsSuffix}
+                        </span>
+                        <span>
+                            {constants.home.authorPrefix} {recipe.author}
+                        </span>
+                        <span>
+                            {constants.recipes.list.createdPrefix} {createdDate}
+                        </span>
                     </div>
                 </div>
             </section>
@@ -149,15 +157,25 @@ const RecipePreviewPage = () => {
                             const nutrition = nutritionByIngredient[ingredient.name.trim()];
 
                             return (
-                                <li key={`${ingredient.name}-${index}`} className="recipe-preview-ingredient-item">
+                                <li
+                                    key={`${ingredient.name}-${index}`}
+                                    className="recipe-preview-ingredient-item"
+                                >
                                     <div className="recipe-preview-ingredient-main">
-                                        <span className="recipe-preview-ingredient-name">{ingredient.name}</span>
+                                        <span className="recipe-preview-ingredient-name">
+                                            {ingredient.name}
+                                        </span>
                                         <span>
-                                            {ingredient.quantity} {constants.recipes.form.units[ingredient.unit]}
+                                            {ingredient.quantity}{' '}
+                                            {constants.recipes.form.units[ingredient.unit]}
                                         </span>
                                     </div>
                                     <span className="recipe-preview-ingredient-btw">
-                                        {constants.recipes.preview.nutritionPrefix}: B:{formatMacro(nutrition?.protein)} T:{formatMacro(nutrition?.fat)} W:{formatMacro(nutrition?.carbohydrates)}
+                                        {constants.recipes.preview.formatBTW(
+                                            formatMacro(nutrition?.protein),
+                                            formatMacro(nutrition?.fat),
+                                            formatMacro(nutrition?.carbohydrates),
+                                        )}
                                     </span>
                                 </li>
                             );

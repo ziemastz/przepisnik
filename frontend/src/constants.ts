@@ -110,6 +110,8 @@ const constants = {
             ingredientsHeading: 'Skladniki',
             preparationHeading: 'Opis przygotowania',
             nutritionPrefix: 'BTW',
+            formatBTW: (protein: string, fat: string, carbohydrates: string) =>
+                `B:${protein} T:${fat} W:${carbohydrates}`,
             backToHome: 'Wroc do listy',
         },
         form: {
