@@ -75,6 +75,11 @@ public class RecipeService {
         return recipeRepository.findPublicRecipes(normalized);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<Recipe> getPublicRecipeById(UUID recipeId) {
+        return recipeRepository.findByIdAndPrivateRecipeFalse(recipeId);
+    }
+
     @Transactional
     public Optional<Recipe> updateRecipe(UUID recipeId, UpdateRecipeRequest request, String username) {
         Objects.requireNonNull(request, AppMessages.Service.RECIPE_REQUEST_REQUIRED);

@@ -11,6 +11,7 @@ const constants = {
         emptySearch: 'Brak wynik\u00F3w dla podanej frazy.',
         loadError: 'Nie uda\u0142o si\u0119 za\u0142adowa\u0107 przepis\u00F3w.',
         authorPrefix: 'Autor:',
+        openRecipeButton: 'Zobacz przepis',
     },
     footer: {
         rightsText: '\u00A9 2025 Przepi\u015Bnik. All rights reserved.',
@@ -34,6 +35,7 @@ const constants = {
         login: '/login',
         register: '/register',
         myRecipes: '/my-recipes',
+        recipeDetails: '/recipes/:id',
         recipeNew: '/recipes/new',
         recipeEdit: '/recipes/:id/edit',
         ingredients: '/ingredients',
@@ -101,6 +103,15 @@ const constants = {
             editTitle: 'Edytuj przepis',
             createTitle: 'Dodaj nowy przepis',
             loadError: 'Nie udało się załadować przepisu.',
+        },
+        preview: {
+            loading: 'Ładowanie przepisu...',
+            loadError: 'Nie udało się załadować podglądu przepisu.',
+            ingredientsHeading: 'Składniki',
+            preparationHeading: 'Opis przygotowania',
+            formatBTW: (protein: string, fat: string, carbohydrates: string) =>
+                `B:${protein} T:${fat} W:${carbohydrates}`,
+            backToHome: 'Wróć do listy',
         },
         form: {
             labels: {
@@ -236,6 +247,7 @@ const constants = {
             create: '/api/recipes/create',
             my: '/api/recipes/my',
             public: '/api/recipes/public',
+            publicById: (id: string) => `/api/recipes/public/${id}`,
             byId: (id: string) => `/api/recipes/${id}`,
             update: (id: string) => `/api/recipes/update/${id}`,
             delete: (id: string) => `/api/recipes/delete/${id}`,

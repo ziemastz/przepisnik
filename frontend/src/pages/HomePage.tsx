@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
+import { uppercaseFirstCharacter } from '../shared/utils/text';
 import constants from '../constants';
 
 const HomePage = () => {
@@ -9,6 +11,7 @@ const HomePage = () => {
     const [inputValue, setInputValue] = useState('');
     const [activeQuery, setActiveQuery] = useState('');
     const abortRef = useRef<AbortController | null>(null);
+    const navigate = useNavigate();
 
     const fetchRecipes = useCallback((query: string) => {
         if (abortRef.current) {
@@ -44,6 +47,10 @@ const HomePage = () => {
         setInputValue('');
         setActiveQuery('');
         fetchRecipes('');
+    };
+
+    const handleOpenRecipe = (id: string) => {
+        navigate(constants.routes.recipeDetails.replace(':id', id));
     };
 
     const isEmpty = !loading && !error && recipes.length === 0;
@@ -95,9 +102,12 @@ const HomePage = () => {
                 {!loading && !error && recipes.length > 0 && (
                     <div className="recipe-list">
                         {recipes.map((recipe) => (
-                            <div key={recipe.id} className="recipe-card">
+                            <div
+                                key={recipe.id}
+                                className="recipe-card"
+                            >
                                 <div className="recipe-card-header">
-                                    <h3>{recipe.name}</h3>
+                                    <h3>{uppercaseFirstCharacter(recipe.name)}</h3>
                                     <div className="recipe-card-meta">
                                         <span className="recipe-time">
                                             ⏱ {recipe.preparationTimeMinutes}{' '}
@@ -116,7 +126,7 @@ const HomePage = () => {
                                     <ul className="recipe-ingredients">
                                         {recipe.ingredients.map((ing, idx) => (
                                             <li key={idx}>
-                                                {ing.name} – {ing.quantity}{' '}
+                                                {uppercaseFirstCharacter(ing.name)} – {ing.quantity}{' '}
                                                 {constants.recipes.form.units[ing.unit]}
                                             </li>
                                         ))}
@@ -134,6 +144,13 @@ const HomePage = () => {
                                             {constants.home.authorPrefix} {recipe.author}
                                         </span>
                                     </div>
+                                    <button
+                                        type="button"
+                                        className="button secondary recipe-preview-button"
+                                        onClick={() => handleOpenRecipe(recipe.id)}
+                                    >
+                                        {constants.home.openRecipeButton}
+                                    </button>
                                 </div>
                             </div>
                         ))}

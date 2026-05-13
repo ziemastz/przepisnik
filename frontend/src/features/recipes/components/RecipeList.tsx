@@ -1,5 +1,6 @@
 import { RecipeResponse } from '../../../api/recipesApi';
 import Button from '../../../shared/button/Button';
+import { uppercaseFirstCharacter } from '../../../shared/utils/text';
 import constants from '../../../constants';
 
 interface RecipeListProps {
@@ -14,7 +15,7 @@ const RecipeList = ({ recipes, onEdit, onDelete }: RecipeListProps) => {
             {recipes.map((recipe) => (
                 <div key={recipe.id} className="recipe-card">
                     <div className="recipe-card-header">
-                        <h3>{recipe.name}</h3>
+                        <h3>{uppercaseFirstCharacter(recipe.name)}</h3>
                         <div className="recipe-card-meta">
                             <span className="recipe-time">⏱ {recipe.preparationTimeMinutes} {constants.recipes.list.timeSuffix}</span>
                             <span className="recipe-servings">🍽 {recipe.servings} {constants.recipes.list.servingsSuffix}</span>
@@ -25,7 +26,8 @@ const RecipeList = ({ recipes, onEdit, onDelete }: RecipeListProps) => {
                         <ul className="recipe-ingredients">
                             {recipe.ingredients.map((ing, idx) => (
                                 <li key={idx}>
-                                    {ing.name} - {ing.quantity} {constants.recipes.form.units[ing.unit]}
+                                    {uppercaseFirstCharacter(ing.name)} - {ing.quantity}{' '}
+                                    {constants.recipes.form.units[ing.unit]}
                                 </li>
                             ))}
                         </ul>

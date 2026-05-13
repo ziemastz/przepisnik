@@ -68,6 +68,15 @@ describe('recipesApi', () => {
         expect(result).toBe(mockRecipe);
     });
 
+    test('getPublicRecipeById calls apiClient.get without authentication', async () => {
+        mockedApiClient.get.mockResolvedValue(mockRecipe);
+
+        const result = await recipesApi.getPublicRecipeById('abc');
+
+        expect(mockedApiClient.get).toHaveBeenCalledWith('/api/recipes/public/abc', false);
+        expect(result).toBe(mockRecipe);
+    });
+
     test('updateRecipe calls apiClient.post with correct args', async () => {
         const updated = { ...mockRecipe, name: 'Updated' };
         mockedApiClient.post.mockResolvedValue(updated);

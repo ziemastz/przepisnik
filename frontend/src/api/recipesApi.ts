@@ -70,6 +70,10 @@ export const recipesApi = {
         return apiClient.get<RecipeResponse>(constants.api.recipes.byId(id), true);
     },
 
+    async getPublicRecipeById(id: string): Promise<RecipeResponse> {
+        return apiClient.get<RecipeResponse>(constants.api.recipes.publicById(id), false);
+    },
+
     async updateRecipe(id: string, payload: UpdateRecipeRequest): Promise<RecipeResponse> {
         return apiClient.post<RecipeResponse, { data: UpdateRecipeRequest }>(
             constants.api.recipes.update(id),
