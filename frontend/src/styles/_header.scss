@@ -28,6 +28,10 @@
             }
 
             &:focus {
+                outline: none;
+            }
+
+            &:focus-visible {
                 outline: 2px solid $color-bg;
                 outline-offset: 4px;
                 border-radius: 4px;
@@ -54,14 +58,31 @@
     .header-nav-link {
         color: $color-bg;
         text-decoration: none;
-        font-weight: 500;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        transition: background-color 0.2s ease;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        padding: 0.5rem 1.1rem;
+        border-radius: 999px;
+        border: 1px solid rgba($color-bg, 0.5);
+        background-color: rgba($color-bg, 0.08);
+        transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.15s ease;
 
         &:hover,
         &:focus {
             background-color: rgba($color-bg, 0.18);
+            border-color: rgba($color-bg, 0.85);
+            transform: translateY(-1px);
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &:focus-visible {
+            outline: 2px solid rgba($color-bg, 0.95);
+            outline-offset: 2px;
         }
     }
 
