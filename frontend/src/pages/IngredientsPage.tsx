@@ -189,11 +189,20 @@ const IngredientsPage = () => {
                         <table className="ingredients-table">
                             <thead>
                                 <tr>
-                                    <th>{constants.titleApp}</th>
+                                    <th rowSpan={2}>{constants.ingredients.list.ingredientColumn}</th>
+                                    <th colSpan={3} className="btw-group-header">{constants.ingredients.list.btw}</th>
+                                    {isAuthenticated && (
+                                        <th
+                                            rowSpan={2}
+                                            className="actions-header"
+                                            aria-label={constants.ingredients.list.actionsColumn}
+                                        />
+                                    )}
+                                </tr>
+                                <tr>
                                     <th className="btw-header">{constants.ingredients.list.protein}</th>
                                     <th className="btw-header">{constants.ingredients.list.fat}</th>
                                     <th className="btw-header">{constants.ingredients.list.carbohydrates}</th>
-                                    {isAuthenticated && <th className="actions-header">{constants.titleApp}</th>}
                                 </tr>
                             </thead>
                             <tbody>

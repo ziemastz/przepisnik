@@ -121,6 +121,10 @@
     width: 12%;
 }
 
+.btw-group-header {
+    text-align: center;
+}
+
 .actions-header {
     text-align: center;
     width: 12%;
@@ -332,6 +336,7 @@
     }
 
     .btw-header,
+    .btw-group-header,
     .actions-header {
         width: auto;
         font-size: 0.85rem;

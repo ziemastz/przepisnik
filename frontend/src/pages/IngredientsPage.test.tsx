@@ -80,6 +80,18 @@ describe('IngredientsPage', () => {
         expect(screen.getByText('3.20')).toBeInTheDocument();
     });
 
+    test('displays shared nutrition header and no Przepiśnik table headers', async () => {
+        render(<IngredientsPage />);
+
+        await waitFor(() => {
+            expect(screen.getByText(constants.ingredients.list.btw)).toBeInTheDocument();
+        });
+
+        expect(
+            screen.queryAllByRole('columnheader', { name: constants.titleApp })
+        ).toHaveLength(0);
+    });
+
     test('displays dash when BTW values are null', async () => {
         const listWithNullBTW = {
             ...mockIngredientList,
