@@ -17,33 +17,39 @@ const IngredientsPage = () => {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [deleting, setDeleting] = useState(false);
-    const abortRef = useRef<AbortController | null>(null);
+    const isMountedRef = useRef(true);
 
     const fetchIngredients = useCallback((page: number, search: string) => {
-        if (abortRef.current) {
-            abortRef.current.abort();
-        }
-        abortRef.current = new AbortController();
         setLoading(true);
         setError(null);
 
         ingredientsApi
             .listIngredients(page, search || undefined)
             .then((data) => {
+                if (!isMountedRef.current) {
+                    return;
+                }
                 setIngredients(data);
                 setLoading(false);
             })
             .catch(() => {
+                if (!isMountedRef.current) {
+                    return;
+                }
                 setError(constants.ingredients.list.loadError);
                 setLoading(false);
             });
     }, []);
 
     useEffect(() => {
+        isMountedRef.current = true;
         fetchIngredients(0, '');
         setCurrentPage(0);
         setInputValue('');
         setActiveSearch('');
+        return () => {
+            isMountedRef.current = false;
+        };
     }, [fetchIngredients]);
 
     const handleSearch = (e: React.FormEvent) => {
@@ -286,7 +292,7 @@ const IngredientsPage = () => {
                                 onClick={handleCancelDelete}
                                 disabled={deleting}
                             >
-                                {constants.titleApp}
+                                {constants.ingredients.form.buttons.cancel}
                             </button>
                             <button
                                 className="button danger"

@@ -420,75 +420,18 @@
     }
 }
 
-/* Button Styles - Base */
+/* Page-scoped danger variant */
 
-.button {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-weight: 500;
-}
-
-.button.primary {
-    background-color: #4caf50;
-    color: white;
-}
-
-.button.primary:hover:not(:disabled) {
-    background-color: #45a049;
-}
-
-.button.secondary {
-    background-color: #f5f5f5;
-    color: #333;
-    border: 1px solid #ddd;
-}
-
-.button.secondary:hover:not(:disabled) {
-    background-color: #eee;
-}
-
-.button.danger {
+.ingredients-page .button.danger {
     background-color: #d32f2f;
     color: white;
 }
 
-.button.danger:hover:not(:disabled) {
+.ingredients-page .button.danger:hover:not(:disabled) {
     background-color: #c62828;
 }
 
-.button:disabled {
+.ingredients-page .button.danger:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-}
-
-/* Header Navigation */
-
-.header-nav {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.header-nav-link {
-    color: #333;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-}
-
-.header-nav-link:hover {
-    background-color: #f5f5f5;
-}
-
-@media (max-width: 768px) {
-    .header-nav-link {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.9rem;
-    }
 }

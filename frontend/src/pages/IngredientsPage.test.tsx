@@ -214,4 +214,17 @@ describe('IngredientsPage', () => {
             expect(screen.getByText(constants.ingredients.list.empty)).toBeInTheDocument();
         });
     });
+
+    test('uses cancel label in delete confirmation dialog', async () => {
+        render(<IngredientsPage />);
+
+        const deleteButtons = await screen.findAllByText(constants.ingredients.list.deleteButton);
+        fireEvent.click(deleteButtons[0]);
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: constants.ingredients.form.buttons.cancel })
+            ).toBeInTheDocument();
+        });
+    });
 });

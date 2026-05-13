@@ -45,6 +45,26 @@
         }
     }
 
+    .header-nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .header-nav-link {
+        color: $color-bg;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+
+        &:hover,
+        &:focus {
+            background-color: rgba($color-bg, 0.18);
+        }
+    }
+
     &_logo {
         width: 40px;
         height: 40px;
@@ -159,6 +179,13 @@
                     min-height: 40px;
                 }
             }
+        }
+    }
+
+    @include respond(md) {
+        .header-nav-link {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
         }
     }
 }

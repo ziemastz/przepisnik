@@ -2,7 +2,7 @@ package jwd.przepisnik.controller;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
@@ -130,7 +130,7 @@ class IngredientControllerTest {
         mockMvc.perform(get("/api/ingredients/list")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.items[0].protein").doesNotExist());
+                .andExpect(jsonPath("$.data.items[0].protein", is(nullValue())));
     }
 
     @Test
@@ -207,6 +207,23 @@ class IngredientControllerTest {
     }
 
     @Test
+    void shouldReturnBadRequestWhenCreatingWithTooManyDecimalPlaces() throws Exception {
+        CreateIngredientRequest request = new CreateIngredientRequest(
+            "Mąka",
+            new BigDecimal("10.123"),
+            BigDecimal.valueOf(2.0),
+            BigDecimal.valueOf(75.0)
+        );
+
+        mockMvc.perform(post("/api/ingredients/create")
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success", is(false)));
+    }
+
+    @Test
     void shouldUpdateIngredientForAuthenticatedUser() throws Exception {
         UUID id = UUID.randomUUID();
         UpdateIngredientRequest request = new UpdateIngredientRequest(
@@ -235,6 +252,22 @@ class IngredientControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenUpdatingDuplicate() throws Exception {
+        UUID id = UUID.randomUUID();
+        UpdateIngredientRequest request = new UpdateIngredientRequest("Cukier", null, null, null);
+
+        when(ingredientService.updateIngredient(eq(id), any(UpdateIngredientRequest.class)))
+            .thenThrow(new IllegalArgumentException("Składnik 'Cukier' już istnieje."));
+
+        mockMvc.perform(put("/api/ingredients/update/" + id)
+                .principal(() -> "john")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success", is(false)));
     }
 
     @Test

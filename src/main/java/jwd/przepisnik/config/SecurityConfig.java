@@ -34,10 +34,14 @@ public class SecurityConfig {
             ApiPaths.FAVICON_ICO
     };
 
-        private static final String AUTH_ENDPOINT = ApiPaths.Auth.ALL;
-        private static final String H2_CONSOLE_ENDPOINT = ApiPaths.H2_CONSOLE_ALL;
-        private static final String USER_REGISTRATION_ENDPOINT = ApiPaths.Users.CREATE_FULL;
-        private static final RequestMatcher API_REQUESTS = PathPatternRequestMatcher.withDefaults().matcher(ApiPaths.API_ALL);
+    private static final String AUTH_ENDPOINT = ApiPaths.Auth.ALL;
+    private static final String H2_CONSOLE_ENDPOINT = ApiPaths.H2_CONSOLE_ALL;
+    private static final String USER_REGISTRATION_ENDPOINT = ApiPaths.Users.CREATE_FULL;
+    private static final RequestMatcher API_REQUESTS = PathPatternRequestMatcher.withDefaults().matcher(ApiPaths.API_ALL);
+    private static final RequestMatcher PUBLIC_INGREDIENT_LIST_REQUEST = PathPatternRequestMatcher.withDefaults()
+            .matcher(HttpMethod.GET, ApiPaths.Ingredients.BASE + ApiPaths.Ingredients.LIST);
+    private static final RequestMatcher PUBLIC_INGREDIENT_BY_ID_REQUEST = PathPatternRequestMatcher.withDefaults()
+            .matcher(HttpMethod.GET, ApiPaths.Ingredients.BASE + ApiPaths.Ingredients.BY_ID);
     private static final RequestMatcher H2_CONSOLE_REQUESTS = PathPatternRequestMatcher.withDefaults()
             .matcher(H2_CONSOLE_ENDPOINT);
     private static final RequestMatcher CSRF_PROTECTION_MATCHER = request ->
@@ -77,8 +81,8 @@ public class SecurityConfig {
         auth.requestMatchers(AUTH_ENDPOINT).permitAll();
         auth.requestMatchers(HttpMethod.POST, USER_REGISTRATION_ENDPOINT).permitAll();
         auth.requestMatchers(HttpMethod.GET, ApiPaths.Recipes.PUBLIC_FULL).permitAll();
-        auth.requestMatchers(HttpMethod.GET, ApiPaths.Ingredients.BASE + ApiPaths.Ingredients.LIST).permitAll();
-        auth.requestMatchers(HttpMethod.GET, ApiPaths.Ingredients.BASE + "/*").permitAll();
+        auth.requestMatchers(PUBLIC_INGREDIENT_LIST_REQUEST).permitAll();
+        auth.requestMatchers(PUBLIC_INGREDIENT_BY_ID_REQUEST).permitAll();
         auth.requestMatchers(API_REQUESTS).authenticated();
         auth.anyRequest().permitAll();
     }

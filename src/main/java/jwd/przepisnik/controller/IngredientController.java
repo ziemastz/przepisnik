@@ -30,6 +30,7 @@ import jwd.przepisnik.web.response.IngredientSuggestionResponse;
 @RestController
 @RequestMapping(ApiPaths.Ingredients.BASE)
 public class IngredientController {
+    private static final String INGREDIENT_ALREADY_EXISTS_MESSAGE = "już istnieje";
     private final IngredientService ingredientService;
 
     public IngredientController(IngredientService ingredientService) {
@@ -104,7 +105,10 @@ public class IngredientController {
             IngredientResponse ingredient = ingredientService.updateIngredient(uuid, request);
             return ResponseEntity.ok(BaseResponse.success(ingredient));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            HttpStatus status = e.getMessage() != null && e.getMessage().contains(INGREDIENT_ALREADY_EXISTS_MESSAGE)
+                    ? HttpStatus.BAD_REQUEST
+                    : HttpStatus.NOT_FOUND;
+            return ResponseEntity.status(status)
                 .body(BaseResponse.failure(e.getMessage()));
         }
     }

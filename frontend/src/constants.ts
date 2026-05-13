@@ -190,9 +190,9 @@ const constants = {
             editTitle: 'Edytuj składnik',
             labels: {
                 name: 'Nazwa *',
-                protein: 'Białko (g) *',
-                fat: 'Tłuszcz (g) *',
-                carbohydrates: 'Węglowodany (g) *',
+                protein: 'Białko (g)',
+                fat: 'Tłuszcz (g)',
+                carbohydrates: 'Węglowodany (g)',
             },
             placeholders: {
                 name: 'np. Mąka pszenna',
