@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
 import constants from '../constants';
 
@@ -9,6 +10,7 @@ const HomePage = () => {
     const [inputValue, setInputValue] = useState('');
     const [activeQuery, setActiveQuery] = useState('');
     const abortRef = useRef<AbortController | null>(null);
+    const navigate = useNavigate();
 
     const fetchRecipes = useCallback((query: string) => {
         if (abortRef.current) {
@@ -44,6 +46,10 @@ const HomePage = () => {
         setInputValue('');
         setActiveQuery('');
         fetchRecipes('');
+    };
+
+    const handleOpenRecipe = (id: string) => {
+        navigate(constants.routes.recipeDetails.replace(':id', id));
     };
 
     const isEmpty = !loading && !error && recipes.length === 0;
@@ -95,7 +101,19 @@ const HomePage = () => {
                 {!loading && !error && recipes.length > 0 && (
                     <div className="recipe-list">
                         {recipes.map((recipe) => (
-                            <div key={recipe.id} className="recipe-card">
+                            <div
+                                key={recipe.id}
+                                className="recipe-card recipe-card--clickable"
+                                onClick={() => handleOpenRecipe(recipe.id)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        handleOpenRecipe(recipe.id);
+                                    }
+                                }}
+                            >
                                 <div className="recipe-card-header">
                                     <h3>{recipe.name}</h3>
                                     <div className="recipe-card-meta">
@@ -134,6 +152,16 @@ const HomePage = () => {
                                             {constants.home.authorPrefix} {recipe.author}
                                         </span>
                                     </div>
+                                    <button
+                                        type="button"
+                                        className="button secondary recipe-preview-button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleOpenRecipe(recipe.id);
+                                        }}
+                                    >
+                                        {constants.home.openRecipeButton}
+                                    </button>
                                 </div>
                             </div>
                         ))}

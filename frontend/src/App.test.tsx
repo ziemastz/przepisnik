@@ -27,6 +27,11 @@ jest.mock('./pages/HomePage', () => ({
     },
 }));
 
+jest.mock('./pages/RecipePreviewPage', () => ({
+    __esModule: true,
+    default: () => <div>Recipe Preview Page</div>,
+}));
+
 jest.mock('./router', () => ({
     BrowserRouter: ({ children }: { children: ReactNode }) => <div>{children}</div>,
     Routes: ({ children }: { children: ReactNode }) => <>{children}</>,
@@ -34,6 +39,7 @@ jest.mock('./router', () => ({
     Navigate: () => null,
     useNavigate: () => jest.fn(),
     useLocation: () => ({ pathname: '/', state: null }),
+    useParams: () => ({}),
 }));
 
 describe('App Component', () => {

@@ -3,6 +3,12 @@ import HomePage from './HomePage';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
 import constants from '../constants';
 
+let mockedNavigate: jest.Mock;
+
+jest.mock('../router', () => ({
+    useNavigate: () => mockedNavigate,
+}));
+
 jest.mock('../api/recipesApi', () => ({
     recipesApi: {
         getPublicRecipes: jest.fn(),
@@ -29,6 +35,7 @@ const sampleRecipe: RecipeResponse = {
 describe('HomePage', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        mockedNavigate = jest.fn();
     });
 
     test('renders heading and search form', async () => {
@@ -123,5 +130,20 @@ describe('HomePage', () => {
         fireEvent.submit(screen.getByRole('search'));
 
         expect(await screen.findByText(constants.home.emptySearch)).toBeInTheDocument();
+    });
+
+    test('opens recipe preview page after clicking recipe card action', async () => {
+        mockedRecipesApi.getPublicRecipes.mockResolvedValue([sampleRecipe]);
+
+        render(<HomePage />);
+
+        const openButton = await screen.findByRole('button', {
+            name: constants.home.openRecipeButton,
+        });
+        fireEvent.click(openButton);
+
+        await waitFor(() => {
+            expect(mockedNavigate).toHaveBeenCalledWith('/recipes/11111111-1111-1111-1111-111111111111');
+        });
     });
 });

@@ -6,6 +6,7 @@ import ProtectedRoute from '../shared/ProtectedRoute';
 import MyRecipesPage from '../features/recipes/pages/MyRecipesPage';
 import RecipeFormPage from '../features/recipes/pages/RecipeFormPage';
 import IngredientsPage from '../pages/IngredientsPage';
+import RecipePreviewPage from '../pages/RecipePreviewPage';
 import constants from '../constants';
 
 const AppRoutes = () => {
@@ -15,6 +16,7 @@ const AppRoutes = () => {
             <Route path={constants.routes.login} element={<LoginPage />} />
             <Route path={constants.routes.register} element={<RegisterPage />} />
             <Route path={constants.routes.ingredients} element={<IngredientsPage />} />
+            <Route path={constants.routes.recipeDetails} element={<RecipePreviewPage />} />
             <Route
                 path={constants.routes.myRecipes}
                 element={

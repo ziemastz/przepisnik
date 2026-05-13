@@ -11,6 +11,7 @@ const constants = {
         emptySearch: 'Brak wynik\u00F3w dla podanej frazy.',
         loadError: 'Nie uda\u0142o si\u0119 za\u0142adowa\u0107 przepis\u00F3w.',
         authorPrefix: 'Autor:',
+        openRecipeButton: 'Zobacz przepis',
     },
     footer: {
         rightsText: '\u00A9 2025 Przepi\u015Bnik. All rights reserved.',
@@ -34,6 +35,7 @@ const constants = {
         login: '/login',
         register: '/register',
         myRecipes: '/my-recipes',
+        recipeDetails: '/recipes/:id',
         recipeNew: '/recipes/new',
         recipeEdit: '/recipes/:id/edit',
         ingredients: '/ingredients',
@@ -101,6 +103,14 @@ const constants = {
             editTitle: 'Edytuj przepis',
             createTitle: 'Dodaj nowy przepis',
             loadError: 'Nie udało się załadować przepisu.',
+        },
+        preview: {
+            loading: 'Ladowanie przepisu...',
+            loadError: 'Nie udalo sie zaladowac podgladu przepisu.',
+            ingredientsHeading: 'Skladniki',
+            preparationHeading: 'Opis przygotowania',
+            nutritionPrefix: 'BTW',
+            backToHome: 'Wroc do listy',
         },
         form: {
             labels: {
