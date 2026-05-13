@@ -5,7 +5,7 @@ target/
 !**/src/test/**/target/
 
 ### H2 database files ###
-data/*.trace.db
+data/
 
 ### STS ###
 .apt_generated
