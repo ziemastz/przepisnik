@@ -57,7 +57,7 @@ const RecipePreviewPage = () => {
             setError(null);
 
             try {
-                const recipeResponse = await recipesApi.getRecipeById(id);
+                const recipeResponse = await recipesApi.getPublicRecipeById(id);
                 if (!isMounted) {
                     return;
                 }

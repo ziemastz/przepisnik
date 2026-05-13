@@ -16,7 +16,7 @@ jest.mock('../router', () => ({
 
 jest.mock('../api/recipesApi', () => ({
     recipesApi: {
-        getRecipeById: jest.fn(),
+        getPublicRecipeById: jest.fn(),
     },
 }));
 
@@ -51,7 +51,7 @@ describe('RecipePreviewPage', () => {
     });
 
     test('renders recipe details and BTW shorthand for ingredients', async () => {
-        mockedRecipesApi.getRecipeById.mockResolvedValue(sampleRecipe);
+        mockedRecipesApi.getPublicRecipeById.mockResolvedValue(sampleRecipe);
         mockedIngredientsApi.listIngredients.mockImplementation(async (_page, search) => {
             if (search === 'Maka pszenna') {
                 return {
@@ -101,7 +101,7 @@ describe('RecipePreviewPage', () => {
     });
 
     test('shows load error when recipe request fails', async () => {
-        mockedRecipesApi.getRecipeById.mockRejectedValue(new Error('Request failed'));
+        mockedRecipesApi.getPublicRecipeById.mockRejectedValue(new Error('Request failed'));
         mockedIngredientsApi.listIngredients.mockResolvedValue({
             items: [],
             totalPages: 0,

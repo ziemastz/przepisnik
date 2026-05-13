@@ -16,6 +16,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
     Optional<Recipe> findByIdAndAuthorId(UUID id, UUID authorId);
 
     @EntityGraph(attributePaths = { "author", "ingredients", "ingredients.ingredient" })
+    Optional<Recipe> findByIdAndPrivateRecipeFalse(UUID id);
+
+    @EntityGraph(attributePaths = { "author", "ingredients", "ingredients.ingredient" })
     List<Recipe> findAllByAuthorIdOrderByCreatedAtDesc(UUID authorId);
 
     @Query("SELECT DISTINCT r FROM Recipe r"

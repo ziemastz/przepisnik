@@ -44,6 +44,14 @@ public class RecipeController {
         return ResponseEntity.ok(BaseResponse.success(recipeMapper.toResponses(recipes)));
     }
 
+    @GetMapping(ApiPaths.Recipes.PUBLIC_BY_ID)
+    public ResponseEntity<BaseResponse<RecipeResponse>> getPublicRecipeById(@PathVariable UUID id) {
+        return recipeService.getPublicRecipeById(id)
+                .map(recipe -> ResponseEntity.ok(BaseResponse.success(recipeMapper.toResponse(recipe))))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(BaseResponse.failure(AppMessages.Controller.RECIPE_BY_ID_NOT_FOUND)));
+    }
+
     @PostMapping(ApiPaths.Recipes.CREATE)
     public ResponseEntity<BaseResponse<RecipeResponse>> createRecipe(
             @Valid @RequestBody BaseRequest<CreateRecipeRequest> recipeRequest,

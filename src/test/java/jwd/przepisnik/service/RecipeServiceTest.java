@@ -3,6 +3,7 @@ package jwd.przepisnik.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -185,4 +186,31 @@ class RecipeServiceTest {
         assertEquals("Nowy opis przygotowania", result.get().getDescription());
                 assertTrue(result.get().isPrivateRecipe());
     }
+
+        @Test
+        void getPublicRecipeByIdShouldReturnRepositoryResult() {
+                UUID recipeId = UUID.randomUUID();
+                Recipe recipe = new Recipe();
+                recipe.setId(recipeId);
+                recipe.setName("Nalesniki");
+
+                when(recipeRepository.findByIdAndPrivateRecipeFalse(recipeId)).thenReturn(Optional.of(recipe));
+
+                Optional<Recipe> result = recipeService.getPublicRecipeById(recipeId);
+
+                assertTrue(result.isPresent());
+                assertEquals("Nalesniki", result.get().getName());
+                verify(recipeRepository).findByIdAndPrivateRecipeFalse(recipeId);
+        }
+
+        @Test
+        void getPublicRecipeByIdShouldReturnEmptyWhenNotFound() {
+                UUID recipeId = UUID.randomUUID();
+                when(recipeRepository.findByIdAndPrivateRecipeFalse(recipeId)).thenReturn(Optional.empty());
+
+                Optional<Recipe> result = recipeService.getPublicRecipeById(recipeId);
+
+                assertFalse(result.isPresent());
+                verify(recipeRepository).findByIdAndPrivateRecipeFalse(recipeId);
+        }
 }

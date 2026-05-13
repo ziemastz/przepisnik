@@ -246,6 +246,7 @@ const constants = {
             create: '/api/recipes/create',
             my: '/api/recipes/my',
             public: '/api/recipes/public',
+            publicById: (id: string) => `/api/recipes/public/${id}`,
             byId: (id: string) => `/api/recipes/${id}`,
             update: (id: string) => `/api/recipes/update/${id}`,
             delete: (id: string) => `/api/recipes/delete/${id}`,

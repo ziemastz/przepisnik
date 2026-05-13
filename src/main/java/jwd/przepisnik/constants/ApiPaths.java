@@ -46,6 +46,8 @@ public final class ApiPaths {
         public static final String MY = "/my";
         public static final String PUBLIC = "/public";
         public static final String PUBLIC_FULL = "/api/recipes/public";
+        public static final String PUBLIC_BY_ID = "/public/{id:[0-9a-fA-F\\-]{36}}";
+        public static final String PUBLIC_BY_ID_FULL = "/api/recipes/public/{id:[0-9a-fA-F\\-]{36}}";
         public static final String BY_ID = "/{id:[0-9a-fA-F\\-]{36}}";
         public static final String UPDATE_BY_ID = "/update/{id}";
         public static final String DELETE_BY_ID = "/delete/{id}";

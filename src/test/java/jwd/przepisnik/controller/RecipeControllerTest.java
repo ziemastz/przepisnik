@@ -338,6 +338,28 @@ class RecipeControllerTest {
                 .andExpect(jsonPath("$.data[0].name", equalTo("Nalesniki")));
     }
 
+        @Test
+        void shouldReturnPublicRecipeById() throws Exception {
+                UUID recipeId = UUID.randomUUID();
+                Recipe recipe = buildRecipe("alice");
+                when(recipeService.getPublicRecipeById(recipeId)).thenReturn(Optional.of(recipe));
+
+                mockMvc.perform(get("/api/recipes/public/{id}", recipeId))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.success", is(true)))
+                                .andExpect(jsonPath("$.data.name", equalTo("Nalesniki")));
+        }
+
+        @Test
+        void shouldReturnNotFoundWhenPublicRecipeByIdDoesNotExist() throws Exception {
+                UUID recipeId = UUID.randomUUID();
+                when(recipeService.getPublicRecipeById(recipeId)).thenReturn(Optional.empty());
+
+                mockMvc.perform(get("/api/recipes/public/{id}", recipeId))
+                                .andExpect(status().isNotFound())
+                                .andExpect(jsonPath("$.success", is(false)));
+        }
+
     @Test
     void shouldReturnEmptyListWhenNoPublicRecipesMatch() throws Exception {
         when(recipeService.getPublicRecipes("xyz")).thenReturn(List.of());
