@@ -148,6 +148,10 @@ const constants = {
                 TEASPOON: '\u0142y\u017Ceczka',
                 CUP: 'szklanka',
             },
+            privacyOptions: {
+                public: 'Publiczny',
+                private: 'Prywatny',
+            },
         },
     },
     shared: {

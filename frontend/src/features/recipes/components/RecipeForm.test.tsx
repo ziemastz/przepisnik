@@ -141,7 +141,7 @@ describe('RecipeForm', () => {
         fireEvent.change(quantityInputs[0], { target: { value: '100' } });
 
         const selects = screen.getAllByRole('combobox');
-        fireEvent.change(selects[0], { target: { value: 'ML' } });
+        fireEvent.change(selects[1], { target: { value: 'ML' } });
 
         fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
 
@@ -155,8 +155,9 @@ describe('RecipeForm', () => {
     test('shows all supported ingredient units in selector', () => {
         render(<RecipeForm onSubmit={jest.fn()} />);
 
-        const select = screen.getAllByRole('combobox')[0] as HTMLSelectElement;
-        const optionValues = Array.from(select.options).map((option) => option.value);
+        const selects = screen.getAllByRole('combobox');
+        const unitSelect = selects[1] as HTMLSelectElement;
+        const optionValues = Array.from(unitSelect.options).map((option) => option.value);
 
         expect(optionValues).toEqual([
             'GRAM',
@@ -245,13 +246,16 @@ describe('RecipeForm', () => {
         });
     });
 
-    test('submits recipe as private when checkbox is selected', async () => {
+    test('submits recipe as private when privacy select is set to Prywatny', async () => {
         const onSubmit = jest.fn().mockResolvedValue(undefined);
         render(<RecipeForm onSubmit={onSubmit} />);
 
         fillValidForm();
         fireEvent.change(screen.getAllByPlaceholderText('Ilość')[0], { target: { value: '100' } });
-        fireEvent.click(screen.getByLabelText('Prywatność przepisu'));
+        
+        const privacySelect = screen.getByDisplayValue('Publiczny') as HTMLSelectElement;
+        fireEvent.change(privacySelect, { target: { value: 'private' } });
+        
         fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
 
         await waitFor(() => {
