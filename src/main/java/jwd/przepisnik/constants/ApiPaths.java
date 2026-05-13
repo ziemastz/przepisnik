@@ -57,6 +57,11 @@ public final class ApiPaths {
 
         public static final String BASE = "/api/ingredients";
         public static final String SEARCH = "/search";
+        public static final String LIST = "/list";
+        public static final String CREATE = "/create";
+        public static final String BY_ID = "/{id:[0-9a-fA-F\\-]{36}}";
+        public static final String UPDATE_BY_ID = "/update/{id}";
+        public static final String DELETE_BY_ID = "/delete/{id}";
         public static final String QUERY_PARAM = "query";
         public static final String LIMIT_PARAM = "limit";
     }

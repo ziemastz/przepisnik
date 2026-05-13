@@ -16,6 +16,11 @@ const Header = () => {
                         </Link>
                     </h1>
                 </div>
+                <nav className="header-nav">
+                    <Link to={constants.routes.ingredients} className="header-nav-link">
+                        {constants.layout.header.ingredients}
+                    </Link>
+                </nav>
                 <UserPanelContainer />
             </div>
         </header>

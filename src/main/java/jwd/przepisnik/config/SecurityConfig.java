@@ -77,6 +77,8 @@ public class SecurityConfig {
         auth.requestMatchers(AUTH_ENDPOINT).permitAll();
         auth.requestMatchers(HttpMethod.POST, USER_REGISTRATION_ENDPOINT).permitAll();
         auth.requestMatchers(HttpMethod.GET, ApiPaths.Recipes.PUBLIC_FULL).permitAll();
+        auth.requestMatchers(HttpMethod.GET, ApiPaths.Ingredients.BASE + ApiPaths.Ingredients.LIST).permitAll();
+        auth.requestMatchers(HttpMethod.GET, ApiPaths.Ingredients.BASE + "/*").permitAll();
         auth.requestMatchers(API_REQUESTS).authenticated();
         auth.anyRequest().permitAll();
     }
