@@ -467,17 +467,17 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                 </div>
             </div>
 
-            <div className="auth-field recipe-checkbox-field">
-                <label htmlFor="recipe-private" className="recipe-checkbox-inline">
-                    <span>{constants.recipes.form.labels.privacy}</span>
-                    <input
-                        id="recipe-private"
-                        type="checkbox"
-                        checked={isPrivate}
-                        onChange={(e) => setIsPrivate(e.target.checked)}
-                        disabled={isSubmitting}
-                    />
-                </label>
+            <div className="auth-field">
+                <label htmlFor="recipe-privacy">{constants.recipes.form.labels.privacy}</label>
+                <select
+                    id="recipe-privacy"
+                    value={isPrivate ? 'private' : 'public'}
+                    onChange={(e) => setIsPrivate(e.target.value === 'private')}
+                    disabled={isSubmitting}
+                >
+                    <option value="public">{constants.recipes.form.privacyOptions.public}</option>
+                    <option value="private">{constants.recipes.form.privacyOptions.private}</option>
+                </select>
             </div>
 
             <div className="recipe-ingredients-section">

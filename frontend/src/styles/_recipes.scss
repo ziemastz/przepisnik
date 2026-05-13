@@ -367,7 +367,8 @@
         }
 
         input,
-        textarea {
+        textarea,
+        select {
             width: 100%;
             box-sizing: border-box;
             border: 1px solid rgba($color-primary, 0.35);
@@ -409,6 +410,20 @@
             line-height: 1.45;
             resize: vertical;
         }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+
+            option {
+                color: $color-text;
+                background: #fff;
+            }
+        }
     }
 
     .recipe-field-error {
@@ -427,25 +442,6 @@
 
         @include respond(md) {
             grid-template-columns: 1fr;
-        }
-    }
-
-    .recipe-checkbox-field {
-        .recipe-checkbox-inline {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            cursor: pointer;
-        }
-
-        input[type='checkbox'] {
-            width: auto;
-            min-width: 16px;
-            margin: 0;
-            padding: 0;
-            accent-color: $color-primary;
-            cursor: pointer;
         }
     }
 
