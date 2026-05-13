@@ -9,6 +9,7 @@ import {
     parseBackendFieldError,
     prettifyValidationMessage,
 } from '../../../shared/forms/validation';
+import { uppercaseFirstCharacter } from '../../../shared/utils/text';
 import Button from '../../../shared/button/Button';
 import constants from '../../../constants';
 
@@ -308,10 +309,11 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
         field: 'name' | 'quantity' | 'unit',
         value: string,
     ) => {
+        const nextValue = field === 'name' ? uppercaseFirstCharacter(value) : value;
         const updated = [...ingredients];
-        updated[index] = { ...updated[index], [field]: value };
+        updated[index] = { ...updated[index], [field]: nextValue };
         setIngredients(updated);
-        if (value.trim()) {
+        if (nextValue.trim()) {
             clearIngredientFieldError(index, field);
         }
     };
@@ -394,8 +396,9 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                     type="text"
                     value={name}
                     onChange={(e) => {
-                        setName(e.target.value);
-                        if (e.target.value.trim()) {
+                        const nextValue = uppercaseFirstCharacter(e.target.value);
+                        setName(nextValue);
+                        if (nextValue.trim()) {
                             clearFieldError('name');
                         }
                     }}
