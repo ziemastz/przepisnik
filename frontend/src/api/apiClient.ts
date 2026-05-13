@@ -129,10 +129,20 @@ export const apiClient = {
     post<TData, TBody>(path: string, body: TBody, authenticated = false): Promise<TData> {
         return request<TData, TBody>(path, { method: 'POST', body, authenticated });
     },
+    put<TData, TBody>(path: string, body: TBody, authenticated = false): Promise<TData> {
+        return request<TData, TBody>(path, { method: 'PUT', body, authenticated });
+    },
     postVoid<TBody>(path: string, body: TBody, authenticated = false): Promise<void> {
         return request<null, TBody>(path, {
             method: 'POST',
             body,
+            authenticated,
+            allowEmptyData: true,
+        }).then(() => undefined);
+    },
+    deleteVoid(path: string, authenticated = false): Promise<void> {
+        return request<null>(path, {
+            method: 'DELETE',
             authenticated,
             allowEmptyData: true,
         }).then(() => undefined);

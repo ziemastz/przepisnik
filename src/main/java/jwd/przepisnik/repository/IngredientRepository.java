@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,4 +14,8 @@ public interface IngredientRepository extends JpaRepository<Ingredient, UUID> {
     Optional<Ingredient> findByNormalizedName(String normalizedName);
 
     List<Ingredient> findByNormalizedNameStartingWithOrderByNormalizedNameAsc(String normalizedPrefix, Pageable pageable);
+
+    Page<Ingredient> findByNormalizedNameContainingOrderByNameAsc(String normalizedName, Pageable pageable);
+
+    Page<Ingredient> findAllByOrderByNameAsc(Pageable pageable);
 }

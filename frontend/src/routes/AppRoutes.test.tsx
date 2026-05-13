@@ -27,6 +27,11 @@ jest.mock('../features/recipes/pages/RecipeFormPage', () => ({
     default: () => <div>Recipe Form Page</div>,
 }));
 
+jest.mock('../pages/IngredientsPage', () => ({
+    __esModule: true,
+    default: () => <div>Ingredients Page</div>,
+}));
+
 jest.mock('../shared/ProtectedRoute', () => ({
     __esModule: true,
     default: ({ children }: { children: ReactNode }) => <div>{children}</div>,
@@ -60,6 +65,7 @@ describe('AppRoutes', () => {
         expect(screen.getByText('Home Page')).toBeInTheDocument();
         expect(screen.getByText('Login Page')).toBeInTheDocument();
         expect(screen.getByText('Register Page')).toBeInTheDocument();
+        expect(screen.getByText('Ingredients Page')).toBeInTheDocument();
         expect(screen.getByText('404 - Strona nie istnieje')).toBeInTheDocument();
         expect(screen.getByText('My Recipes Page')).toBeInTheDocument();
         expect(screen.getAllByText('Recipe Form Page')).toHaveLength(2); // /recipes/new and /recipes/:id/edit
@@ -68,6 +74,7 @@ describe('AppRoutes', () => {
         expect(paths).toContain('/');
         expect(paths).toContain('/login');
         expect(paths).toContain('/register');
+        expect(paths).toContain('/ingredients');
         expect(paths).toContain('/my-recipes');
         expect(paths).toContain('/recipes/new');
         expect(paths).toContain('/recipes/:id/edit');

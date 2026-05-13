@@ -1,5 +1,6 @@
 package jwd.przepisnik.models;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -25,4 +26,14 @@ public class Ingredient {
 
     @Column(name = "normalized_name", nullable = false)
     private String normalizedName;
+
+    // Nutritional values per 100g or 100ml (BTW - Białko, Tłuszcz, Węglowodany)
+    @Column(precision = 10, scale = 2)
+    private BigDecimal protein; // Białko
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal fat; // Tłuszcz
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal carbohydrates; // Węglowodany
 }
