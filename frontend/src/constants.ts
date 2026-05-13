@@ -105,14 +105,13 @@ const constants = {
             loadError: 'Nie udało się załadować przepisu.',
         },
         preview: {
-            loading: 'Ladowanie przepisu...',
-            loadError: 'Nie udalo sie zaladowac podgladu przepisu.',
-            ingredientsHeading: 'Skladniki',
+            loading: 'Ładowanie przepisu...',
+            loadError: 'Nie udało się załadować podglądu przepisu.',
+            ingredientsHeading: 'Składniki',
             preparationHeading: 'Opis przygotowania',
-            nutritionPrefix: 'BTW',
             formatBTW: (protein: string, fat: string, carbohydrates: string) =>
                 `B:${protein} T:${fat} W:${carbohydrates}`,
-            backToHome: 'Wroc do listy',
+            backToHome: 'Wróć do listy',
         },
         form: {
             labels: {

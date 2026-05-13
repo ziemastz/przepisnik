@@ -104,16 +104,7 @@ const HomePage = () => {
                         {recipes.map((recipe) => (
                             <div
                                 key={recipe.id}
-                                className="recipe-card recipe-card--clickable"
-                                onClick={() => handleOpenRecipe(recipe.id)}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleOpenRecipe(recipe.id);
-                                    }
-                                }}
+                                className="recipe-card"
                             >
                                 <div className="recipe-card-header">
                                     <h3>{uppercaseFirstCharacter(recipe.name)}</h3>
@@ -156,10 +147,7 @@ const HomePage = () => {
                                     <button
                                         type="button"
                                         className="button secondary recipe-preview-button"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleOpenRecipe(recipe.id);
-                                        }}
+                                        onClick={() => handleOpenRecipe(recipe.id)}
                                     >
                                         {constants.home.openRecipeButton}
                                     </button>
