@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import RecipeForm from './RecipeForm';
 import { RecipeResponse } from '../../../api/recipesApi';
 import { ApiError } from '../../../api/types';
+import constants from '../../../constants';
 
 const fillValidForm = () => {
     fireEvent.change(screen.getByLabelText('Nazwa przepisu *'), { target: { value: 'Zupa' } });
@@ -140,8 +141,8 @@ describe('RecipeForm', () => {
         const quantityInputs = screen.getAllByPlaceholderText('Ilość');
         fireEvent.change(quantityInputs[0], { target: { value: '100' } });
 
-        const selects = screen.getAllByRole('combobox');
-        fireEvent.change(selects[1], { target: { value: 'ML' } });
+        const unitSelect = screen.getByDisplayValue(constants.recipes.form.units.GRAM);
+        fireEvent.change(unitSelect, { target: { value: 'ML' } });
 
         fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
 
@@ -155,8 +156,9 @@ describe('RecipeForm', () => {
     test('shows all supported ingredient units in selector', () => {
         render(<RecipeForm onSubmit={jest.fn()} />);
 
-        const selects = screen.getAllByRole('combobox');
-        const unitSelect = selects[1] as HTMLSelectElement;
+        const unitSelect = screen.getByDisplayValue(
+            constants.recipes.form.units.GRAM,
+        ) as HTMLSelectElement;
         const optionValues = Array.from(unitSelect.options).map((option) => option.value);
 
         expect(optionValues).toEqual([
@@ -252,10 +254,9 @@ describe('RecipeForm', () => {
 
         fillValidForm();
         fireEvent.change(screen.getAllByPlaceholderText('Ilość')[0], { target: { value: '100' } });
-        
-        const privacySelect = screen.getByDisplayValue('Publiczny') as HTMLSelectElement;
+        const privacySelect = screen.getByLabelText('Prywatność przepisu') as HTMLSelectElement;
         fireEvent.change(privacySelect, { target: { value: 'private' } });
-        
+
         fireEvent.click(screen.getByRole('button', { name: 'Zapisz' }));
 
         await waitFor(() => {
