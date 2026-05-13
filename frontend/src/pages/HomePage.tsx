@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
+import { uppercaseFirstCharacter } from '../shared/utils/text';
 import constants from '../constants';
 
 const HomePage = () => {
@@ -115,7 +116,7 @@ const HomePage = () => {
                                 }}
                             >
                                 <div className="recipe-card-header">
-                                    <h3>{recipe.name}</h3>
+                                    <h3>{uppercaseFirstCharacter(recipe.name)}</h3>
                                     <div className="recipe-card-meta">
                                         <span className="recipe-time">
                                             ⏱ {recipe.preparationTimeMinutes}{' '}
@@ -134,7 +135,7 @@ const HomePage = () => {
                                     <ul className="recipe-ingredients">
                                         {recipe.ingredients.map((ing, idx) => (
                                             <li key={idx}>
-                                                {ing.name} – {ing.quantity}{' '}
+                                                {uppercaseFirstCharacter(ing.name)} – {ing.quantity}{' '}
                                                 {constants.recipes.form.units[ing.unit]}
                                             </li>
                                         ))}

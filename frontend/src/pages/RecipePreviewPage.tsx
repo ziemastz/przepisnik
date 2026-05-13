@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
 import { ingredientsApi, IngredientBTW } from '../api/ingredientsApi';
+import { uppercaseFirstCharacter } from '../shared/utils/text';
 import constants from '../constants';
 
 type NutritionByIngredient = Record<string, IngredientBTW | null>;
@@ -131,7 +132,7 @@ const RecipePreviewPage = () => {
         <div className="recipe-preview-page">
             <section className="recipe-preview-hero">
                 <div className="recipe-preview-header">
-                    <h1>{recipe.name}</h1>
+                    <h1>{uppercaseFirstCharacter(recipe.name)}</h1>
                     <div className="recipe-preview-meta">
                         <span>
                             ⏱ {recipe.preparationTimeMinutes} {constants.recipes.list.timeSuffix}
@@ -163,7 +164,7 @@ const RecipePreviewPage = () => {
                                 >
                                     <div className="recipe-preview-ingredient-main">
                                         <span className="recipe-preview-ingredient-name">
-                                            {ingredient.name}
+                                            {uppercaseFirstCharacter(ingredient.name)}
                                         </span>
                                         <span>
                                             {ingredient.quantity}{' '}
