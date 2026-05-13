@@ -32,7 +32,7 @@ describe('Header', () => {
         expect(homeLink).toHaveAttribute('href', constants.routes.home);
     });
 
-    test('home link contains the logo icon', () => {
+    test('home link has the correct CSS class', () => {
         render(<Header />);
 
         const homeLink = screen.getByRole('link', { name: new RegExp(constants.titleApp, 'i') });
