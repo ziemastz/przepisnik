@@ -121,6 +121,15 @@ describe('RecipeForm', () => {
         expect(screen.getAllByPlaceholderText('Nazwa składnika')).toHaveLength(2);
     });
 
+    test('add ingredient action uses dashed button styling', () => {
+        render(<RecipeForm onSubmit={jest.fn()} />);
+
+        expect(screen.getByRole('button', { name: '+ Dodaj składnik' })).toHaveClass(
+            'button',
+            'dashed',
+        );
+    });
+
     test('can remove an ingredient row when there are multiple', () => {
         render(<RecipeForm onSubmit={jest.fn()} />);
 
