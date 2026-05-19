@@ -7,11 +7,11 @@
     margin: 0 auto;
 
     .button.danger {
-        background-color: #d32f2f;
-        color: white;
+        background-color: $color-danger;
+        color: $color-white;
 
         &:hover:not(:disabled) {
-            background-color: darken(#d32f2f, 5%);
+            background-color: darken($color-danger, 5%);
         }
 
         &:disabled {
@@ -54,7 +54,7 @@
     width: 100%;
     padding: 0.75rem 2.5rem 0.75rem 0.75rem;
     font-size: 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid $color-border;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
@@ -75,7 +75,7 @@
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
-    color: #999;
+    color: $color-text-muted;
     transition: color 0.2s;
 
     &:hover {
@@ -90,16 +90,14 @@
 
 .ingredients-status-text {
     text-align: center;
-    color: #666;
+    color: $color-text-subtle;
     padding: 2rem;
     font-size: 1rem;
 }
 
 .ingredients-error {
-    background-color: #ffebee;
-    color: #c62828;
+    @include message-error;
     padding: 1rem;
-    border-radius: 4px;
     margin-bottom: 1rem;
 }
 
@@ -115,11 +113,11 @@
 .ingredients-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: $color-white;
 
     thead {
-        background-color: #f5f5f5;
-        border-bottom: 2px solid #ddd;
+        background-color: $color-bg-disabled;
+        border-bottom: 2px solid $color-border;
     }
 
     th {
@@ -131,7 +129,7 @@
     }
 
     tbody tr {
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid $color-border-light;
         transition: background-color 0.2s;
 
         &:hover {
@@ -166,7 +164,7 @@
 .btw-cell {
     text-align: center;
     font-family: 'Courier New', monospace;
-    color: #666;
+    color: $color-text-subtle;
 }
 
 .actions-cell {
@@ -191,10 +189,10 @@
     }
 
     &--danger {
-        color: #d32f2f;
+        color: $color-danger;
 
         &:hover {
-            color: darken(#d32f2f, 5%);
+            color: darken($color-danger, 8%);
         }
     }
 }
@@ -210,7 +208,7 @@
 
     &-info {
         font-size: 0.95rem;
-        color: #666;
+        color: $color-text-subtle;
         white-space: nowrap;
     }
 
@@ -241,7 +239,7 @@
 }
 
 .modal-dialog {
-    background-color: #fff;
+    background-color: $color-white;
     border-radius: 8px;
     padding: 2rem;
     max-width: 600px;
@@ -290,7 +288,7 @@
     input {
         padding: 0.75rem;
         font-size: 1rem;
-        border: 1px solid #ddd;
+        border: 1px solid $color-border;
         border-radius: 4px;
         transition: border-color 0.2s;
 
@@ -301,8 +299,7 @@
         }
 
         &.field-invalid {
-            border-color: #d32f2f;
-            box-shadow: 0 0 5px rgba(211, 47, 47, 0.3);
+            @include field-invalid;
         }
     }
 }
@@ -314,15 +311,13 @@
 }
 
 .field-error {
-    color: #d32f2f;
+    color: $color-danger;
     font-size: 0.85rem;
 }
 
 .form-error {
-    background-color: #ffebee;
-    color: #c62828;
+    @include message-error;
     padding: 0.75rem;
-    border-radius: 4px;
     font-size: 0.95rem;
 }
 

@@ -29,3 +29,34 @@
         }
     }
 }
+
+@mixin message-error {
+    color: $color-error-text;
+    background: $color-error-bg;
+    border: 1px solid $color-error-border;
+    border-radius: 8px;
+}
+
+@mixin message-success {
+    color: $color-success-text;
+    background: $color-success-bg;
+    border: 1px solid $color-success-border;
+    border-radius: 8px;
+}
+
+@mixin message-warning {
+    color: $color-warning-text;
+    background: $color-warning-bg;
+    border: 1px solid $color-warning-border;
+    border-radius: 8px;
+}
+
+@mixin field-invalid {
+    border-color: $color-error;
+    background: #fff6f6;
+
+    &:focus {
+        outline: 2px solid rgba($color-error, 0.3);
+        border-color: $color-error;
+    }
+}
