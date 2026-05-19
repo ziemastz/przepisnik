@@ -49,7 +49,7 @@ describe('HomePage', () => {
     });
 
     test('shows loading state initially', () => {
-        mockedRecipesApi.getPublicRecipes.mockReturnValue(new Promise((_resolve) => {}));
+        mockedRecipesApi.getPublicRecipes.mockReturnValue(new Promise((_resolve) => undefined));
 
         render(<HomePage />);
 
