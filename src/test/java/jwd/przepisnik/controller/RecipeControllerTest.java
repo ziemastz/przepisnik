@@ -33,8 +33,10 @@ import jwd.przepisnik.models.IngredientUnit;
 import jwd.przepisnik.models.Recipe;
 import jwd.przepisnik.models.RecipeIngredient;
 import jwd.przepisnik.models.User;
+import jwd.przepisnik.service.NutritionalValuesService;
 import jwd.przepisnik.service.RecipeService;
 import jwd.przepisnik.web.mapper.RecipeMapper;
+import jwd.przepisnik.web.response.NutritionalValuesResponse;
 import jwd.przepisnik.web.request.BaseRequest;
 import jwd.przepisnik.web.request.CreateRecipeRequest;
 import jwd.przepisnik.web.request.IngredientAmountRequest;
@@ -46,12 +48,32 @@ class RecipeControllerTest {
     @Mock
     private RecipeService recipeService;
 
+    @Mock
+    private NutritionalValuesService nutritionalValuesService;
+
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new RecipeController(recipeService, new RecipeMapper()))
+        NutritionalValuesResponse zeroNutrition = new NutritionalValuesResponse(
+                java.math.BigDecimal.ZERO, java.math.BigDecimal.ZERO, java.math.BigDecimal.ZERO);
+        org.mockito.Mockito.lenient()
+                .when(nutritionalValuesService.calculateForIngredient(org.mockito.ArgumentMatchers.any()))
+                .thenReturn(zeroNutrition);
+        org.mockito.Mockito.lenient()
+                .when(nutritionalValuesService.calculateTotal(org.mockito.ArgumentMatchers.any()))
+                .thenReturn(zeroNutrition);
+        org.mockito.Mockito.lenient()
+                .when(nutritionalValuesService.calculateTotalFromValues(org.mockito.ArgumentMatchers.any()))
+                .thenReturn(zeroNutrition);
+        org.mockito.Mockito.lenient()
+                .when(nutritionalValuesService.calculatePerServing(
+                        org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.anyInt()))
+                .thenReturn(zeroNutrition);
+
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(new RecipeController(recipeService, new RecipeMapper(nutritionalValuesService)))
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
         objectMapper = new ObjectMapper();
