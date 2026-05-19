@@ -149,6 +149,7 @@ const constants = {
                 ingredientQuantityRequired: 'Ilosc skladnika jest wymagana.',
                 ingredientQuantityMin: 'Ilosc skladnika musi byc co najmniej 0.01.',
                 ingredientNameRequired: 'Nazwa skladnika jest wymagana.',
+                portionInvalid: 'Porcja musi być liczbą z maksymalnie 2 miejscami po przecinku.',
                 submitFallback: 'Coś poszło nie tak. Spróbuj ponownie.',
             },
             units: {
@@ -205,12 +206,14 @@ const constants = {
                 protein: 'Białko (g)',
                 fat: 'Tłuszcz (g)',
                 carbohydrates: 'Węglowodany (g)',
+                portion: 'Porcja jednej sztuki (g)',
             },
             placeholders: {
                 name: 'np. Mąka pszenna',
                 protein: '10',
                 fat: '2',
                 carbohydrates: '75',
+                portion: '100',
             },
             buttons: {
                 save: 'Zapisz',
@@ -223,6 +226,7 @@ const constants = {
                 proteinInvalid: 'Białko musi być liczbą z maksymalnie 2 miejscami po przecinku.',
                 fatInvalid: 'Tłuszcz musi być liczbą z maksymalnie 2 miejscami po przecinku.',
                 carbohydratesInvalid: 'Węglowodany muszą być liczbą z maksymalnie 2 miejscami po przecinku.',
+                portionInvalid: 'Porcja musi być liczbą z maksymalnie 2 miejscami po przecinku.',
                 submitFallback: 'Coś poszło nie tak. Spróbuj ponownie.',
                 alreadyExists: 'Składnik o tej nazwie już istnieje.',
             },

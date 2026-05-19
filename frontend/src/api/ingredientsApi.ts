@@ -12,6 +12,7 @@ export interface CreateIngredientRequest {
     protein: number | null;
     fat: number | null;
     carbohydrates: number | null;
+    portion: number | null;
 }
 
 export interface UpdateIngredientRequest {
@@ -19,6 +20,7 @@ export interface UpdateIngredientRequest {
     protein: number | null;
     fat: number | null;
     carbohydrates: number | null;
+    portion: number | null;
 }
 
 export interface IngredientItemResponse {
@@ -27,6 +29,7 @@ export interface IngredientItemResponse {
     protein: number | null;
     fat: number | null;
     carbohydrates: number | null;
+    portion: number | null;
 }
 
 export interface IngredientListResponse {
@@ -43,6 +46,7 @@ export interface IngredientResponse {
     protein: number | null;
     fat: number | null;
     carbohydrates: number | null;
+    portion: number | null;
 }
 
 export const ingredientsApi = {

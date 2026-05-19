@@ -48,6 +48,7 @@ describe('IngredientDialog', () => {
             protein: 10.0,
             fat: 2.0,
             carbohydrates: 75.0,
+            portion: 100.0,
         };
 
         getIngredientByIdMock.mockResolvedValue(mockIngredient);
@@ -90,6 +91,7 @@ describe('IngredientDialog', () => {
             protein: 31.0,
             fat: 3.6,
             carbohydrates: 0,
+            portion: 100.0,
         });
 
         render(
@@ -104,11 +106,13 @@ describe('IngredientDialog', () => {
         const proteinInput = screen.getByPlaceholderText('10');
         const fatInput = screen.getByPlaceholderText('2');
         const carbsInputs = screen.getAllByPlaceholderText('75');
+        const portionInput = screen.getByPlaceholderText('100');
 
         fireEvent.change(nameInput, { target: { value: 'Kurczak' } });
         fireEvent.change(proteinInput, { target: { value: '31' } });
         fireEvent.change(fatInput, { target: { value: '3.6' } });
         fireEvent.change(carbsInputs[0], { target: { value: '0' } });
+        fireEvent.change(portionInput, { target: { value: '100' } });
 
         const saveButton = screen.getByText('Zapisz');
         fireEvent.click(saveButton);
@@ -120,6 +124,7 @@ describe('IngredientDialog', () => {
                     protein: 31,
                     fat: 3.6,
                     carbohydrates: 0,
+                    portion: 100,
                 })
             );
         });
@@ -133,6 +138,7 @@ describe('IngredientDialog', () => {
             protein: null,
             fat: null,
             carbohydrates: null,
+            portion: null,
         });
 
         render(
@@ -156,6 +162,7 @@ describe('IngredientDialog', () => {
                     protein: null,
                     fat: null,
                     carbohydrates: null,
+                    portion: null,
                 })
             );
         });
@@ -168,6 +175,7 @@ describe('IngredientDialog', () => {
             protein: 10.0,
             fat: 2.0,
             carbohydrates: 75.0,
+            portion: 100.0, 
         };
 
         getIngredientByIdMock.mockResolvedValue(mockIngredient);
@@ -247,6 +255,7 @@ describe('IngredientDialog', () => {
                 protein: null,
                 fat: null,
                 carbohydrates: null,
+                portion: null,
             }), 100))
         );
 
