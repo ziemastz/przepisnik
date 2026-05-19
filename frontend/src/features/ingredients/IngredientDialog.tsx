@@ -156,7 +156,9 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
                         />
                         {errors.name && <span className="field-error">{errors.name}</span>}
                     </div>
-
+                    <div className="form-group">
+                        <label>{constants.ingredients.list.btw}</label>
+                    </div>
                     <div className="form-row">
                         <div className="form-group">
                             <label htmlFor="ingredient-protein">
@@ -175,7 +177,9 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
                                 aria-invalid={Boolean(errors.protein)}
                                 disabled={saving}
                             />
-                            {errors.protein && <span className="field-error">{errors.protein}</span>}
+                            {errors.protein && (
+                                <span className="field-error">{errors.protein}</span>
+                            )}
                         </div>
 
                         <div className="form-group">
@@ -230,11 +234,7 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
                         >
                             {constants.ingredients.form.buttons.cancel}
                         </button>
-                        <button
-                            type="submit"
-                            className="button primary"
-                            disabled={saving}
-                        >
+                        <button type="submit" className="button primary" disabled={saving}>
                             {saving
                                 ? constants.ingredients.form.buttons.saving
                                 : constants.ingredients.form.buttons.save}
