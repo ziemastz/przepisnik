@@ -149,7 +149,6 @@ const constants = {
                 ingredientQuantityRequired: 'Ilosc skladnika jest wymagana.',
                 ingredientQuantityMin: 'Ilosc skladnika musi byc co najmniej 0.01.',
                 ingredientNameRequired: 'Nazwa skladnika jest wymagana.',
-                portionInvalid: 'Porcja musi być liczbą z maksymalnie 2 miejscami po przecinku.',
                 submitFallback: 'Coś poszło nie tak. Spróbuj ponownie.',
             },
             units: {

@@ -175,7 +175,7 @@ describe('IngredientDialog', () => {
             protein: 10.0,
             fat: 2.0,
             carbohydrates: 75.0,
-            portion: 100.0, 
+            portion: 100.0,
         };
 
         getIngredientByIdMock.mockResolvedValue(mockIngredient);
