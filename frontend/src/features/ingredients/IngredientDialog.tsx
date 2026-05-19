@@ -13,6 +13,7 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
     const [protein, setProtein] = useState<string>('');
     const [fat, setFat] = useState<string>('');
     const [carbohydrates, setCarbohydrates] = useState<string>('');
+    const [portion, setPortion] = useState<string>('');
     const [loading, setLoading] = useState(ingredientId ? true : false);
     const [saving, setSaving] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -32,6 +33,7 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
             setProtein(ingredient.protein?.toString() || '');
             setFat(ingredient.fat?.toString() || '');
             setCarbohydrates(ingredient.carbohydrates?.toString() || '');
+            setPortion(ingredient.portion?.toString() || '');
             setLoading(false);
         } catch (err) {
             setGeneralError('Nie udało się załadować składnika.');
@@ -69,6 +71,9 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
         if (!isValidOptionalNumber(carbohydrates)) {
             newErrors.carbohydrates = constants.ingredients.form.errors.carbohydratesInvalid;
         }
+        if (!isValidOptionalNumber(portion)) {
+            newErrors.portion = constants.ingredients.form.errors.portionInvalid;
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -88,6 +93,7 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
             const proteinVal = protein ? parseFloat(protein) : null;
             const fatVal = fat ? parseFloat(fat) : null;
             const carbsVal = carbohydrates ? parseFloat(carbohydrates) : null;
+            const portionVal = portion ? parseFloat(portion) : null;
 
             if (ingredientId) {
                 await ingredientsApi.updateIngredient(ingredientId, {
@@ -95,6 +101,7 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
                     protein: proteinVal,
                     fat: fatVal,
                     carbohydrates: carbsVal,
+                    portion: portionVal,
                 });
             } else {
                 await ingredientsApi.createIngredient({
@@ -102,6 +109,7 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
                     protein: proteinVal,
                     fat: fatVal,
                     carbohydrates: carbsVal,
+                    portion: portionVal,
                 });
             }
 
@@ -223,6 +231,26 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
                                 <span className="field-error">{errors.carbohydrates}</span>
                             )}
                         </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="ingredient-portion">
+                            {constants.ingredients.form.labels.portion}
+                        </label>
+                        <input
+                            id="ingredient-portion"
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            max="9999.99"
+                            value={portion}
+                            onChange={(e) => setPortion(e.target.value)}
+                            placeholder={constants.ingredients.form.placeholders.portion}
+                            className={errors.portion ? 'field-invalid' : ''}
+                            aria-invalid={Boolean(errors.portion)}
+                            disabled={saving}
+                        />
+                        {errors.portion && <span className="field-error">{errors.portion}</span>}
                     </div>
 
                     <div className="modal-actions">
