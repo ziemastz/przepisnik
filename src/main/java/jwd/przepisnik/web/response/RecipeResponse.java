@@ -14,5 +14,7 @@ public record RecipeResponse(
         String author,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        List<IngredientAmountResponse> ingredients) {
+        List<IngredientAmountResponse> ingredients,
+        NutritionalValuesResponse nutritionalValues,
+        NutritionalValuesResponse nutritionalValuesPerServing) {
 }
