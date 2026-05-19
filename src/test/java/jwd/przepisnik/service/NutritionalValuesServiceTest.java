@@ -1,6 +1,7 @@
 package jwd.przepisnik.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
@@ -76,6 +77,20 @@ class NutritionalValuesServiceTest {
         assertThat(result.protein()).isEqualByComparingTo("24.00");
         assertThat(result.fat()).isEqualByComparingTo("4.80");
         assertThat(result.carbohydrates()).isEqualByComparingTo("12.80");
+    }
+
+    @Test
+    void calculateForIngredientShouldReturnZeroWhenPiecePortionIsMissing() {
+        RecipeIngredient ri = buildIngredient(
+                new BigDecimal("15.00"), new BigDecimal("3.00"), new BigDecimal("8.00"), null,
+                new BigDecimal("2.00"), IngredientUnit.PIECE);
+
+        NutritionalValuesResponse result = nutritionalValuesService.calculateForIngredient(ri);
+
+        assertThat(result.protein()).isEqualByComparingTo("0.00");
+        assertThat(result.fat()).isEqualByComparingTo("0.00");
+        assertThat(result.carbohydrates()).isEqualByComparingTo("0.00");
+        verifyNoInteractions(ingredientUnitConversionService);
     }
 
     @Test

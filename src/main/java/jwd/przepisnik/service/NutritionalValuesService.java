@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import jwd.przepisnik.models.Ingredient;
+import jwd.przepisnik.models.IngredientUnit;
 import jwd.przepisnik.models.RecipeIngredient;
 import jwd.przepisnik.web.response.NutritionalValuesResponse;
 
@@ -26,10 +27,7 @@ public class NutritionalValuesService {
         BigDecimal fat = orZero(ingredient.getFat());
         BigDecimal carbohydrates = orZero(ingredient.getCarbohydrates());
 
-        BigDecimal grams = ingredientUnitConversionService.convertToGrams(
-                recipeIngredient.getQuantity(),
-                recipeIngredient.getUnit(),
-                ingredient.getPortion());
+        BigDecimal grams = getIngredientWeightInGrams(recipeIngredient, ingredient);
 
         BigDecimal factor = grams.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
 
@@ -56,6 +54,16 @@ public class NutritionalValuesService {
                 total.protein().divide(divisor, 2, RoundingMode.HALF_UP),
                 total.fat().divide(divisor, 2, RoundingMode.HALF_UP),
                 total.carbohydrates().divide(divisor, 2, RoundingMode.HALF_UP));
+    }
+
+    private BigDecimal getIngredientWeightInGrams(RecipeIngredient recipeIngredient, Ingredient ingredient) {
+        if (recipeIngredient.getUnit() == IngredientUnit.PIECE && ingredient.getPortion() == null) {
+            return BigDecimal.ZERO;
+        }
+        return ingredientUnitConversionService.convertToGrams(
+                recipeIngredient.getQuantity(),
+                recipeIngredient.getUnit(),
+                ingredient.getPortion());
     }
 
     private NutritionalValuesResponse sum(NutritionalValuesResponse a, NutritionalValuesResponse b) {
