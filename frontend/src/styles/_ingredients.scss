@@ -101,8 +101,6 @@
     margin-bottom: 1rem;
 }
 
-// Table Styles
-
 .ingredients-table-wrapper {
     overflow-x: auto;
     margin-bottom: 2rem;
@@ -197,8 +195,6 @@
     }
 }
 
-// Pagination
-
 .pagination {
     display: flex;
     justify-content: center;
@@ -221,8 +217,6 @@
         }
     }
 }
-
-// Modal Overlay
 
 .modal-overlay {
     position: fixed;
@@ -265,8 +259,6 @@
         padding: 0.75rem 1.5rem;
     }
 }
-
-// Ingredient Form Styles
 
 .ingredient-form {
     display: flex;
@@ -320,8 +312,6 @@
     padding: 0.75rem;
     font-size: 0.95rem;
 }
-
-// Responsive Design
 
 @include respond(md) {
     .ingredients-page {

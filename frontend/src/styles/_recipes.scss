@@ -1,7 +1,6 @@
 @import 'variables';
 @import 'mixins';
 
-// Home Page
 .home-page {
     min-height: 0;
     background: $color-bg;
@@ -114,7 +113,6 @@
     margin-bottom: 16px;
 }
 
-// My Recipes Page
 .recipes-page {
     display: flex;
     justify-content: center;
@@ -185,7 +183,6 @@
     }
 }
 
-// Recipe List
 .recipe-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -425,7 +422,6 @@
     }
 }
 
-// Recipe Form Page
 .recipe-form-page {
     display: flex;
     justify-content: center;
@@ -471,7 +467,6 @@
     }
 }
 
-// Recipe Form
 .recipe-form {
     display: grid;
     gap: 16px;

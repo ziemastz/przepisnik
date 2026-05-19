@@ -41,7 +41,6 @@ const AppRoutes = () => {
                     </ProtectedRoute>
                 }
             />
-            {/* Fallback route for unknown paths */}
             <Route path="*" element={<h2>{constants.routes.notFoundText}</h2>} />
         </Routes>
     );

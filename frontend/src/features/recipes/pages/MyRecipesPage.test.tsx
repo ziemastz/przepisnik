@@ -128,7 +128,6 @@ describe('MyRecipesPage', () => {
 
         await screen.findByText('Nalesniki');
         fireEvent.click(screen.getByRole('button', { name: 'Usuń' }));
-        // the dialog confirm button is also named 'Usuń'; pick it by grabbing all and the last one
         fireEvent.click(screen.getAllByRole('button', { name: 'Usuń' })[1]);
 
         await waitFor(() =>

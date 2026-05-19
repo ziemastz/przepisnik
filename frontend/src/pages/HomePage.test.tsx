@@ -45,12 +45,11 @@ describe('HomePage', () => {
 
         expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
         expect(screen.getByRole('search')).toBeInTheDocument();
-        // Wait for async state updates to settle inside act()
         await screen.findByText(constants.home.empty);
     });
 
     test('shows loading state initially', () => {
-        mockedRecipesApi.getPublicRecipes.mockReturnValue(new Promise((_resolve) => { /* pending */ }));
+        mockedRecipesApi.getPublicRecipes.mockReturnValue(new Promise((_resolve) => undefined));
 
         render(<HomePage />);
 

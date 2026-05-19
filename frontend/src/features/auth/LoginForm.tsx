@@ -77,7 +77,6 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
             await login({ email, password });
             onSuccess();
         } catch {
-            // Error is handled in auth context.
         } finally {
             setIsLoading(false);
         }

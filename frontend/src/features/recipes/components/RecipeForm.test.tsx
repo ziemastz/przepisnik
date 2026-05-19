@@ -11,7 +11,6 @@ const fillValidForm = () => {
     });
     fireEvent.change(screen.getByLabelText('Czas przygotowania (min) *'), { target: { value: '30' } });
     fireEvent.change(screen.getByLabelText('Liczba porcji *'), { target: { value: '4' } });
-    // ingredient name placeholder input
     const nameInputs = screen.getAllByPlaceholderText('Nazwa składnika');
     fireEvent.change(nameInputs[0], { target: { value: 'Sol' } });
 };

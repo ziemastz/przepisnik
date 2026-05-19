@@ -119,7 +119,6 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             await register({ email, password, name, surname });
             onSuccess();
         } catch {
-            // Error is handled in auth context.
         } finally {
             setIsLoading(false);
         }

@@ -82,8 +82,6 @@ class IngredientControllerTest {
                 .andExpect(jsonPath("$.success", is(false)));
     }
 
-    // New tests for list, create, update, delete
-
     @Test
     void shouldListIngredientsWithoutAuthentication() throws Exception {
         UUID id = UUID.randomUUID();
