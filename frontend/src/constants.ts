@@ -157,6 +157,7 @@ const constants = {
                 ML: 'ml',
                 L: 'l',
                 PIECE: 'szt.',
+                PINCH: 'szczypta',
                 TABLESPOON: 'łyżka',
                 TEASPOON: 'łyżeczka',
                 CUP: 'szklanka',

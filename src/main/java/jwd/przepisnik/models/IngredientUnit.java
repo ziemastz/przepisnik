@@ -8,5 +8,6 @@ public enum IngredientUnit {
     CUP,
     ML,
     L,
-    KG
+    KG,
+    PINCH
 }

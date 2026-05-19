@@ -548,6 +548,7 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                                     {constants.recipes.form.units.TEASPOON}
                                 </option>
                                 <option value="CUP">{constants.recipes.form.units.CUP}</option>
+                                <option value="PINCH">{constants.recipes.form.units.PINCH}</option>
                             </select>
                             {ingredients.length > 1 && (
                                 <Button

@@ -170,6 +170,7 @@ describe('RecipeForm', () => {
             'TABLESPOON',
             'TEASPOON',
             'CUP',
+            'PINCH',
         ]);
     });
 

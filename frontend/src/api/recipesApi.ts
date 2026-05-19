@@ -4,7 +4,7 @@ import constants from '../constants';
 export interface IngredientAmountRequest {
     name: string;
     quantity: string;
-    unit: 'GRAM' | 'KG' | 'ML' | 'L' | 'PIECE' | 'TABLESPOON' | 'TEASPOON' | 'CUP';
+    unit: 'GRAM' | 'KG' | 'ML' | 'L' | 'PIECE' | 'TABLESPOON' | 'TEASPOON' | 'CUP' | 'PINCH';
 }
 
 export interface CreateRecipeRequest {
@@ -28,7 +28,7 @@ export interface UpdateRecipeRequest {
 export interface IngredientAmountResponse {
     name: string;
     quantity: string | number;
-    unit: 'GRAM' | 'KG' | 'ML' | 'L' | 'PIECE' | 'TABLESPOON' | 'TEASPOON' | 'CUP';
+    unit: 'GRAM' | 'KG' | 'ML' | 'L' | 'PIECE' | 'TABLESPOON' | 'TEASPOON' | 'CUP' | 'PINCH';
 }
 
 export interface RecipeResponse {
