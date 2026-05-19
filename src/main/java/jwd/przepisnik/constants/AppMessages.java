@@ -33,8 +33,12 @@ public final class AppMessages {
         public static final String INGREDIENT_NAMES_UNIQUE = "Ingredient names must be unique within a recipe.";
         public static final String INGREDIENT_QUERY_EMPTY = "Query cannot be empty.";
         public static final String INGREDIENT_LIMIT_POSITIVE = "Limit must be greater than zero.";
+        public static final String INGREDIENT_QUANTITY_REQUIRED = "Ingredient quantity cannot be null.";
+        public static final String INGREDIENT_UNIT_REQUIRED = "Ingredient unit cannot be null.";
+        public static final String INGREDIENT_PORTION_REQUIRED_FOR_PIECE = "Ingredient portion cannot be null for PIECE conversion.";
         public static final String USER_SECRET_REQUIRED = "Has\u0142o nie mo\u017Ce by\u0107 puste.";
 
+        public static final String INGREDIENT_UNIT_CONVERSION_MISSING_PATTERN = "No gram conversion configured for unit '%s'.";
         public static final String USERNAME_EXISTS_PATTERN = "Uzytkownik z loginem '%s' juz istnieje.";
         public static final String EMAIL_EXISTS_PATTERN = "Uzytkownik z e-mailem '%s' juz istnieje.";
     }
