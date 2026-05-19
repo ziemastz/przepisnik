@@ -92,6 +92,7 @@ public class IngredientService {
         ingredient.setProtein(request.protein());
         ingredient.setFat(request.fat());
         ingredient.setCarbohydrates(request.carbohydrates());
+        ingredient.setPortion(request.portion());
 
         Ingredient saved = ingredientRepository.save(ingredient);
         return toResponse(saved);
@@ -116,6 +117,7 @@ public class IngredientService {
         ingredient.setProtein(request.protein());
         ingredient.setFat(request.fat());
         ingredient.setCarbohydrates(request.carbohydrates());
+        ingredient.setPortion(request.portion());
 
         Ingredient updated = ingredientRepository.save(ingredient);
         return toResponse(updated);
@@ -142,7 +144,8 @@ public class IngredientService {
                 ingredient.getName(),
                 ingredient.getProtein(),
                 ingredient.getFat(),
-                ingredient.getCarbohydrates());
+                ingredient.getCarbohydrates(),
+                ingredient.getPortion());
     }
 
     private IngredientItemResponse toItemResponse(Ingredient ingredient) {
@@ -151,7 +154,8 @@ public class IngredientService {
                 ingredient.getName(),
                 ingredient.getProtein(),
                 ingredient.getFat(),
-                ingredient.getCarbohydrates());
+                ingredient.getCarbohydrates(),
+                ingredient.getPortion());
     }
 
     private String normalizeQuery(String query) {

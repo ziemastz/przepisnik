@@ -36,4 +36,7 @@ public class Ingredient {
 
     @Column(precision = 10, scale = 2)
     private BigDecimal carbohydrates; // Węglowodany
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal portion; // Porcja
 }

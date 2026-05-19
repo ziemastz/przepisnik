@@ -8,5 +8,6 @@ public record IngredientResponse(
         String name,
         BigDecimal protein,
         BigDecimal fat,
-        BigDecimal carbohydrates) {
+        BigDecimal carbohydrates,
+        BigDecimal portion) {
 }

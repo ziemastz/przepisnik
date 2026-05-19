@@ -91,8 +91,8 @@ class IngredientServiceTest {
     @Test
     void shouldListAllIngredientsOnFirstPage() {
         UUID id = UUID.randomUUID();
-        Ingredient ingredient = createTestIngredient(id, "Oliwa", "oliwa", 
-            BigDecimal.ZERO, BigDecimal.valueOf(100), BigDecimal.ZERO);
+        Ingredient ingredient = createTestIngredient(id, "Oliwa", "oliwa",
+                BigDecimal.ZERO, BigDecimal.valueOf(100), BigDecimal.ZERO, BigDecimal.valueOf(100));
 
         Page<Ingredient> page = new PageImpl<>(List.of(ingredient), PageRequest.of(0, 20), 1);
         when(ingredientRepository.findAllByOrderByNameAsc(eq(PageRequest.of(0, 20))))
@@ -111,7 +111,7 @@ class IngredientServiceTest {
     void shouldSearchIngredientsWithPagination() {
         UUID id = UUID.randomUUID();
         Ingredient ingredient = createTestIngredient(id, "Mleko", "mleko",
-            BigDecimal.valueOf(3.2), BigDecimal.valueOf(3.6), BigDecimal.valueOf(4.8));
+                BigDecimal.valueOf(3.2), BigDecimal.valueOf(3.6), BigDecimal.valueOf(4.8), BigDecimal.valueOf(100.0));
 
         Page<Ingredient> page = new PageImpl<>(List.of(ingredient), PageRequest.of(0, 20), 1);
         when(ingredientRepository.findByNormalizedNameContainingOrderByNameAsc(
@@ -125,12 +125,13 @@ class IngredientServiceTest {
         assertThat(item.protein()).isEqualTo(BigDecimal.valueOf(3.2));
         assertThat(item.fat()).isEqualTo(BigDecimal.valueOf(3.6));
         assertThat(item.carbohydrates()).isEqualTo(BigDecimal.valueOf(4.8));
+        assertThat(item.portion()).isEqualTo(BigDecimal.valueOf(100.0));
     }
 
     @Test
     void shouldDisplayNullBTWValuesAsNull() {
         UUID id = UUID.randomUUID();
-        Ingredient ingredient = createTestIngredient(id, "Sól", "sol", null, null, null);
+        Ingredient ingredient = createTestIngredient(id, "Sól", "sol", null, null, null, null);
 
         Page<Ingredient> page = new PageImpl<>(List.of(ingredient), PageRequest.of(0, 20), 1);
         when(ingredientRepository.findAllByOrderByNameAsc(eq(PageRequest.of(0, 20))))
@@ -147,11 +148,11 @@ class IngredientServiceTest {
     @Test
     void shouldCreateNewIngredientWithBTW() {
         CreateIngredientRequest request = new CreateIngredientRequest(
-            "Jajko",
-            BigDecimal.valueOf(13.0),
-            BigDecimal.valueOf(11.0),
-            BigDecimal.valueOf(1.1)
-        );
+                "Jajko",
+                BigDecimal.valueOf(13.0),
+                BigDecimal.valueOf(11.0),
+                BigDecimal.valueOf(1.1),
+                BigDecimal.valueOf(100.0));
 
         Ingredient saved = new Ingredient();
         saved.setId(UUID.randomUUID());
@@ -160,6 +161,7 @@ class IngredientServiceTest {
         saved.setProtein(BigDecimal.valueOf(13.0));
         saved.setFat(BigDecimal.valueOf(11.0));
         saved.setCarbohydrates(BigDecimal.valueOf(1.1));
+        saved.setPortion(BigDecimal.valueOf(100.0));
 
         when(ingredientRepository.findByNormalizedName("jajko")).thenReturn(Optional.empty());
         when(ingredientRepository.save(any(Ingredient.class))).thenReturn(saved);
@@ -170,14 +172,14 @@ class IngredientServiceTest {
         assertThat(result.protein()).isEqualTo(BigDecimal.valueOf(13.0));
         assertThat(result.fat()).isEqualTo(BigDecimal.valueOf(11.0));
         assertThat(result.carbohydrates()).isEqualTo(BigDecimal.valueOf(1.1));
+        assertThat(result.portion()).isEqualTo(BigDecimal.valueOf(100.0));
         verify(ingredientRepository).save(any(Ingredient.class));
     }
 
     @Test
     void shouldRejectCreatingDuplicateIngredient() {
         CreateIngredientRequest request = new CreateIngredientRequest(
-            "Cukier", null, null, null
-        );
+                "Cukier", null, null, null, null);
 
         Ingredient existing = new Ingredient();
         existing.setNormalizedName("cukier");
@@ -195,17 +197,17 @@ class IngredientServiceTest {
     void shouldUpdateIngredient() {
         UUID id = UUID.randomUUID();
         UpdateIngredientRequest request = new UpdateIngredientRequest(
-            "Kurczak",
-            BigDecimal.valueOf(31.0),
-            BigDecimal.valueOf(3.6),
-            BigDecimal.ZERO
-        );
+                "Kurczak",
+                BigDecimal.valueOf(31.0),
+                BigDecimal.valueOf(3.6),
+                BigDecimal.ZERO,
+                BigDecimal.valueOf(100.0));
 
-        Ingredient existing = createTestIngredient(id, "Kurczak", "kurczak", null, null, null);
+        Ingredient existing = createTestIngredient(id, "Kurczak", "kurczak", null, null, null, null);
         when(ingredientRepository.findById(id)).thenReturn(Optional.of(existing));
 
         Ingredient updated = createTestIngredient(id, "Kurczak", "kurczak",
-            BigDecimal.valueOf(31.0), BigDecimal.valueOf(3.6), BigDecimal.ZERO);
+                BigDecimal.valueOf(31.0), BigDecimal.valueOf(3.6), BigDecimal.ZERO, BigDecimal.valueOf(100.0));
         when(ingredientRepository.save(any(Ingredient.class))).thenReturn(updated);
 
         IngredientResponse result = ingredientService.updateIngredient(id, request);
@@ -213,15 +215,16 @@ class IngredientServiceTest {
         assertThat(result.protein()).isEqualTo(BigDecimal.valueOf(31.0));
         assertThat(result.fat()).isEqualTo(BigDecimal.valueOf(3.6));
         assertThat(result.carbohydrates()).isEqualTo(BigDecimal.ZERO);
+        assertThat(result.portion()).isEqualTo(BigDecimal.valueOf(100.0));
     }
 
     @Test
     void shouldRejectUpdatingToExistingName() {
         UUID id = UUID.randomUUID();
-        UpdateIngredientRequest request = new UpdateIngredientRequest("Manna", null, null, null);
+        UpdateIngredientRequest request = new UpdateIngredientRequest("Manna", null, null, null, null);
 
-        Ingredient existing = createTestIngredient(id, "Semolina", "semolina", null, null, null);
-        Ingredient other = createTestIngredient(UUID.randomUUID(), "Manna", "manna", null, null, null);
+        Ingredient existing = createTestIngredient(id, "Semolina", "semolina", null, null, null, null);
+        Ingredient other = createTestIngredient(UUID.randomUUID(), "Manna", "manna", null, null, null, null);
 
         when(ingredientRepository.findById(id)).thenReturn(Optional.of(existing));
         when(ingredientRepository.findByNormalizedName("manna")).thenReturn(Optional.of(other));
@@ -257,7 +260,7 @@ class IngredientServiceTest {
     void shouldGetIngredientById() {
         UUID id = UUID.randomUUID();
         Ingredient ingredient = createTestIngredient(id, "Mąka", "mąka",
-            BigDecimal.valueOf(10.0), BigDecimal.valueOf(2.0), BigDecimal.valueOf(75.0));
+                BigDecimal.valueOf(10.0), BigDecimal.valueOf(2.0), BigDecimal.valueOf(75.0), BigDecimal.valueOf(100.0));
 
         when(ingredientRepository.findById(id)).thenReturn(Optional.of(ingredient));
 
@@ -267,8 +270,8 @@ class IngredientServiceTest {
         assertThat(result.name()).isEqualTo("Mąka");
     }
 
-    private Ingredient createTestIngredient(UUID id, String name, String normalizedName, 
-            BigDecimal protein, BigDecimal fat, BigDecimal carbohydrates) {
+    private Ingredient createTestIngredient(UUID id, String name, String normalizedName,
+            BigDecimal protein, BigDecimal fat, BigDecimal carbohydrates, BigDecimal portion) {
         Ingredient ingredient = new Ingredient();
         ingredient.setId(id);
         ingredient.setName(name);
@@ -276,6 +279,7 @@ class IngredientServiceTest {
         ingredient.setProtein(protein);
         ingredient.setFat(fat);
         ingredient.setCarbohydrates(carbohydrates);
+        ingredient.setPortion(portion);
         return ingredient;
     }
 }

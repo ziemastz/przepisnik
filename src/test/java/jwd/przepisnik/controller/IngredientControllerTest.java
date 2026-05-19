@@ -88,7 +88,7 @@ class IngredientControllerTest {
     void shouldListIngredientsWithoutAuthentication() throws Exception {
         UUID id = UUID.randomUUID();
         IngredientItemResponse item = new IngredientItemResponse(id, "Mąka",
-            BigDecimal.valueOf(10.0), BigDecimal.valueOf(2.0), BigDecimal.valueOf(75.0));
+                BigDecimal.valueOf(10.0), BigDecimal.valueOf(2.0), BigDecimal.valueOf(75.0), BigDecimal.valueOf(100.0));
         IngredientListResponse response = new IngredientListResponse(List.of(item), 1, 1L, 0, 20);
 
         when(ingredientService.listIngredients(0, null)).thenReturn(response);
@@ -105,7 +105,7 @@ class IngredientControllerTest {
     @Test
     void shouldSearchIngredientsWithPagination() throws Exception {
         UUID id = UUID.randomUUID();
-        IngredientItemResponse item = new IngredientItemResponse(id, "Mleko", null, null, null);
+        IngredientItemResponse item = new IngredientItemResponse(id, "Mleko", null, null, null, null);
         IngredientListResponse response = new IngredientListResponse(List.of(item), 1, 1L, 1, 20);
 
         when(ingredientService.listIngredients(1, "mleko")).thenReturn(response);
@@ -122,7 +122,7 @@ class IngredientControllerTest {
     @Test
     void shouldDisplayMissingBTWValuesAsNull() throws Exception {
         UUID id = UUID.randomUUID();
-        IngredientItemResponse item = new IngredientItemResponse(id, "Sól", null, null, null);
+        IngredientItemResponse item = new IngredientItemResponse(id, "Sól", null, null, null, null);
         IngredientListResponse response = new IngredientListResponse(List.of(item), 1, 1L, 0, 20);
 
         when(ingredientService.listIngredients(0, null)).thenReturn(response);
@@ -137,7 +137,7 @@ class IngredientControllerTest {
     void shouldGetIngredientById() throws Exception {
         UUID id = UUID.randomUUID();
         IngredientResponse ingredient = new IngredientResponse(id, "Jajko",
-            BigDecimal.valueOf(13.0), BigDecimal.valueOf(11.0), BigDecimal.valueOf(1.1));
+                BigDecimal.valueOf(13.0), BigDecimal.valueOf(11.0), BigDecimal.valueOf(1.1), BigDecimal.valueOf(100.0));
 
         when(ingredientService.getIngredientById(id)).thenReturn(ingredient);
 
@@ -152,7 +152,7 @@ class IngredientControllerTest {
     void shouldReturn404WhenIngredientNotFound() throws Exception {
         UUID id = UUID.randomUUID();
         when(ingredientService.getIngredientById(id))
-            .thenThrow(new IllegalArgumentException("Składnik nie znaleziony."));
+                .thenThrow(new IllegalArgumentException("Składnik nie znaleziony."));
 
         mockMvc.perform(get("/api/ingredients/" + id)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -163,13 +163,13 @@ class IngredientControllerTest {
     void shouldCreateIngredientForAuthenticatedUser() throws Exception {
         UUID id = UUID.randomUUID();
         CreateIngredientRequest request = new CreateIngredientRequest(
-            "Kurczak", BigDecimal.valueOf(31.0), BigDecimal.valueOf(3.6), BigDecimal.ZERO
-        );
+                "Kurczak", BigDecimal.valueOf(31.0), BigDecimal.valueOf(3.6), BigDecimal.ZERO,
+                BigDecimal.valueOf(100.0));
         IngredientResponse response = new IngredientResponse(id, "Kurczak",
-            BigDecimal.valueOf(31.0), BigDecimal.valueOf(3.6), BigDecimal.ZERO);
+                BigDecimal.valueOf(31.0), BigDecimal.valueOf(3.6), BigDecimal.ZERO, BigDecimal.valueOf(100.0));
 
         when(ingredientService.createIngredient(any(CreateIngredientRequest.class)))
-            .thenReturn(response);
+                .thenReturn(response);
 
         mockMvc.perform(post("/api/ingredients/create")
                 .principal(() -> "john")
@@ -182,7 +182,7 @@ class IngredientControllerTest {
 
     @Test
     void shouldReturnUnauthorizedWhenCreatingWithoutAuthentication() throws Exception {
-        CreateIngredientRequest request = new CreateIngredientRequest("Kurczak", null, null, null);
+        CreateIngredientRequest request = new CreateIngredientRequest("Kurczak", null, null, null, null);
 
         mockMvc.perform(post("/api/ingredients/create")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -193,10 +193,10 @@ class IngredientControllerTest {
 
     @Test
     void shouldReturnBadRequestWhenCreatingDuplicate() throws Exception {
-        CreateIngredientRequest request = new CreateIngredientRequest("Cukier", null, null, null);
+        CreateIngredientRequest request = new CreateIngredientRequest("Cukier", null, null, null, null);
 
         when(ingredientService.createIngredient(any(CreateIngredientRequest.class)))
-            .thenThrow(new IllegalArgumentException("Składnik 'Cukier' już istnieje."));
+                .thenThrow(new IllegalArgumentException("Składnik 'Cukier' już istnieje."));
 
         mockMvc.perform(post("/api/ingredients/create")
                 .principal(() -> "john")
@@ -209,11 +209,11 @@ class IngredientControllerTest {
     @Test
     void shouldReturnBadRequestWhenCreatingWithTooManyDecimalPlaces() throws Exception {
         CreateIngredientRequest request = new CreateIngredientRequest(
-            "Mąka",
-            new BigDecimal("10.123"),
-            BigDecimal.valueOf(2.0),
-            BigDecimal.valueOf(75.0)
-        );
+                "Mąka",
+                new BigDecimal("10.123"),
+                BigDecimal.valueOf(2.0),
+                BigDecimal.valueOf(75.0),
+                BigDecimal.valueOf(1.0));
 
         mockMvc.perform(post("/api/ingredients/create")
                 .principal(() -> "john")
@@ -227,13 +227,13 @@ class IngredientControllerTest {
     void shouldUpdateIngredientForAuthenticatedUser() throws Exception {
         UUID id = UUID.randomUUID();
         UpdateIngredientRequest request = new UpdateIngredientRequest(
-            "Kurczak", BigDecimal.valueOf(31.0), BigDecimal.valueOf(3.6), BigDecimal.ZERO
-        );
+                "Kurczak", BigDecimal.valueOf(31.0), BigDecimal.valueOf(3.6), BigDecimal.ZERO,
+                BigDecimal.valueOf(100.0));
         IngredientResponse response = new IngredientResponse(id, "Kurczak",
-            BigDecimal.valueOf(31.0), BigDecimal.valueOf(3.6), BigDecimal.ZERO);
+                BigDecimal.valueOf(31.0), BigDecimal.valueOf(3.6), BigDecimal.ZERO, BigDecimal.valueOf(100.0));
 
         when(ingredientService.updateIngredient(eq(id), any(UpdateIngredientRequest.class)))
-            .thenReturn(response);
+                .thenReturn(response);
 
         mockMvc.perform(put("/api/ingredients/update/" + id)
                 .principal(() -> "john")
@@ -246,7 +246,7 @@ class IngredientControllerTest {
     @Test
     void shouldReturnUnauthorizedWhenUpdatingWithoutAuthentication() throws Exception {
         UUID id = UUID.randomUUID();
-        UpdateIngredientRequest request = new UpdateIngredientRequest("Kurczak", null, null, null);
+        UpdateIngredientRequest request = new UpdateIngredientRequest("Kurczak", null, null, null, null);
 
         mockMvc.perform(put("/api/ingredients/update/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -257,10 +257,10 @@ class IngredientControllerTest {
     @Test
     void shouldReturnBadRequestWhenUpdatingDuplicate() throws Exception {
         UUID id = UUID.randomUUID();
-        UpdateIngredientRequest request = new UpdateIngredientRequest("Cukier", null, null, null);
+        UpdateIngredientRequest request = new UpdateIngredientRequest("Cukier", null, null, null, null);
 
         when(ingredientService.updateIngredient(eq(id), any(UpdateIngredientRequest.class)))
-            .thenThrow(new IllegalArgumentException("Składnik 'Cukier' już istnieje."));
+                .thenThrow(new IllegalArgumentException("Składnik 'Cukier' już istnieje."));
 
         mockMvc.perform(put("/api/ingredients/update/" + id)
                 .principal(() -> "john")
@@ -297,7 +297,7 @@ class IngredientControllerTest {
         UUID id = UUID.randomUUID();
 
         doThrow(new IllegalArgumentException("Składnik nie znaleziony."))
-            .when(ingredientService).deleteIngredient(id);
+                .when(ingredientService).deleteIngredient(id);
 
         mockMvc.perform(delete("/api/ingredients/delete/" + id)
                 .principal(() -> "john")
