@@ -143,6 +143,20 @@ class NutritionalValuesServiceTest {
     }
 
     @Test
+    void calculateTotalFromValuesShouldSumProvidedNutritionalValues() {
+        NutritionalValuesResponse first = new NutritionalValuesResponse(
+                new BigDecimal("10.00"), new BigDecimal("4.00"), new BigDecimal("20.00"));
+        NutritionalValuesResponse second = new NutritionalValuesResponse(
+                new BigDecimal("5.50"), new BigDecimal("1.00"), new BigDecimal("7.00"));
+
+        NutritionalValuesResponse result = nutritionalValuesService.calculateTotalFromValues(List.of(first, second));
+
+        assertThat(result.protein()).isEqualByComparingTo("15.50");
+        assertThat(result.fat()).isEqualByComparingTo("5.00");
+        assertThat(result.carbohydrates()).isEqualByComparingTo("27.00");
+    }
+
+    @Test
     void calculatePerServingShouldDivideTotalByServings() {
         NutritionalValuesResponse total = new NutritionalValuesResponse(
                 new BigDecimal("40.00"), new BigDecimal("10.00"), new BigDecimal("20.00"));

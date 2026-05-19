@@ -1,6 +1,5 @@
 package jwd.przepisnik.web.mapper;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -26,11 +25,11 @@ public class RecipeMapper {
                 .map(this::toIngredientResponse)
                 .toList();
 
-        NutritionalValuesResponse total = ingredientResponses.stream()
+        List<NutritionalValuesResponse> ingredientNutritionalValues = ingredientResponses.stream()
                 .map(IngredientAmountResponse::nutritionalValues)
-                .reduce(
-                        new NutritionalValuesResponse(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
-                        this::sum);
+                .toList();
+        NutritionalValuesResponse total = nutritionalValuesService.calculateTotalFromValues(
+                ingredientNutritionalValues);
         NutritionalValuesResponse perServing = nutritionalValuesService.calculatePerServing(total,
                 recipe.getServings());
 
@@ -61,12 +60,5 @@ public class RecipeMapper {
                 recipeIngredient.getQuantity(),
                 recipeIngredient.getUnit(),
                 nutritionalValues);
-    }
-
-    private NutritionalValuesResponse sum(NutritionalValuesResponse a, NutritionalValuesResponse b) {
-        return new NutritionalValuesResponse(
-                a.protein().add(b.protein()),
-                a.fat().add(b.fat()),
-                a.carbohydrates().add(b.carbohydrates()));
     }
 }

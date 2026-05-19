@@ -2,6 +2,7 @@ package jwd.przepisnik.web.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -51,6 +52,8 @@ class RecipeMapperTest {
 
         when(nutritionalValuesService.calculateForIngredient(firstIngredient)).thenReturn(firstValues);
         when(nutritionalValuesService.calculateForIngredient(secondIngredient)).thenReturn(secondValues);
+        when(nutritionalValuesService.calculateTotalFromValues(List.of(firstValues, secondValues))).thenReturn(
+                totalValues);
         when(nutritionalValuesService.calculatePerServing(totalValues, 2)).thenReturn(perServingValues);
 
         RecipeResponse response = recipeMapper.toResponse(buildRecipe(List.of(firstIngredient, secondIngredient)));
@@ -59,6 +62,7 @@ class RecipeMapperTest {
         assertThat(response.nutritionalValuesPerServing()).isEqualTo(perServingValues);
         verify(nutritionalValuesService).calculateForIngredient(firstIngredient);
         verify(nutritionalValuesService).calculateForIngredient(secondIngredient);
+        verify(nutritionalValuesService).calculateTotalFromValues(eq(List.of(firstValues, secondValues)));
         verify(nutritionalValuesService).calculatePerServing(totalValues, 2);
         verify(nutritionalValuesService, never()).calculateTotal(anyList());
     }

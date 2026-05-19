@@ -45,6 +45,13 @@ public class NutritionalValuesService {
                         this::sum);
     }
 
+    public NutritionalValuesResponse calculateTotalFromValues(List<NutritionalValuesResponse> nutritionalValues) {
+        return nutritionalValues.stream()
+                .reduce(
+                        new NutritionalValuesResponse(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
+                        this::sum);
+    }
+
     public NutritionalValuesResponse calculatePerServing(NutritionalValuesResponse total, int servings) {
         if (servings <= 0) {
             return total;

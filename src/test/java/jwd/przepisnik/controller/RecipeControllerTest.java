@@ -65,6 +65,9 @@ class RecipeControllerTest {
                 .when(nutritionalValuesService.calculateTotal(org.mockito.ArgumentMatchers.any()))
                 .thenReturn(zeroNutrition);
         org.mockito.Mockito.lenient()
+                .when(nutritionalValuesService.calculateTotalFromValues(org.mockito.ArgumentMatchers.any()))
+                .thenReturn(zeroNutrition);
+        org.mockito.Mockito.lenient()
                 .when(nutritionalValuesService.calculatePerServing(
                         org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.anyInt()))
                 .thenReturn(zeroNutrition);
