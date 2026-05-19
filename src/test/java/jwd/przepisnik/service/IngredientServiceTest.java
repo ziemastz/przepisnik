@@ -86,8 +86,6 @@ class IngredientServiceTest {
         assertThat(exception.getMessage()).isEqualTo(AppMessages.Service.INGREDIENT_LIMIT_POSITIVE);
     }
 
-    // New tests for list, create, update, delete functionality
-
     @Test
     void shouldListAllIngredientsOnFirstPage() {
         UUID id = UUID.randomUUID();

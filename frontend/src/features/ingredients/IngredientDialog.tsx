@@ -60,8 +60,6 @@ const IngredientDialog = ({ ingredientId, onClose, onSave }: IngredientDialogPro
             newErrors.name = constants.ingredients.form.errors.nameRequired;
         }
 
-        // Validate that at least one BTW field is provided (or all are optional)
-        // Since BTW is optional, we just validate the format if provided
         if (!isValidOptionalNumber(protein)) {
             newErrors.protein = constants.ingredients.form.errors.proteinInvalid;
         }

@@ -81,7 +81,6 @@ public class IngredientService {
         String name = request.name().trim();
         String normalizedName = normalizeIngredientName(name);
 
-        // Check if ingredient already exists
         if (ingredientRepository.findByNormalizedName(normalizedName).isPresent()) {
             throw new IllegalArgumentException("Składnik '" + name + "' już istnieje.");
         }
@@ -106,7 +105,6 @@ public class IngredientService {
         String name = request.name().trim();
         String normalizedName = normalizeIngredientName(name);
 
-        // Check if new name already exists (excluding current ingredient)
         if (!ingredient.getNormalizedName().equals(normalizedName) &&
                 ingredientRepository.findByNormalizedName(normalizedName).isPresent()) {
             throw new IllegalArgumentException("Składnik '" + name + "' już istnieje.");

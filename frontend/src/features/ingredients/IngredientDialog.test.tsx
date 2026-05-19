@@ -3,7 +3,6 @@ import IngredientDialog from './IngredientDialog';
 import * as ingredientsApi from '../../api/ingredientsApi';
 import constants from '../../constants';
 
-// Mock the API
 jest.mock('../../api/ingredientsApi', () => ({
     ingredientsApi: {
         getIngredientById: jest.fn(),

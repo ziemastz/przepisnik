@@ -27,16 +27,15 @@ public class Ingredient {
     @Column(name = "normalized_name", nullable = false)
     private String normalizedName;
 
-    // Nutritional values per 100g or 100ml (BTW - Białko, Tłuszcz, Węglowodany)
     @Column(precision = 10, scale = 2)
-    private BigDecimal protein; // Białko
+    private BigDecimal protein;
 
     @Column(precision = 10, scale = 2)
-    private BigDecimal fat; // Tłuszcz
+    private BigDecimal fat;
 
     @Column(precision = 10, scale = 2)
-    private BigDecimal carbohydrates; // Węglowodany
+    private BigDecimal carbohydrates;
 
     @Column(precision = 10, scale = 2)
-    private BigDecimal portion; // Porcja
+    private BigDecimal portion;
 }
