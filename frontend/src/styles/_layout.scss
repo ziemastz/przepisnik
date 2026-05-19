@@ -72,7 +72,7 @@ main {
                     padding: 10px 12px;
                     font-size: 16px;
                     color: $color-text;
-                    background: #fff;
+                    background: $color-white;
 
                     &:focus {
                         outline: 2px solid rgba($color-primary, 0.35);
@@ -80,43 +80,29 @@ main {
                     }
 
                     &:disabled {
-                        background: #f5f5f5;
+                        background: $color-bg-disabled;
                         cursor: not-allowed;
                     }
 
                     &.field-invalid {
-                        border-color: #d94141;
-                        background: #fff6f6;
-
-                        &:focus {
-                            outline: 2px solid rgba(217, 65, 65, 0.3);
-                            border-color: #d94141;
-                        }
+                        @include field-invalid;
                     }
                 }
 
                 [role='alert'] {
+                    @include message-error;
                     padding: 10px 12px;
-                    border-radius: 8px;
                     font-size: 14px;
-                    color: #8a1c1c;
-                    background: #ffe5e5;
-                    border: 1px solid #ffc9c9;
                 }
 
                 [role='status'] {
+                    @include message-success;
                     padding: 10px 12px;
-                    border-radius: 8px;
                     font-size: 14px;
-                    color: #1c5d2e;
-                    background: #e6f7eb;
-                    border: 1px solid #c7ebd1;
                 }
 
                 .auth-server-issue {
-                    color: #7a4c00;
-                    background: #fff5e6;
-                    border: 1px solid #ffd8a8;
+                    @include message-warning;
                 }
 
                 .button {

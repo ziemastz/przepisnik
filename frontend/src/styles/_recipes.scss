@@ -9,7 +9,7 @@
 
 .home-hero {
     background: linear-gradient(135deg, $color-primary 0%, darken($color-primary, 12%) 100%);
-    color: #fff;
+    color: $color-white;
     text-align: center;
     padding: 56px 16px 48px;
 
@@ -74,7 +74,7 @@
     border: none;
     font-size: 20px;
     line-height: 1;
-    color: #888;
+    color: $color-text-muted;
     cursor: pointer;
     padding: 0;
 
@@ -101,19 +101,16 @@
 
 .home-status-text {
     text-align: center;
-    color: #999;
+    color: $color-text-muted;
     font-size: 16px;
     padding: 48px 0;
 }
 
 .home-error {
+    @include message-error;
     text-align: center;
     padding: 12px 16px;
-    border-radius: 8px;
     font-size: 14px;
-    color: #8a1c1c;
-    background: #ffe5e5;
-    border: 1px solid #ffc9c9;
     margin-bottom: 16px;
 }
 
@@ -159,12 +156,9 @@
         }
 
         .recipes-error {
+            @include message-error;
             padding: 12px 16px;
-            border-radius: 8px;
             font-size: 14px;
-            color: #8a1c1c;
-            background: #ffe5e5;
-            border: 1px solid #ffc9c9;
             margin-bottom: 16px;
         }
 
@@ -176,7 +170,7 @@
             justify-content: center;
             padding: 60px 24px;
             text-align: center;
-            color: #999;
+            color: $color-text-muted;
 
             p {
                 margin: 0 0 16px 0;
@@ -204,7 +198,7 @@
 }
 
 .recipe-card {
-    background: #fff;
+    background: $color-white;
     border: 1px solid rgba($color-primary, 0.15);
     border-radius: 12px;
     overflow: hidden;
@@ -231,7 +225,7 @@
             display: flex;
             gap: 12px;
             font-size: 13px;
-            color: #666;
+            color: $color-text-subtle;
 
             span {
                 display: flex;
@@ -249,7 +243,7 @@
             margin: 0 0 8px 0;
             font-size: 13px;
             font-weight: 600;
-            color: #666;
+            color: $color-text-subtle;
             text-transform: uppercase;
         }
 
@@ -279,7 +273,7 @@
 
         .recipe-timestamps {
             font-size: 12px;
-            color: #999;
+            color: $color-text-muted;
             display: flex;
             flex-direction: column;
             gap: 4px;
@@ -323,7 +317,7 @@
 
 .recipe-preview-hero {
     background: linear-gradient(135deg, $color-primary 0%, darken($color-primary, 12%) 100%);
-    color: #fff;
+    color: $color-white;
     padding: 40px 16px 32px;
 }
 
@@ -366,7 +360,7 @@
 }
 
 .recipe-preview-card {
-    background: #fff;
+    background: $color-white;
     border: 1px solid rgba($color-primary, 0.15);
     border-radius: 14px;
     padding: 24px;
@@ -391,7 +385,7 @@
     padding: 12px;
     border-radius: 10px;
     border: 1px solid #e8ecef;
-    background: #fafcfd;
+    background: #fafcfd; // Dedicated card surface — not a generic gray
 }
 
 .recipe-preview-ingredient-main {
@@ -410,14 +404,14 @@
 .recipe-preview-ingredient-btw {
     margin-top: 6px;
     display: inline-block;
-    color: #7f8a94;
+    color: $color-text-subtle;
     font-size: 12px;
     letter-spacing: 0.02em;
 }
 
 .recipe-preview-description p {
     margin: 0;
-    color: #38434b;
+    color: $color-text;
     line-height: 1.7;
     white-space: pre-wrap;
 }
@@ -441,7 +435,7 @@
     background: $color-bg;
 
     .recipe-form-container {
-        background: #fff;
+        background: $color-white;
         padding: 32px;
         border-radius: 12px;
         border: 1px solid rgba($color-primary, 0.15);
@@ -460,17 +454,14 @@
         .recipe-form-loading {
             text-align: center;
             padding: 40px 16px;
-            color: #999;
+            color: $color-text-muted;
             font-size: 16px;
         }
 
         .recipe-form-error {
+            @include message-error;
             padding: 12px 16px;
-            border-radius: 8px;
             font-size: 14px;
-            color: #8a1c1c;
-            background: #ffe5e5;
-            border: 1px solid #ffc9c9;
             margin-bottom: 16px;
         }
 
@@ -506,7 +497,7 @@
             font-size: 16px;
             font-family: inherit;
             color: $color-text;
-            background: #fff;
+            background: $color-white;
 
             &:focus {
                 outline: 2px solid rgba($color-primary, 0.35);
@@ -514,23 +505,17 @@
             }
 
             &:disabled {
-                background: #f5f5f5;
+                background: $color-bg-disabled;
                 cursor: not-allowed;
             }
 
             &::placeholder {
-                color: #a7a7a7;
+                color: $color-placeholder;
                 opacity: 1;
             }
 
             &.field-invalid {
-                border-color: #d94141;
-                background: #fff6f6;
-
-                &:focus {
-                    outline: 2px solid rgba(217, 65, 65, 0.3);
-                    border-color: #d94141;
-                }
+                @include field-invalid;
             }
         }
 
@@ -550,18 +535,15 @@
 
             option {
                 color: $color-text;
-                background: #fff;
+                background: $color-white;
             }
         }
     }
 
     .recipe-field-error {
+        @include message-error;
         padding: 6px 8px;
-        border-radius: 6px;
         font-size: 12px;
-        color: #8a1c1c;
-        background: #ffe5e5;
-        border: 1px solid #ffc9c9;
     }
 
     .recipe-form-row {
@@ -605,7 +587,7 @@
             padding: 10px 8px;
             font-size: 14px;
             color: $color-text;
-            background: #fff;
+            background: $color-white;
 
             &:focus {
                 outline: 2px solid rgba($color-primary, 0.35);
@@ -613,34 +595,25 @@
             }
 
             &:disabled {
-                background: #f5f5f5;
+                background: $color-bg-disabled;
                 cursor: not-allowed;
             }
 
             &::placeholder {
-                color: #a7a7a7;
+                color: $color-placeholder;
                 opacity: 1;
             }
 
             &.field-invalid {
-                border-color: #d94141;
-                background: #fff6f6;
-
-                &:focus {
-                    outline: 2px solid rgba(217, 65, 65, 0.3);
-                    border-color: #d94141;
-                }
+                @include field-invalid;
             }
         }
 
         .recipe-ingredient-error {
+            @include message-error;
             grid-column: 1 / -1;
             padding: 6px 8px;
-            border-radius: 6px;
             font-size: 12px;
-            color: #8a1c1c;
-            background: #ffe5e5;
-            border: 1px solid #ffc9c9;
         }
 
         .button {
@@ -662,12 +635,9 @@
     }
 
     .recipe-form-submit-error {
+        @include message-error;
         padding: 12px 16px;
-        border-radius: 8px;
         font-size: 14px;
-        color: #8a1c1c;
-        background: #ffe5e5;
-        border: 1px solid #ffc9c9;
     }
 
     .recipe-form-actions {

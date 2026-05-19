@@ -3,7 +3,6 @@ import { useAuth } from '../features/auth/AuthContext';
 import { ingredientsApi, IngredientListResponse } from '../api/ingredientsApi';
 import constants from '../constants';
 import IngredientDialog from '../features/ingredients/IngredientDialog';
-import '../styles/ingredients.css';
 
 const IngredientsPage = () => {
     const { isAuthenticated } = useAuth();

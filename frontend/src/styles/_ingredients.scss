@@ -1,9 +1,24 @@
-/* Ingredients Page Styles */
+@import 'variables';
+@import 'mixins';
 
 .ingredients-page {
     padding: 2rem 1rem;
     max-width: 1200px;
     margin: 0 auto;
+
+    .button.danger {
+        background-color: $color-danger;
+        color: $color-white;
+
+        &:hover:not(:disabled) {
+            background-color: darken($color-danger, 5%);
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    }
 }
 
 .ingredients-header {
@@ -13,13 +28,13 @@
     margin-bottom: 2rem;
     flex-wrap: wrap;
     gap: 1rem;
-}
 
-.ingredients-header h1 {
-    font-size: 2rem;
-    margin: 0;
-    color: #333;
-    flex: 1;
+    h1 {
+        font-size: 2rem;
+        margin: 0;
+        color: $color-text;
+        flex: 1;
+    }
 }
 
 .ingredients-search-form {
@@ -39,15 +54,15 @@
     width: 100%;
     padding: 0.75rem 2.5rem 0.75rem 0.75rem;
     font-size: 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid $color-border;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
 
-.ingredients-search-input:focus {
-    outline: none;
-    border-color: #4caf50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+    &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 5px rgba($color-primary, 0.3);
+    }
 }
 
 .ingredients-search-clear {
@@ -60,12 +75,12 @@
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
-    color: #999;
+    color: $color-text-muted;
     transition: color 0.2s;
-}
 
-.ingredients-search-clear:hover {
-    color: #333;
+    &:hover {
+        color: $color-text;
+    }
 }
 
 .ingredients-search-btn {
@@ -75,20 +90,18 @@
 
 .ingredients-status-text {
     text-align: center;
-    color: #666;
+    color: $color-text-subtle;
     padding: 2rem;
     font-size: 1rem;
 }
 
 .ingredients-error {
-    background-color: #ffebee;
-    color: #c62828;
+    @include message-error;
     padding: 1rem;
-    border-radius: 4px;
     margin-bottom: 1rem;
 }
 
-/* Table Styles */
+// Table Styles
 
 .ingredients-table-wrapper {
     overflow-x: auto;
@@ -100,20 +113,29 @@
 .ingredients-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
-}
+    background-color: $color-white;
 
-.ingredients-table thead {
-    background-color: #f5f5f5;
-    border-bottom: 2px solid #ddd;
-}
+    thead {
+        background-color: $color-bg-disabled;
+        border-bottom: 2px solid $color-border;
+    }
 
-.ingredients-table th {
-    padding: 1rem;
-    text-align: left;
-    font-weight: 600;
-    color: #333;
-    font-size: 0.95rem;
+    th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: $color-text;
+        font-size: 0.95rem;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid $color-border-light;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: #fafafa;
+        }
+    }
 }
 
 .btw-header {
@@ -130,18 +152,9 @@
     width: 12%;
 }
 
-.ingredients-table tbody tr {
-    border-bottom: 1px solid #eee;
-    transition: background-color 0.2s;
-}
-
-.ingredients-table tbody tr:hover {
-    background-color: #fafafa;
-}
-
 .ingredient-row td {
     padding: 1rem;
-    color: #333;
+    color: $color-text;
 }
 
 .ingredient-name {
@@ -151,7 +164,7 @@
 .btw-cell {
     text-align: center;
     font-family: 'Courier New', monospace;
-    color: #666;
+    color: $color-text-subtle;
 }
 
 .actions-cell {
@@ -164,27 +177,27 @@
 .text-button {
     background: none;
     border: none;
-    color: #4caf50;
+    color: $color-primary;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
     font-size: 0.9rem;
     transition: color 0.2s;
+
+    &:hover {
+        color: darken($color-primary, 8%);
+        text-decoration: underline;
+    }
+
+    &--danger {
+        color: $color-danger;
+
+        &:hover {
+            color: darken($color-danger, 8%);
+        }
+    }
 }
 
-.text-button:hover {
-    color: #45a049;
-    text-decoration: underline;
-}
-
-.text-button--danger {
-    color: #d32f2f;
-}
-
-.text-button--danger:hover {
-    color: #c62828;
-}
-
-/* Pagination */
+// Pagination
 
 .pagination {
     display: flex;
@@ -192,24 +205,24 @@
     align-items: center;
     gap: 1rem;
     margin-top: 2rem;
+
+    &-info {
+        font-size: 0.95rem;
+        color: $color-text-subtle;
+        white-space: nowrap;
+    }
+
+    .button {
+        padding: 0.5rem 1rem;
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
 }
 
-.pagination-info {
-    font-size: 0.95rem;
-    color: #666;
-    white-space: nowrap;
-}
-
-.pagination .button {
-    padding: 0.5rem 1rem;
-}
-
-.pagination .button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* Modal Overlay */
+// Modal Overlay
 
 .modal-overlay {
     position: fixed;
@@ -226,7 +239,7 @@
 }
 
 .modal-dialog {
-    background-color: #fff;
+    background-color: $color-white;
     border-radius: 8px;
     padding: 2rem;
     max-width: 600px;
@@ -239,7 +252,7 @@
 .modal-title {
     margin: 0 0 1.5rem 0;
     font-size: 1.5rem;
-    color: #333;
+    color: $color-text;
 }
 
 .modal-actions {
@@ -247,13 +260,13 @@
     gap: 1rem;
     justify-content: flex-end;
     margin-top: 2rem;
+
+    .button {
+        padding: 0.75rem 1.5rem;
+    }
 }
 
-.modal-actions .button {
-    padding: 0.75rem 1.5rem;
-}
-
-/* Ingredient Form Styles */
+// Ingredient Form Styles
 
 .ingredient-form {
     display: flex;
@@ -265,31 +278,30 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-}
 
-.form-group label {
-    font-weight: 500;
-    color: #333;
-    font-size: 0.95rem;
-}
+    label {
+        font-weight: 500;
+        color: $color-text;
+        font-size: 0.95rem;
+    }
 
-.form-group input {
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    transition: border-color 0.2s;
-}
+    input {
+        padding: 0.75rem;
+        font-size: 1rem;
+        border: 1px solid $color-border;
+        border-radius: 4px;
+        transition: border-color 0.2s;
 
-.form-group input:focus {
-    outline: none;
-    border-color: #4caf50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-}
+        &:focus {
+            outline: none;
+            border-color: $color-primary;
+            box-shadow: 0 0 5px rgba($color-primary, 0.3);
+        }
 
-.form-group input.field-invalid {
-    border-color: #d32f2f;
-    box-shadow: 0 0 5px rgba(211, 47, 47, 0.3);
+        &.field-invalid {
+            @include field-invalid;
+        }
+    }
 }
 
 .form-row {
@@ -299,21 +311,19 @@
 }
 
 .field-error {
-    color: #d32f2f;
+    color: $color-danger;
     font-size: 0.85rem;
 }
 
 .form-error {
-    background-color: #ffebee;
-    color: #c62828;
+    @include message-error;
     padding: 0.75rem;
-    border-radius: 4px;
     font-size: 0.95rem;
 }
 
-/* Responsive Design */
+// Responsive Design
 
-@media (max-width: 768px) {
+@include respond(md) {
     .ingredients-page {
         padding: 1rem;
     }
@@ -321,10 +331,10 @@
     .ingredients-header {
         flex-direction: column;
         align-items: stretch;
-    }
 
-    .ingredients-header h1 {
-        font-size: 1.5rem;
+        h1 {
+            font-size: 1.5rem;
+        }
     }
 
     .ingredients-search-form {
@@ -372,10 +382,10 @@
 
     .modal-actions {
         flex-direction: column-reverse;
-    }
 
-    .modal-actions .button {
-        width: 100%;
+        .button {
+            width: 100%;
+        }
     }
 
     .pagination {
@@ -416,22 +426,6 @@
     }
 
     .form-group input {
-        font-size: 16px; /* Prevents zoom on iOS */
+        font-size: 16px; // Prevents zoom on iOS
     }
-}
-
-/* Page-scoped danger variant */
-
-.ingredients-page .button.danger {
-    background-color: #d32f2f;
-    color: white;
-}
-
-.ingredients-page .button.danger:hover:not(:disabled) {
-    background-color: #c62828;
-}
-
-.ingredients-page .button.danger:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
 }
