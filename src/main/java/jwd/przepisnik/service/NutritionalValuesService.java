@@ -19,11 +19,6 @@ public class NutritionalValuesService {
         this.ingredientUnitConversionService = ingredientUnitConversionService;
     }
 
-    /**
-     * Calculates BTW (Białko/Tłuszcze/Węglowodany) contributed by a single
-     * recipe ingredient. Ingredient BTW fields are stored per 100 g, so the result
-     * is: {@code btw_per_100g * grams / 100}. Null BTW values are treated as 0.
-     */
     public NutritionalValuesResponse calculateForIngredient(RecipeIngredient recipeIngredient) {
         Ingredient ingredient = recipeIngredient.getIngredient();
 
@@ -44,10 +39,6 @@ public class NutritionalValuesService {
                 carbohydrates.multiply(factor).setScale(2, RoundingMode.HALF_UP));
     }
 
-    /**
-     * Calculates total BTW for a list of recipe ingredients by summing each
-     * ingredient's contribution.
-     */
     public NutritionalValuesResponse calculateTotal(List<RecipeIngredient> ingredients) {
         return ingredients.stream()
                 .map(this::calculateForIngredient)
@@ -56,9 +47,6 @@ public class NutritionalValuesService {
                         this::sum);
     }
 
-    /**
-     * Divides total BTW by number of servings to get per-serving values.
-     */
     public NutritionalValuesResponse calculatePerServing(NutritionalValuesResponse total, int servings) {
         if (servings <= 0) {
             return total;

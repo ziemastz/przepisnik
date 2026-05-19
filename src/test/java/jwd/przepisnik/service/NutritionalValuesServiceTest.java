@@ -26,12 +26,8 @@ class NutritionalValuesServiceTest {
     @InjectMocks
     private NutritionalValuesService nutritionalValuesService;
 
-    // --- calculateForIngredient ---
-
     @Test
     void calculateForIngredientShouldScaleBtwByGramFactor() {
-        // Ingredient: 20g protein, 5g fat, 10g carbs per 100g
-        // Quantity: 200 GRAM  →  factor = 2.0
         RecipeIngredient ri = buildIngredient(
                 new BigDecimal("20.00"), new BigDecimal("5.00"), new BigDecimal("10.00"), null,
                 new BigDecimal("200.00"), IngredientUnit.GRAM);
@@ -49,7 +45,6 @@ class NutritionalValuesServiceTest {
 
     @Test
     void calculateForIngredientShouldTreatNullBtwAsZero() {
-        // Ingredient: all BTW null
         RecipeIngredient ri = buildIngredient(
                 null, null, null, null,
                 new BigDecimal("100.00"), IngredientUnit.GRAM);
@@ -67,8 +62,6 @@ class NutritionalValuesServiceTest {
 
     @Test
     void calculateForIngredientShouldUsePiecePortionForGramConversion() {
-        // Ingredient: 15g protein, 3g fat, 8g carbs per 100g, portion = 80g/piece
-        // Quantity: 2 PIECE  →  grams = 160  →  factor = 1.6
         BigDecimal portion = new BigDecimal("80.00");
         RecipeIngredient ri = buildIngredient(
                 new BigDecimal("15.00"), new BigDecimal("3.00"), new BigDecimal("8.00"), portion,
@@ -87,7 +80,6 @@ class NutritionalValuesServiceTest {
 
     @Test
     void calculateForIngredientShouldHandlePartialNullBtw() {
-        // Only fat is null, others are set
         RecipeIngredient ri = buildIngredient(
                 new BigDecimal("10.00"), null, new BigDecimal("30.00"), null,
                 new BigDecimal("50.00"), IngredientUnit.GRAM);
@@ -103,8 +95,6 @@ class NutritionalValuesServiceTest {
         assertThat(result.carbohydrates()).isEqualByComparingTo("15.00");
     }
 
-    // --- calculateTotal ---
-
     @Test
     void calculateTotalShouldSumAllIngredients() {
         RecipeIngredient ri1 = buildIngredient(
@@ -114,8 +104,6 @@ class NutritionalValuesServiceTest {
                 new BigDecimal("10.00"), new BigDecimal("6.00"), new BigDecimal("20.00"), null,
                 new BigDecimal("200.00"), IngredientUnit.GRAM);
 
-        // ri1: factor = 1.0  →  protein=20, fat=4,  carbs=10
-        // ri2: factor = 2.0  →  protein=20, fat=12, carbs=40
         when(ingredientUnitConversionService.convertToGrams(
                 new BigDecimal("100.00"), IngredientUnit.GRAM, null))
                 .thenReturn(new BigDecimal("100.00"));
@@ -139,8 +127,6 @@ class NutritionalValuesServiceTest {
         assertThat(result.carbohydrates()).isEqualByComparingTo(BigDecimal.ZERO);
     }
 
-    // --- calculatePerServing ---
-
     @Test
     void calculatePerServingShouldDivideTotalByServings() {
         NutritionalValuesResponse total = new NutritionalValuesResponse(
@@ -162,8 +148,6 @@ class NutritionalValuesServiceTest {
 
         assertThat(result).isEqualTo(total);
     }
-
-    // --- helpers ---
 
     private RecipeIngredient buildIngredient(BigDecimal protein, BigDecimal fat, BigDecimal carbohydrates,
             BigDecimal portion, BigDecimal quantity, IngredientUnit unit) {
