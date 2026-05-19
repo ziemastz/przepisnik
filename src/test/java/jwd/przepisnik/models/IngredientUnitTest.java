@@ -16,7 +16,8 @@ class IngredientUnitTest {
                 IngredientUnit.CUP,
                 IngredientUnit.ML,
                 IngredientUnit.L,
-                IngredientUnit.KG
+                IngredientUnit.KG,
+                IngredientUnit.PINCH
         }, IngredientUnit.values());
     }
 }
