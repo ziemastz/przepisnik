@@ -14,51 +14,50 @@ import jwd.przepisnik.web.response.RecipeResponse;
 @Component
 public class RecipeMapper {
 
-    private final NutritionalValuesService nutritionalValuesService;
+        private final NutritionalValuesService nutritionalValuesService;
 
-    public RecipeMapper(NutritionalValuesService nutritionalValuesService) {
-        this.nutritionalValuesService = nutritionalValuesService;
-    }
+        public RecipeMapper(NutritionalValuesService nutritionalValuesService) {
+                this.nutritionalValuesService = nutritionalValuesService;
+        }
 
-    public RecipeResponse toResponse(Recipe recipe) {
-        List<IngredientAmountResponse> ingredientResponses = recipe.getIngredients().stream()
-                .map(this::toIngredientResponse)
-                .toList();
+        public RecipeResponse toResponse(Recipe recipe) {
+                List<IngredientAmountResponse> ingredientResponses = recipe.getIngredients().stream()
+                                .map(this::toIngredientResponse)
+                                .toList();
 
-        List<NutritionalValuesResponse> ingredientNutritionalValues = ingredientResponses.stream()
-                .map(IngredientAmountResponse::nutritionalValues)
-                .toList();
-        NutritionalValuesResponse total = nutritionalValuesService.calculateTotalFromValues(
-                ingredientNutritionalValues);
-        NutritionalValuesResponse perServing = nutritionalValuesService.calculatePerServing(total,
-                recipe.getServings());
+                List<NutritionalValuesResponse> ingredientNutritionalValues = ingredientResponses.stream()
+                                .map(IngredientAmountResponse::nutritionalValues)
+                                .toList();
+                NutritionalValuesResponse total = nutritionalValuesService.calculateTotalFromValues(
+                                ingredientNutritionalValues);
+                NutritionalValuesResponse perProtein = nutritionalValuesService.calculatePerProtein(total);
 
-        return new RecipeResponse(
-                recipe.getId(),
-                recipe.getName(),
-                recipe.getDescription(),
-                recipe.getPreparationTimeMinutes(),
-                recipe.getServings(),
-                recipe.isPrivateRecipe(),
-                recipe.getAuthor().getUsername(),
-                recipe.getCreatedAt(),
-                recipe.getUpdatedAt(),
-                ingredientResponses,
-                total,
-                perServing);
-    }
+                return new RecipeResponse(
+                                recipe.getId(),
+                                recipe.getName(),
+                                recipe.getDescription(),
+                                recipe.getPreparationTimeMinutes(),
+                                recipe.getServings(),
+                                recipe.isPrivateRecipe(),
+                                recipe.getAuthor().getUsername(),
+                                recipe.getCreatedAt(),
+                                recipe.getUpdatedAt(),
+                                ingredientResponses,
+                                total,
+                                perProtein);
+        }
 
-    public List<RecipeResponse> toResponses(List<Recipe> recipes) {
-        return recipes.stream().map(this::toResponse).toList();
-    }
+        public List<RecipeResponse> toResponses(List<Recipe> recipes) {
+                return recipes.stream().map(this::toResponse).toList();
+        }
 
-    private IngredientAmountResponse toIngredientResponse(RecipeIngredient recipeIngredient) {
-        NutritionalValuesResponse nutritionalValues = nutritionalValuesService
-                .calculateForIngredient(recipeIngredient);
-        return new IngredientAmountResponse(
-                recipeIngredient.getIngredient().getName(),
-                recipeIngredient.getQuantity(),
-                recipeIngredient.getUnit(),
-                nutritionalValues);
-    }
+        private IngredientAmountResponse toIngredientResponse(RecipeIngredient recipeIngredient) {
+                NutritionalValuesResponse nutritionalValues = nutritionalValuesService
+                                .calculateForIngredient(recipeIngredient);
+                return new IngredientAmountResponse(
+                                recipeIngredient.getIngredient().getName(),
+                                recipeIngredient.getQuantity(),
+                                recipeIngredient.getUnit(),
+                                nutritionalValues);
+        }
 }

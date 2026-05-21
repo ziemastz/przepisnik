@@ -16,5 +16,5 @@ public record RecipeResponse(
         LocalDateTime updatedAt,
         List<IngredientAmountResponse> ingredients,
         NutritionalValuesResponse nutritionalValues,
-        NutritionalValuesResponse nutritionalValuesPerServing) {
+        NutritionalValuesResponse nutritionalValuesPerProtein) {
 }

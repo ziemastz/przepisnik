@@ -30,69 +30,70 @@ import jwd.przepisnik.web.response.RecipeResponse;
 @ExtendWith(MockitoExtension.class)
 class RecipeMapperTest {
 
-    @Mock
-    private NutritionalValuesService nutritionalValuesService;
+        @Mock
+        private NutritionalValuesService nutritionalValuesService;
 
-    @InjectMocks
-    private RecipeMapper recipeMapper;
+        @InjectMocks
+        private RecipeMapper recipeMapper;
 
-    @Test
-    void toResponseShouldReuseIngredientNutritionToBuildTotals() {
-        RecipeIngredient firstIngredient = buildRecipeIngredient("Flour", new BigDecimal("100.00"));
-        RecipeIngredient secondIngredient = buildRecipeIngredient("Milk", new BigDecimal("200.00"));
+        @Test
+        void toResponseShouldReuseIngredientNutritionToBuildTotals() {
+                RecipeIngredient firstIngredient = buildRecipeIngredient("Flour", new BigDecimal("100.00"));
+                RecipeIngredient secondIngredient = buildRecipeIngredient("Milk", new BigDecimal("200.00"));
 
-        NutritionalValuesResponse firstValues = new NutritionalValuesResponse(
-                new BigDecimal("10.00"), new BigDecimal("1.50"), new BigDecimal("70.00"));
-        NutritionalValuesResponse secondValues = new NutritionalValuesResponse(
-                new BigDecimal("6.00"), new BigDecimal("5.00"), new BigDecimal("10.00"));
-        NutritionalValuesResponse totalValues = new NutritionalValuesResponse(
-                new BigDecimal("16.00"), new BigDecimal("6.50"), new BigDecimal("80.00"));
-        NutritionalValuesResponse perServingValues = new NutritionalValuesResponse(
-                new BigDecimal("8.00"), new BigDecimal("3.25"), new BigDecimal("40.00"));
+                NutritionalValuesResponse firstValues = new NutritionalValuesResponse(
+                                new BigDecimal("10.00"), new BigDecimal("1.50"), new BigDecimal("70.00"));
+                NutritionalValuesResponse secondValues = new NutritionalValuesResponse(
+                                new BigDecimal("6.00"), new BigDecimal("5.00"), new BigDecimal("10.00"));
+                NutritionalValuesResponse totalValues = new NutritionalValuesResponse(
+                                new BigDecimal("16.00"), new BigDecimal("6.50"), new BigDecimal("80.00"));
+                NutritionalValuesResponse perServingValues = new NutritionalValuesResponse(
+                                new BigDecimal("8.00"), new BigDecimal("3.25"), new BigDecimal("40.00"));
 
-        when(nutritionalValuesService.calculateForIngredient(firstIngredient)).thenReturn(firstValues);
-        when(nutritionalValuesService.calculateForIngredient(secondIngredient)).thenReturn(secondValues);
-        when(nutritionalValuesService.calculateTotalFromValues(List.of(firstValues, secondValues))).thenReturn(
-                totalValues);
-        when(nutritionalValuesService.calculatePerServing(totalValues, 2)).thenReturn(perServingValues);
+                when(nutritionalValuesService.calculateForIngredient(firstIngredient)).thenReturn(firstValues);
+                when(nutritionalValuesService.calculateForIngredient(secondIngredient)).thenReturn(secondValues);
+                when(nutritionalValuesService.calculateTotalFromValues(List.of(firstValues, secondValues))).thenReturn(
+                                totalValues);
+                when(nutritionalValuesService.calculatePerProtein(totalValues)).thenReturn(perServingValues);
 
-        RecipeResponse response = recipeMapper.toResponse(buildRecipe(List.of(firstIngredient, secondIngredient)));
+                RecipeResponse response = recipeMapper
+                                .toResponse(buildRecipe(List.of(firstIngredient, secondIngredient)));
 
-        assertThat(response.nutritionalValues()).isEqualTo(totalValues);
-        assertThat(response.nutritionalValuesPerServing()).isEqualTo(perServingValues);
-        verify(nutritionalValuesService).calculateForIngredient(firstIngredient);
-        verify(nutritionalValuesService).calculateForIngredient(secondIngredient);
-        verify(nutritionalValuesService).calculateTotalFromValues(eq(List.of(firstValues, secondValues)));
-        verify(nutritionalValuesService).calculatePerServing(totalValues, 2);
-        verify(nutritionalValuesService, never()).calculateTotal(anyList());
-    }
+                assertThat(response.nutritionalValues()).isEqualTo(totalValues);
+                assertThat(response.nutritionalValuesPerProtein()).isEqualTo(perServingValues);
+                verify(nutritionalValuesService).calculateForIngredient(firstIngredient);
+                verify(nutritionalValuesService).calculateForIngredient(secondIngredient);
+                verify(nutritionalValuesService).calculateTotalFromValues(eq(List.of(firstValues, secondValues)));
+                verify(nutritionalValuesService).calculatePerProtein(totalValues);
+                verify(nutritionalValuesService, never()).calculateTotal(anyList());
+        }
 
-    private Recipe buildRecipe(List<RecipeIngredient> ingredients) {
-        User author = new User();
-        author.setUsername("john");
+        private Recipe buildRecipe(List<RecipeIngredient> ingredients) {
+                User author = new User();
+                author.setUsername("john");
 
-        Recipe recipe = new Recipe();
-        recipe.setId(UUID.randomUUID());
-        recipe.setName("Pancakes");
-        recipe.setDescription("Mix and fry");
-        recipe.setPreparationTimeMinutes(15);
-        recipe.setServings(2);
-        recipe.setPrivateRecipe(false);
-        recipe.setAuthor(author);
-        recipe.setCreatedAt(LocalDateTime.now());
-        recipe.setUpdatedAt(LocalDateTime.now());
-        recipe.setIngredients(ingredients);
-        return recipe;
-    }
+                Recipe recipe = new Recipe();
+                recipe.setId(UUID.randomUUID());
+                recipe.setName("Pancakes");
+                recipe.setDescription("Mix and fry");
+                recipe.setPreparationTimeMinutes(15);
+                recipe.setServings(2);
+                recipe.setPrivateRecipe(false);
+                recipe.setAuthor(author);
+                recipe.setCreatedAt(LocalDateTime.now());
+                recipe.setUpdatedAt(LocalDateTime.now());
+                recipe.setIngredients(ingredients);
+                return recipe;
+        }
 
-    private RecipeIngredient buildRecipeIngredient(String name, BigDecimal quantity) {
-        Ingredient ingredient = new Ingredient();
-        ingredient.setName(name);
+        private RecipeIngredient buildRecipeIngredient(String name, BigDecimal quantity) {
+                Ingredient ingredient = new Ingredient();
+                ingredient.setName(name);
 
-        RecipeIngredient recipeIngredient = new RecipeIngredient();
-        recipeIngredient.setIngredient(ingredient);
-        recipeIngredient.setQuantity(quantity);
-        recipeIngredient.setUnit(IngredientUnit.GRAM);
-        return recipeIngredient;
-    }
+                RecipeIngredient recipeIngredient = new RecipeIngredient();
+                recipeIngredient.setIngredient(ingredient);
+                recipeIngredient.setQuantity(quantity);
+                recipeIngredient.setUnit(IngredientUnit.GRAM);
+                return recipeIngredient;
+        }
 }
