@@ -40,8 +40,8 @@ const sampleRecipe: RecipeResponse = {
     createdAt: '2026-01-01T10:00:00',
     updatedAt: '2026-01-01T10:00:00',
     ingredients: [
-        { name: 'Maka pszenna', quantity: '500', unit: 'GRAM' },
-        { name: 'Woda', quantity: '320', unit: 'ML' },
+        { name: 'Maka pszenna', quantity: '500', unit: 'GRAM', nutritionalValues: { protein: 10, fat: 2, carbohydrates: 75 } },
+        { name: 'Woda', quantity: '320', unit: 'ML', nutritionalValues: { protein: 0, fat: 0, carbohydrates: 0 } },
     ],
 };
 

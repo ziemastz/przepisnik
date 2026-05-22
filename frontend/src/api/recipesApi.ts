@@ -25,10 +25,17 @@ export interface UpdateRecipeRequest {
     ingredients: IngredientAmountRequest[];
 }
 
+export interface NutritionalValuesResponse {
+    protein: number;
+    fat: number;
+    carbohydrates: number;  
+}
+
 export interface IngredientAmountResponse {
     name: string;
     quantity: string | number;
     unit: 'GRAM' | 'KG' | 'ML' | 'L' | 'PIECE' | 'TABLESPOON' | 'TEASPOON' | 'CUP' | 'PINCH';
+    nutritionalValues: NutritionalValuesResponse;
 }
 
 export interface RecipeResponse {
