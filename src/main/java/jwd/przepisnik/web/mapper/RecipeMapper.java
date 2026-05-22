@@ -30,8 +30,7 @@ public class RecipeMapper {
                 .toList();
         NutritionalValuesResponse total = nutritionalValuesService.calculateTotalFromValues(
                 ingredientNutritionalValues);
-        NutritionalValuesResponse perServing = nutritionalValuesService.calculatePerServing(total,
-                recipe.getServings());
+        NutritionalValuesResponse perProtein = nutritionalValuesService.calculatePerProtein(total);
 
         return new RecipeResponse(
                 recipe.getId(),
@@ -45,7 +44,7 @@ public class RecipeMapper {
                 recipe.getUpdatedAt(),
                 ingredientResponses,
                 total,
-                perServing);
+                perProtein);
     }
 
     public List<RecipeResponse> toResponses(List<Recipe> recipes) {

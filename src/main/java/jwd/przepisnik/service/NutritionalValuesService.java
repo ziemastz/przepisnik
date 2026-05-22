@@ -52,11 +52,12 @@ public class NutritionalValuesService {
                         this::sum);
     }
 
-    public NutritionalValuesResponse calculatePerServing(NutritionalValuesResponse total, int servings) {
-        if (servings <= 0) {
-            return total;
+    public NutritionalValuesResponse calculatePerProtein(NutritionalValuesResponse total) {
+        BigDecimal divisor = total.protein();
+        if (divisor.compareTo(BigDecimal.ZERO) == 0) {
+            return new NutritionalValuesResponse(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         }
-        BigDecimal divisor = BigDecimal.valueOf(servings);
+
         return new NutritionalValuesResponse(
                 total.protein().divide(divisor, 2, RoundingMode.HALF_UP),
                 total.fat().divide(divisor, 2, RoundingMode.HALF_UP),
