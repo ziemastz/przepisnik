@@ -171,10 +171,8 @@ class NutritionalValuesServiceTest {
 
         @Test
         void calculatePerProteinShouldReturnZerosWhenProteinIsZero() {
-                NutritionalValuesResponse total = new NutritionalValuesResponse(
-                                new BigDecimal("30.00"), new BigDecimal("5.00"), new BigDecimal("15.00"));
                 NutritionalValuesResponse zeroProtein = new NutritionalValuesResponse(
-                                BigDecimal.ZERO, total.fat(), total.carbohydrates());
+                                BigDecimal.ZERO, new BigDecimal("5.00"), new BigDecimal("15.00"));
 
                 NutritionalValuesResponse result = nutritionalValuesService.calculatePerProtein(zeroProtein);
 
