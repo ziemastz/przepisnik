@@ -28,7 +28,16 @@ const sampleRecipe: RecipeResponse = {
     createdAt: '2025-01-15T10:00:00',
     updatedAt: '2025-01-15T10:00:00',
     ingredients: [
-        { name: 'Maka', quantity: '250', unit: 'GRAM' },
+        {
+            name: 'Maka',
+            quantity: '250',
+            unit: 'GRAM',
+            nutritionalValues: {
+                protein: 0,
+                fat: 0,
+                carbohydrates: 0,
+            },
+        },
     ],
 };
 

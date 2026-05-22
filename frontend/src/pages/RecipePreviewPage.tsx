@@ -1,33 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
-import { ingredientsApi, IngredientBTW } from '../api/ingredientsApi';
 import { uppercaseFirstCharacter } from '../shared/utils/text';
 import constants from '../constants';
-
-type NutritionByIngredient = Record<string, IngredientBTW | null>;
-
-const findNutritionMatch = async (ingredientName: string): Promise<IngredientBTW | null> => {
-    try {
-        const list = await ingredientsApi.listIngredients(0, ingredientName);
-        const exactMatch = list.items.find(
-            (item) => item.name.toLowerCase() === ingredientName.toLowerCase(),
-        );
-        const candidate = exactMatch ?? list.items[0];
-
-        if (!candidate) {
-            return null;
-        }
-
-        return {
-            protein: candidate.protein,
-            fat: candidate.fat,
-            carbohydrates: candidate.carbohydrates,
-        };
-    } catch {
-        return null;
-    }
-};
 
 const formatMacro = (value: number | null | undefined): string => {
     if (value === null || value === undefined) {
@@ -40,7 +15,6 @@ const formatMacro = (value: number | null | undefined): string => {
 const RecipePreviewPage = () => {
     const { id } = useParams<{ id: string }>();
     const [recipe, setRecipe] = useState<RecipeResponse | null>(null);
-    const [nutritionByIngredient, setNutritionByIngredient] = useState<NutritionByIngredient>({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -64,22 +38,6 @@ const RecipePreviewPage = () => {
                 }
 
                 setRecipe(recipeResponse);
-
-                const uniqueIngredientNames = Array.from(
-                    new Set(recipeResponse.ingredients.map((ingredient) => ingredient.name.trim())),
-                );
-                const nutritionEntries = await Promise.all(
-                    uniqueIngredientNames.map(async (ingredientName) => {
-                        const nutrition = await findNutritionMatch(ingredientName);
-                        return [ingredientName, nutrition] as const;
-                    }),
-                );
-
-                if (!isMounted) {
-                    return;
-                }
-
-                setNutritionByIngredient(Object.fromEntries(nutritionEntries));
             } catch {
                 if (!isMounted) {
                     return;
@@ -155,8 +113,6 @@ const RecipePreviewPage = () => {
                     <h2>{constants.recipes.preview.ingredientsHeading}</h2>
                     <ul className="recipe-preview-ingredients">
                         {recipe.ingredients.map((ingredient, index) => {
-                            const nutrition = nutritionByIngredient[ingredient.name.trim()];
-
                             return (
                                 <li
                                     key={`${ingredient.name}-${index}`}
@@ -173,9 +129,9 @@ const RecipePreviewPage = () => {
                                     </div>
                                     <span className="recipe-preview-ingredient-btw">
                                         {constants.recipes.preview.formatBTW(
-                                            formatMacro(nutrition?.protein),
-                                            formatMacro(nutrition?.fat),
-                                            formatMacro(nutrition?.carbohydrates),
+                                            formatMacro(ingredient.nutritionalValues.protein),
+                                            formatMacro(ingredient.nutritionalValues.fat),
+                                            formatMacro(ingredient.nutritionalValues.carbohydrates),
                                         )}
                                     </span>
                                 </li>

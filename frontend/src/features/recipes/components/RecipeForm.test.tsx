@@ -34,6 +34,11 @@ describe('RecipeForm', () => {
                     name: 'Maka',
                     quantity: 250,
                     unit: 'GRAM',
+                    nutritionalValues: {
+                        protein: 0,
+                        fat: 0,
+                        carbohydrates: 0,
+                    },
                 },
             ],
         };
