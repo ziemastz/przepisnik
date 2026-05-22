@@ -205,6 +205,28 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>clear-readonly-static-files-on-windows</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<exec executable="cmd" osfamily="windows" failonerror="false">
+									<arg value="/c"/>
+									<arg value="if exist &quot;${project.build.outputDirectory}\\static&quot; attrib -R &quot;${project.build.outputDirectory}\\static\\*&quot; /S /D"/>
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.3.0</version>
 				<executions>
