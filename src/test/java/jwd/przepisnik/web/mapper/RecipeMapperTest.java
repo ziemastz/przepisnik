@@ -47,20 +47,20 @@ class RecipeMapperTest {
                                 new BigDecimal("6.00"), new BigDecimal("5.00"), new BigDecimal("10.00"));
                 NutritionalValuesResponse totalValues = new NutritionalValuesResponse(
                                 new BigDecimal("16.00"), new BigDecimal("6.50"), new BigDecimal("80.00"));
-                NutritionalValuesResponse perServingValues = new NutritionalValuesResponse(
+                NutritionalValuesResponse perProteinValues = new NutritionalValuesResponse(
                                 new BigDecimal("8.00"), new BigDecimal("3.25"), new BigDecimal("40.00"));
 
                 when(nutritionalValuesService.calculateForIngredient(firstIngredient)).thenReturn(firstValues);
                 when(nutritionalValuesService.calculateForIngredient(secondIngredient)).thenReturn(secondValues);
                 when(nutritionalValuesService.calculateTotalFromValues(List.of(firstValues, secondValues))).thenReturn(
                                 totalValues);
-                when(nutritionalValuesService.calculatePerProtein(totalValues)).thenReturn(perServingValues);
+                when(nutritionalValuesService.calculatePerProtein(totalValues)).thenReturn(perProteinValues);
 
                 RecipeResponse response = recipeMapper
                                 .toResponse(buildRecipe(List.of(firstIngredient, secondIngredient)));
 
                 assertThat(response.nutritionalValues()).isEqualTo(totalValues);
-                assertThat(response.nutritionalValuesPerProtein()).isEqualTo(perServingValues);
+                assertThat(response.nutritionalValuesPerProtein()).isEqualTo(perProteinValues);
                 verify(nutritionalValuesService).calculateForIngredient(firstIngredient);
                 verify(nutritionalValuesService).calculateForIngredient(secondIngredient);
                 verify(nutritionalValuesService).calculateTotalFromValues(eq(List.of(firstValues, secondValues)));
