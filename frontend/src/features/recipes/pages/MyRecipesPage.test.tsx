@@ -28,7 +28,18 @@ const makeRecipe = (overrides: Partial<RecipeResponse> = {}): RecipeResponse => 
     author: 'jan',
     createdAt: '2026-04-10T10:00:00',
     updatedAt: '2026-04-10T10:00:00',
-    ingredients: [{ name: 'Maka', quantity: '250', unit: 'GRAM' }],
+    ingredients: [
+        {
+            name: 'Maka',
+            quantity: '250',
+            unit: 'GRAM',
+            nutritionalValues: {
+                protein: 0,
+                fat: 0,
+                carbohydrates: 0,
+            },
+        },
+    ],
     ...overrides,
 });
 
