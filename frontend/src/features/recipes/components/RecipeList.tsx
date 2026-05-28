@@ -1,8 +1,7 @@
 import { RecipeResponse } from '../../../api/recipesApi';
 import Button from '../../../shared/button/Button';
-import { uppercaseFirstCharacter } from '../../../shared/utils/text';
+import { uppercaseFirstCharacter, formatMacro } from '../../../shared/utils/text';
 import constants from '../../../constants';
-import { formatMacro } from '../../../shared/utils/text';
 
 interface RecipeListProps {
     recipes: RecipeResponse[];

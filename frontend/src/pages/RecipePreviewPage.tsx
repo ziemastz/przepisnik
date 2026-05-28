@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
-import { uppercaseFirstCharacter } from '../shared/utils/text';
+import { uppercaseFirstCharacter, formatMacro } from '../shared/utils/text';
 import constants from '../constants';
-import { formatMacro } from '../shared/utils/text';
 
 const RecipePreviewPage = () => {
     const { id } = useParams<{ id: string }>();
