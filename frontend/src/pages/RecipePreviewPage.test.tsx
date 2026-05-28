@@ -47,6 +47,16 @@ const sampleRecipe: RecipeResponse = {
             nutritionalValues: { protein: 0, fat: 0, carbohydrates: 0 },
         },
     ],
+    nutritionalValues: {
+        protein: 0,
+        fat: 0,
+        carbohydrates: 0,
+    },
+    nutritionalValuesPerProtein: {
+        protein: 0,
+        fat: 0,
+        carbohydrates: 0,
+    },
 };
 
 describe('RecipePreviewPage', () => {

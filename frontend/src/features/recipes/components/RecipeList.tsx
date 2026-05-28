@@ -2,6 +2,7 @@ import { RecipeResponse } from '../../../api/recipesApi';
 import Button from '../../../shared/button/Button';
 import { uppercaseFirstCharacter } from '../../../shared/utils/text';
 import constants from '../../../constants';
+import { formatMacro } from '../../../shared/utils/text';
 
 interface RecipeListProps {
     recipes: RecipeResponse[];
@@ -17,12 +18,26 @@ const RecipeList = ({ recipes, onEdit, onDelete }: RecipeListProps) => {
                     <div className="recipe-card-header">
                         <h3>{uppercaseFirstCharacter(recipe.name)}</h3>
                         <div className="recipe-card-meta">
-                            <span className="recipe-time">⏱ {recipe.preparationTimeMinutes} {constants.recipes.list.timeSuffix}</span>
-                            <span className="recipe-servings">🍽 {recipe.servings} {constants.recipes.list.servingsSuffix}</span>
+                            <span className="recipe-time">
+                                ⏱ {recipe.preparationTimeMinutes}{' '}
+                                {constants.recipes.list.timeSuffix}
+                            </span>
+                            <span className="recipe-servings">
+                                🍽 {recipe.servings} {constants.recipes.list.servingsSuffix}
+                            </span>
+                            <span className="recipe-ingredient-btw">
+                               🧾 {constants.recipes.preview.formatBTW(
+                                    formatMacro(recipe.nutritionalValues.protein),
+                                    formatMacro(recipe.nutritionalValues.fat),
+                                    formatMacro(recipe.nutritionalValues.carbohydrates),
+                                )}
+                            </span>
                         </div>
                     </div>
                     <div className="recipe-card-body">
-                        <p className="recipe-ingredients-label">{constants.recipes.list.ingredientsLabel}</p>
+                        <p className="recipe-ingredients-label">
+                            {constants.recipes.list.ingredientsLabel}
+                        </p>
                         <ul className="recipe-ingredients">
                             {recipe.ingredients.map((ing, idx) => (
                                 <li key={idx}>
@@ -35,7 +50,10 @@ const RecipeList = ({ recipes, onEdit, onDelete }: RecipeListProps) => {
                     <div className="recipe-card-footer">
                         <div className="recipe-timestamps">
                             <span className="recipe-created">
-                                {constants.recipes.list.createdPrefix} {new Date(recipe.createdAt).toLocaleDateString(constants.recipes.list.dateLocale)}
+                                {constants.recipes.list.createdPrefix}{' '}
+                                {new Date(recipe.createdAt).toLocaleDateString(
+                                    constants.recipes.list.dateLocale,
+                                )}
                             </span>
                         </div>
                         <div className="recipe-actions">

@@ -110,7 +110,7 @@ const constants = {
             ingredientsHeading: 'Składniki',
             preparationHeading: 'Opis przygotowania',
             formatBTW: (protein: string, fat: string, carbohydrates: string) =>
-                `B:${protein} T:${fat} W:${carbohydrates}`,
+                `B: ${protein} T: ${fat} W: ${carbohydrates}`,
             backToHome: 'Wróć do listy',
         },
         form: {

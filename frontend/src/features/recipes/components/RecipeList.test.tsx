@@ -24,6 +24,16 @@ const makeRecipe = (overrides: Partial<RecipeResponse> = {}): RecipeResponse => 
             },
         },
     ],
+    nutritionalValues: {
+        protein: 0,
+        fat: 0,
+        carbohydrates: 0,
+    },
+    nutritionalValuesPerProtein: {
+        protein: 0,
+        fat: 0,
+        carbohydrates: 0,
+    },
     ...overrides,
 });
 

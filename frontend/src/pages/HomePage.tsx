@@ -3,6 +3,7 @@ import { useNavigate } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
 import { uppercaseFirstCharacter } from '../shared/utils/text';
 import constants from '../constants';
+import { formatMacro } from '../shared/utils/text';
 
 const HomePage = () => {
     const [recipes, setRecipes] = useState<RecipeResponse[]>([]);
@@ -88,12 +89,8 @@ const HomePage = () => {
             </div>
 
             <div className="home-recipes-section">
-                {loading && (
-                    <p className="home-status-text">{constants.home.loading}</p>
-                )}
-                {error && (
-                    <p className="home-error">{error}</p>
-                )}
+                {loading && <p className="home-status-text">{constants.home.loading}</p>}
+                {error && <p className="home-error">{error}</p>}
                 {isEmpty && (
                     <p className="home-status-text">
                         {activeQuery ? constants.home.emptySearch : constants.home.empty}
@@ -102,10 +99,7 @@ const HomePage = () => {
                 {!loading && !error && recipes.length > 0 && (
                     <div className="recipe-list">
                         {recipes.map((recipe) => (
-                            <div
-                                key={recipe.id}
-                                className="recipe-card"
-                            >
+                            <div key={recipe.id} className="recipe-card">
                                 <div className="recipe-card-header">
                                     <h3>{uppercaseFirstCharacter(recipe.name)}</h3>
                                     <div className="recipe-card-meta">
@@ -116,6 +110,13 @@ const HomePage = () => {
                                         <span className="recipe-servings">
                                             🍽 {recipe.servings}{' '}
                                             {constants.recipes.list.servingsSuffix}
+                                        </span>
+                                        <span className="recipe-ingredient-btw">
+                                            🧾 {constants.recipes.preview.formatBTW(
+                                                formatMacro(recipe.nutritionalValues.protein),
+                                                formatMacro(recipe.nutritionalValues.fat),
+                                                formatMacro(recipe.nutritionalValues.carbohydrates),
+                                            )}
                                         </span>
                                     </div>
                                 </div>

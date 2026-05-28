@@ -123,7 +123,7 @@
 
     .recipes-page-container {
         width: 100%;
-        max-width: 1000px;
+        max-width: 1200px;
 
         .recipes-header {
             display: flex;
@@ -346,6 +346,10 @@
         background: rgba(255, 255, 255, 0.2);
         font-size: 13px;
         font-weight: 600;
+    }
+
+    span:nth-of-type(4) {
+        margin-left: auto;
     }
 }
 
