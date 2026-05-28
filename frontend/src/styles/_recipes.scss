@@ -402,18 +402,16 @@
     font-weight: 600;
 }
 
+.recipe-ingredient-btw,
 .recipe-preview-ingredient-btw {
-    margin-top: 6px;
-    display: inline-block;
     color: $color-text-subtle;
     font-size: 12px;
     letter-spacing: 0.02em;
 }
 
-.recipe-ingredient-btw {
-    color: $color-text-subtle;
-    font-size: 12px;
-    letter-spacing: 0.02em;
+.recipe-preview-ingredient-btw {
+    margin-top: 6px;
+    display: inline-block;
 }
 
 .recipe-preview-description p {

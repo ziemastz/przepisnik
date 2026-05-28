@@ -90,7 +90,6 @@ const RecipePreviewPage = () => {
                         <span>
                             🍽 {recipe.servings} {constants.recipes.list.servingsSuffix}
                         </span>
-                       
                         <span className="recipe-ingredient-btw">
                             🧾 {constants.recipes.preview.formatBTW(
                                 formatMacro(recipe.nutritionalValues.protein),
