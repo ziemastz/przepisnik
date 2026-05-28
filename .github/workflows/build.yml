@@ -36,6 +36,10 @@ jobs:
           distribution: temurin
           java-version: 25
 
+      - name: Validate Flyway + Hibernate against PostgreSQL
+        run: |
+          mvn -B -DskipFrontend=true -Dspring.profiles.active=prod -Dtest=PostgresSchemaValidationTest test
+
       - name: Build, Test & SonarCloud
         env:
           SPRING_PROFILES_ACTIVE: local
