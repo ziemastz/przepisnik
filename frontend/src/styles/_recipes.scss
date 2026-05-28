@@ -123,7 +123,7 @@
 
     .recipes-page-container {
         width: 100%;
-        max-width: 1000px;
+        max-width: 1200px;
 
         .recipes-header {
             display: flex;
@@ -347,6 +347,10 @@
         font-size: 13px;
         font-weight: 600;
     }
+
+    span:nth-of-type(4) {
+        margin-left: auto;
+    }
 }
 
 .recipe-preview-content {
@@ -398,12 +402,16 @@
     font-weight: 600;
 }
 
+.recipe-ingredient-btw,
 .recipe-preview-ingredient-btw {
-    margin-top: 6px;
-    display: inline-block;
     color: $color-text-subtle;
     font-size: 12px;
     letter-spacing: 0.02em;
+}
+
+.recipe-preview-ingredient-btw {
+    margin-top: 6px;
+    display: inline-block;
 }
 
 .recipe-preview-description p {

@@ -49,6 +49,8 @@ export interface RecipeResponse {
     createdAt: string;
     updatedAt: string;
     ingredients: IngredientAmountResponse[];
+    nutritionalValues: NutritionalValuesResponse;
+    nutritionalValuesPerProtein: NutritionalValuesResponse;
 }
 
 export const recipesApi = {

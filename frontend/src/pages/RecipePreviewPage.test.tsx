@@ -47,6 +47,16 @@ const sampleRecipe: RecipeResponse = {
             nutritionalValues: { protein: 0, fat: 0, carbohydrates: 0 },
         },
     ],
+    nutritionalValues: {
+        protein: 0,
+        fat: 0,
+        carbohydrates: 0,
+    },
+    nutritionalValuesPerProtein: {
+        protein: 0,
+        fat: 0,
+        carbohydrates: 0,
+    },
 };
 
 describe('RecipePreviewPage', () => {
@@ -90,10 +100,10 @@ describe('RecipePreviewPage', () => {
         expect(screen.getByText(new RegExp(`${constants.recipes.list.createdPrefix}`))).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(screen.getByText(/B:10.13g T:2g W:75.5g/)).toBeInTheDocument();
+            expect(screen.getByText(/B: 10.13g T: 2g W: 75.5g/)).toBeInTheDocument();
         });
 
-        expect(screen.getByText('B:0g T:0g W:0g')).toBeInTheDocument();
+        expect(screen.getByText('B: 0g T: 0g W: 0g')).toBeInTheDocument();
     });
 
     test('shows load error when recipe request fails', async () => {

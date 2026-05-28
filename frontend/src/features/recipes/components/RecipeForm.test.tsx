@@ -41,6 +41,16 @@ describe('RecipeForm', () => {
                     },
                 },
             ],
+            nutritionalValues: {
+                protein: 0,
+                fat: 0,
+                carbohydrates: 0,
+            },
+            nutritionalValuesPerProtein: {
+                protein: 0,
+                fat: 0,
+                carbohydrates: 0,
+            },
         };
 
         render(<RecipeForm initialData={initialData} onSubmit={onSubmit} />);

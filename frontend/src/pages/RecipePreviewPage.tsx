@@ -1,16 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
-import { uppercaseFirstCharacter } from '../shared/utils/text';
+import { uppercaseFirstCharacter, formatMacro } from '../shared/utils/text';
 import constants from '../constants';
-
-const formatMacro = (value: number | null | undefined): string => {
-    if (value === null || value === undefined) {
-        return '-';
-    }
-
-    return `${parseFloat(value.toFixed(2))}g`;
-};
 
 const RecipePreviewPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -97,6 +89,13 @@ const RecipePreviewPage = () => {
                         </span>
                         <span>
                             🍽 {recipe.servings} {constants.recipes.list.servingsSuffix}
+                        </span>
+                        <span className="recipe-ingredient-btw">
+                            🧾 {constants.recipes.preview.formatBTW(
+                                formatMacro(recipe.nutritionalValues.protein),
+                                formatMacro(recipe.nutritionalValues.fat),
+                                formatMacro(recipe.nutritionalValues.carbohydrates),
+                            )}
                         </span>
                         <span>
                             {constants.home.authorPrefix} {recipe.author}
