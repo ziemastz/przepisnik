@@ -47,7 +47,7 @@ Projekt został zrealizowany w ramach pracy dyplomowej i stanowi praktyczne zast
 |----------------|------------------------|
 | 🔙 Backend    | Java 25, Spring Boot, Spring Web, Spring Data JPA, Hibernate, Flyway |
 | 🎨 Frontend       | React (TypeScript/JavaScript) |
-| 🗄️ Baza danych    | H2 |
+| 🗄️ Baza danych    | H2 (local/test), PostgreSQL (prod) |
 | 🔐 Bezpieczeństwo | Spring Security, JWT Authentication |
 | ⚙️ Budowanie      | Maven, npm |
 | 🧪 Testy | React Testing Library, Jest, Mockito, JUnit 5| 
@@ -114,8 +114,8 @@ git clone https://github.com/ziemastz/przepisnik.git
 
 cd przepisnik
 
-# Uruchomienie aplikacji backend (Spring Boot)
-mvn spring-boot:run
+# Uruchomienie backendu na profilu lokalnym (H2)
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 Frontend znajduje się w folderze `/frontend`:
 ```bash

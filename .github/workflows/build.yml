@@ -37,6 +37,8 @@ jobs:
           java-version: 25
 
       - name: Build, Test & SonarCloud
+        env:
+          SPRING_PROFILES_ACTIVE: local
         run: |
           mvn -B clean verify sonar:sonar \
             -Dsonar.projectKey=ziemastz_przepisnik \
