@@ -85,6 +85,39 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B093B8AACD3040559006FF37A760E0D3 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_07630E1503CC4670A955745B0BE48FBA }}
 
+      - name: Enforce prod profile and validate Azure app settings
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            WEBAPP_NAME="przepisnik-web"
+            RESOURCE_GROUP="$(az webapp list --query "[?name=='${WEBAPP_NAME}'].resourceGroup | [0]" -o tsv)"
+
+            if [ -z "${RESOURCE_GROUP}" ]; then
+              echo "Cannot find resource group for ${WEBAPP_NAME} in current subscription."
+              exit 1
+            fi
+
+            az webapp config appsettings set \
+              --resource-group "${RESOURCE_GROUP}" \
+              --name "${WEBAPP_NAME}" \
+              --settings SPRING_PROFILES_ACTIVE=prod >/dev/null
+
+            MISSING_KEYS=""
+            REQUIRED_KEYS="SPRING_DATASOURCE_URL SPRING_DATASOURCE_USERNAME SPRING_DATASOURCE_PASSWORD SECURITY_JWT_SECRET SECURITY_JWT_EXPIRATION_SECONDS SECURITY_JWT_ISSUER"
+
+            for KEY in ${REQUIRED_KEYS}; do
+              VALUE="$(az webapp config appsettings list --resource-group "${RESOURCE_GROUP}" --name "${WEBAPP_NAME}" --query "[?name=='${KEY}'].value | [0]" -o tsv)"
+              if [ -z "${VALUE}" ]; then
+                MISSING_KEYS="${MISSING_KEYS} ${KEY}"
+              fi
+            done
+
+            if [ -n "${MISSING_KEYS}" ]; then
+              echo "Missing required Azure App Settings:${MISSING_KEYS}"
+              echo "Set them in Azure Portal -> App Service -> Environment variables."
+              exit 1
+            fi
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
