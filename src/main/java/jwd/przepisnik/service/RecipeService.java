@@ -71,8 +71,10 @@ public class RecipeService {
 
     @Transactional(readOnly = true)
     public List<Recipe> getPublicRecipes(String query) {
-        String normalized = (query == null || query.isBlank()) ? null : query.trim();
-        return recipeRepository.findPublicRecipes(normalized);
+        String pattern = (query == null || query.isBlank())
+                ? null
+                : "%" + query.trim().toLowerCase(Locale.ROOT) + "%";
+        return recipeRepository.findPublicRecipes(pattern);
     }
 
     @Transactional(readOnly = true)
