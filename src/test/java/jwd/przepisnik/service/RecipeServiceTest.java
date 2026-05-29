@@ -68,13 +68,13 @@ class RecipeServiceTest {
     void getPublicRecipesShouldPassTrimmedQueryToRepository() {
         Recipe recipe = new Recipe();
         recipe.setName("Nalesniki");
-        when(recipeRepository.findPublicRecipes("nale")).thenReturn(List.of(recipe));
+                when(recipeRepository.findPublicRecipes("%nale%")).thenReturn(List.of(recipe));
 
         List<Recipe> result = recipeService.getPublicRecipes("  nale  ");
 
         assertEquals(1, result.size());
         assertEquals("Nalesniki", result.get(0).getName());
-        verify(recipeRepository).findPublicRecipes("nale");
+                verify(recipeRepository).findPublicRecipes("%nale%");
     }
 
     @Test

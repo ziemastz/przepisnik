@@ -26,9 +26,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
             + " LEFT JOIN FETCH r.ingredients ri"
             + " LEFT JOIN FETCH ri.ingredient"
             + " WHERE r.privateRecipe = false"
-            + " AND (:query IS NULL"
-            + "      OR LOWER(CAST(r.name AS string)) LIKE LOWER(CONCAT('%', :query, '%'))"
-            + "      OR LOWER(COALESCE(CAST(r.description AS string), '')) LIKE LOWER(CONCAT('%', :query, '%')))"
+            + " AND (:pattern IS NULL"
+            + "      OR LOWER(CAST(r.name AS string)) LIKE :pattern"
+            + "      OR LOWER(COALESCE(CAST(r.description AS string), '')) LIKE :pattern)"
             + " ORDER BY r.createdAt DESC")
-    List<Recipe> findPublicRecipes(@Param("query") String query);
+        List<Recipe> findPublicRecipes(@Param("pattern") String pattern);
 }
