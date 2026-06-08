@@ -103,7 +103,7 @@ describe('RecipePreviewPage', () => {
         expect(
             screen.getByText((_content, element) =>
                 !!element?.classList.contains('recipe-zo-value') &&
-                !!element.textContent?.includes('ZO: 72.5%'),
+                !!element.textContent?.includes(`${constants.recipes.preview.zoPrefix}: 72.5%`),
             ),
         ).toBeInTheDocument();
 

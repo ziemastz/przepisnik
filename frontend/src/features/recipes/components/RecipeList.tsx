@@ -1,6 +1,6 @@
 import { RecipeResponse } from '../../../api/recipesApi';
 import Button from '../../../shared/button/Button';
-import { uppercaseFirstCharacter, formatMacro, formatPercent, colorForZoRating } from '../../../shared/utils/text';
+import { uppercaseFirstCharacter, formatMacroValue, formatPercent, colorForZoRating } from '../../../shared/utils/text';
 import constants from '../../../constants';
 
 interface RecipeListProps {
@@ -26,9 +26,9 @@ const RecipeList = ({ recipes, onEdit, onDelete }: RecipeListProps) => {
                             </span>
                             <span className="recipe-ingredient-btw">
                                🧾 {constants.recipes.preview.formatBTW(
-                                    formatMacro(recipe.nutritionalValues.protein),
-                                    formatMacro(recipe.nutritionalValues.fat),
-                                    formatMacro(recipe.nutritionalValues.carbohydrates),
+                                    formatMacroValue(recipe.nutritionalValuesPerProtein.protein),
+                                    formatMacroValue(recipe.nutritionalValuesPerProtein.fat),
+                                    formatMacroValue(recipe.nutritionalValuesPerProtein.carbohydrates),
                                 )}
                             </span>
                             <span

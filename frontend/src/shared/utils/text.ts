@@ -14,6 +14,14 @@ export const formatMacro = (value: number | null | undefined): string => {
     return `${parseFloat(value.toFixed(2))}g`;
 };
 
+export const formatMacroValue = (value: number | null | undefined): string => {
+    if (value === null || value === undefined) {
+        return '-';
+    }
+
+    return `${parseFloat(value.toFixed(2))}`;
+};
+
 export const formatPercent = (value: number | null | undefined): string => {
     if (value === null || value === undefined) {
         return '-';

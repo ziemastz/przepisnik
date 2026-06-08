@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
-import { uppercaseFirstCharacter, formatMacro, formatPercent, colorForZoRating } from '../shared/utils/text';
+import { uppercaseFirstCharacter, formatMacroValue, formatPercent, colorForZoRating } from '../shared/utils/text';
 import constants from '../constants';
 
 const HomePage = () => {
@@ -112,9 +112,9 @@ const HomePage = () => {
                                         </span>
                                         <span className="recipe-ingredient-btw">
                                             🧾 {constants.recipes.preview.formatBTW(
-                                                formatMacro(recipe.nutritionalValues.protein),
-                                                formatMacro(recipe.nutritionalValues.fat),
-                                                formatMacro(recipe.nutritionalValues.carbohydrates),
+                                                formatMacroValue(recipe.nutritionalValuesPerProtein.protein),
+                                                formatMacroValue(recipe.nutritionalValuesPerProtein.fat),
+                                                formatMacroValue(recipe.nutritionalValuesPerProtein.carbohydrates),
                                             )}
                                         </span>
                                         <span
