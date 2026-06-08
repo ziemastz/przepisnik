@@ -49,6 +49,11 @@ export interface IngredientResponse {
     portion: number | null;
 }
 
+export interface IngredientSuggestion {
+    id: string;
+    name: string;
+}
+
 export const ingredientsApi = {
     async listIngredients(page = 0, search?: string): Promise<IngredientListResponse> {
         const url = search
@@ -79,5 +84,10 @@ export const ingredientsApi = {
 
     async deleteIngredient(id: string): Promise<void> {
         return apiClient.deleteVoid(constants.api.ingredients.delete(id), true);
+    },
+
+    async searchIngredients(query: string, limit = 8): Promise<IngredientSuggestion[]> {
+        const url = `${constants.api.ingredients.search}?query=${encodeURIComponent(query)}&limit=${limit}`;
+        return apiClient.get<IngredientSuggestion[]>(url, true);
     },
 };

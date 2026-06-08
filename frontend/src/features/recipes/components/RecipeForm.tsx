@@ -12,6 +12,7 @@ import {
 import { uppercaseFirstCharacter } from '../../../shared/utils/text';
 import Button from '../../../shared/button/Button';
 import constants from '../../../constants';
+import IngredientAutocomplete from './IngredientAutocomplete';
 
 interface RecipeFormProps {
     initialData?: RecipeResponse | null;
@@ -493,12 +494,10 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
                 <div className="recipe-ingredients-list">
                     {ingredients.map((ingredient, index) => (
                         <div key={index} className="recipe-ingredient-row">
-                            <input
-                                type="text"
+                            <IngredientAutocomplete
                                 value={ingredient.name}
-                                onChange={(e) =>
-                                    handleIngredientChange(index, 'name', e.target.value)
-                                }
+                                onChange={(v) => handleIngredientChange(index, 'name', v)}
+                                onSelect={(name) => handleIngredientChange(index, 'name', name)}
                                 placeholder={constants.recipes.form.placeholders.ingredientName}
                                 className={
                                     getIngredientFieldError(index, 'name')
