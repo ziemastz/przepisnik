@@ -7,6 +7,7 @@ import MyRecipesPage from '../features/recipes/pages/MyRecipesPage';
 import RecipeFormPage from '../features/recipes/pages/RecipeFormPage';
 import IngredientsPage from '../pages/IngredientsPage';
 import RecipePreviewPage from '../pages/RecipePreviewPage';
+import OptimalNutritionPage from '../pages/OptimalNutritionPage';
 import constants from '../constants';
 
 const AppRoutes = () => {
@@ -16,6 +17,7 @@ const AppRoutes = () => {
             <Route path={constants.routes.login} element={<LoginPage />} />
             <Route path={constants.routes.register} element={<RegisterPage />} />
             <Route path={constants.routes.ingredients} element={<IngredientsPage />} />
+            <Route path={constants.routes.optimalNutrition} element={<OptimalNutritionPage />} />
             <Route path={constants.routes.recipeDetails} element={<RecipePreviewPage />} />
             <Route
                 path={constants.routes.myRecipes}

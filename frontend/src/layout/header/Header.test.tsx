@@ -38,4 +38,14 @@ describe('Header', () => {
         const homeLink = screen.getByRole('link', { name: new RegExp(constants.titleApp, 'i') });
         expect(homeLink).toHaveClass('header-title__link');
     });
+
+    test('renders navigation link to optimal nutrition page', () => {
+        render(<Header />);
+
+        const nutritionLink = screen.getByRole('link', {
+            name: constants.layout.header.optimalNutrition,
+        });
+        expect(nutritionLink).toBeInTheDocument();
+        expect(nutritionLink).toHaveAttribute('href', constants.routes.optimalNutrition);
+    });
 });

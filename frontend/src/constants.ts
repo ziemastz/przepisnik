@@ -3,6 +3,7 @@ const constants = {
     home: {
         title: 'Odkryj przepisy',
         subtitle: 'Przegl\u0105daj publiczne przepisy kulinarne naszej spo\u0142eczno\u015Bci.',
+        optimalNutritionButton: 'Zasady żywienia optymalnego',
         searchPlaceholder: 'Szukaj przepis\u00F3w\u2026',
         searchButton: 'Szukaj',
         clearButton: 'Wyczy\u015B\u0107',
@@ -25,6 +26,7 @@ const constants = {
             logout: 'Wyloguj',
             addRecipe: '+ Przepis',
             ingredients: 'Składniki',
+            optimalNutrition: 'Żywienie optymalne',
             login: 'Zaloguj',
             register: 'Zarejestruj',
             welcomePrefix: 'Witaj,',
@@ -39,6 +41,7 @@ const constants = {
         recipeNew: '/recipes/new',
         recipeEdit: '/recipes/:id/edit',
         ingredients: '/ingredients',
+        optimalNutrition: '/optimal-nutrition',
         notFoundText: '404 - Strona nie istnieje',
     },
     auth: {

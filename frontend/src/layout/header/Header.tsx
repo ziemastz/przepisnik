@@ -20,6 +20,9 @@ const Header = () => {
                     <Link to={constants.routes.ingredients} className="header-nav-link">
                         {constants.layout.header.ingredients}
                     </Link>
+                    <Link to={constants.routes.optimalNutrition} className="header-nav-link">
+                        {constants.layout.header.optimalNutrition}
+                    </Link>
                 </nav>
                 <UserPanelContainer />
             </div>
