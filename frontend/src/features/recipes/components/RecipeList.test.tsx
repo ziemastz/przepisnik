@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import RecipeList from './RecipeList';
 import { RecipeResponse } from '../../../api/recipesApi';
-import constants from '../../../constants';
 
 const makeRecipe = (overrides: Partial<RecipeResponse> = {}): RecipeResponse => ({
     id: '1',

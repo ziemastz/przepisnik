@@ -236,11 +236,12 @@
             gap: 12px;
             font-size: 13px;
             color: $color-text-subtle;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
+            row-gap: 6px;
             padding-right: 10px;
             min-width: 0;
 
-            span {
+            > span {
                 display: flex;
                 align-items: center;
                 gap: 4px;
@@ -253,12 +254,26 @@
                 flex: 0 0 auto;
             }
 
+            .recipe-time {
+                order: 1;
+            }
+
+            .recipe-servings {
+                order: 2;
+            }
+
+            .recipe-zo-badge {
+                order: 3;
+                margin-left: auto;
+            }
+
             .recipe-ingredient-btw {
-                flex: 1 1 auto;
-                min-width: 0;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                order: 4;
+                flex: 0 0 100%;
+                overflow: visible;
+                text-overflow: unset;
                 white-space: nowrap;
+                line-height: 1.25;
                 display: block;
             }
         }
@@ -489,7 +504,7 @@
     gap: 10px;
     padding-right: 18px;
 
-    span {
+    > span {
         display: inline-flex;
         align-items: center;
         padding: 6px 10px;
@@ -500,18 +515,14 @@
         white-space: nowrap;
     }
 
-    span:nth-of-type(5) {
+    > span:nth-of-type(5) {
         margin-left: auto;
     }
 }
 
 .recipe-zo-badge {
     font-weight: 600;
-    position: relative;
-    gap: 6px;
-    overflow: visible;
     white-space: nowrap;
-    z-index: 3;
     margin-left: auto;
     margin-right: 8px;
 }
