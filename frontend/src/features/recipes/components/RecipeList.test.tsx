@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import RecipeList from './RecipeList';
 import { RecipeResponse } from '../../../api/recipesApi';
+import constants from '../../../constants';
 
 const makeRecipe = (overrides: Partial<RecipeResponse> = {}): RecipeResponse => ({
     id: '1',
@@ -34,6 +35,8 @@ const makeRecipe = (overrides: Partial<RecipeResponse> = {}): RecipeResponse => 
         fat: 0,
         carbohydrates: 0,
     },
+    zo: 38.75,
+    zoRating: 'POOR',
     ...overrides,
 });
 
@@ -45,6 +48,13 @@ describe('RecipeList', () => {
         expect(screen.getByText(/20 min/)).toBeInTheDocument();
         expect(screen.getByText(/2 porcji/)).toBeInTheDocument();
         expect(screen.getByText(/Maka/)).toBeInTheDocument();
+        expect(
+            screen.getByText((_content, element) =>
+                !!element?.classList.contains('recipe-zo-value') &&
+                !!element.textContent?.includes('ZO: 38.75%'),
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText(constants.recipes.preview.zoTooltipText)).toBeInTheDocument();
     });
 
     test('calls onEdit with recipe id when Edytuj is clicked', () => {

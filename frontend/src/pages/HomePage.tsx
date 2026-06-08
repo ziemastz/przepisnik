@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
-import { uppercaseFirstCharacter, formatMacro } from '../shared/utils/text';
+import { uppercaseFirstCharacter, formatMacro, formatPercent, colorForZoRating } from '../shared/utils/text';
 import constants from '../constants';
 
 const HomePage = () => {
@@ -116,6 +116,22 @@ const HomePage = () => {
                                                 formatMacro(recipe.nutritionalValues.fat),
                                                 formatMacro(recipe.nutritionalValues.carbohydrates),
                                             )}
+                                        </span>
+                                        <span
+                                            className="recipe-zo-badge"
+                                        >
+                                            <span
+                                                className={`recipe-zo-value ${colorForZoRating(recipe.zoRating)}`}
+                                            >
+                                                {constants.recipes.preview.zoPrefix}:{' '}
+                                                {formatPercent(recipe.zo)}%
+                                            </span>
+                                            <span className="recipe-zo-tooltip-content">
+                                                {constants.recipes.preview.zoTooltipText}{' '}
+                                                <a href={constants.routes.optimalNutrition}>
+                                                    {constants.recipes.preview.zoTooltipLinkLabel}
+                                                </a>
+                                            </span>
                                         </span>
                                     </div>
                                 </div>

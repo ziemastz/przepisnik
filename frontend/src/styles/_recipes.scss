@@ -479,9 +479,86 @@
         font-weight: 600;
     }
 
-    span:nth-of-type(4) {
+    span:nth-of-type(5) {
         margin-left: auto;
     }
+}
+
+.recipe-zo-badge {
+    font-weight: 600;
+    position: relative;
+    gap: 6px;
+    cursor: help;
+    overflow: visible;
+}
+
+.recipe-zo-value {
+    font-weight: 800;
+}
+
+.recipe-zo-value--ideal {
+    color: #22c55e;
+}
+
+.recipe-zo-value--good {
+    color: #84cc16;
+}
+
+.recipe-zo-value--average {
+    color: #f59e0b;
+}
+
+.recipe-zo-value--poor {
+    color: #ef4444;
+}
+
+.recipe-zo-value--default {
+    color: $color-text;
+}
+
+.recipe-zo-tooltip-content {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 8px);
+    transform: translateX(-50%);
+    width: min(260px, 70vw);
+    background: $color-white;
+    color: $color-text;
+    border: 1px solid rgba($color-primary, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 10;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: -6px;
+        width: 10px;
+        height: 10px;
+        background: $color-white;
+        border-left: 1px solid rgba($color-primary, 0.2);
+        border-top: 1px solid rgba($color-primary, 0.2);
+        transform: translateX(-50%) rotate(45deg);
+    }
+
+    a {
+        color: $color-primary;
+        text-decoration: underline;
+    }
+}
+
+.recipe-zo-badge:hover .recipe-zo-tooltip-content,
+.recipe-zo-badge:focus-within .recipe-zo-tooltip-content {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .recipe-preview-content {

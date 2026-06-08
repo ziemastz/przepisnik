@@ -26,6 +26,7 @@ import jwd.przepisnik.models.User;
 import jwd.przepisnik.service.NutritionalValuesService;
 import jwd.przepisnik.web.response.NutritionalValuesResponse;
 import jwd.przepisnik.web.response.RecipeResponse;
+import jwd.przepisnik.web.response.ZoRating;
 
 @ExtendWith(MockitoExtension.class)
 class RecipeMapperTest {
@@ -49,22 +50,30 @@ class RecipeMapperTest {
                                 new BigDecimal("16.00"), new BigDecimal("6.50"), new BigDecimal("80.00"));
                 NutritionalValuesResponse perProteinValues = new NutritionalValuesResponse(
                                 new BigDecimal("8.00"), new BigDecimal("3.25"), new BigDecimal("40.00"));
+                BigDecimal zo = new BigDecimal("70.00");
+                ZoRating zoRating = ZoRating.GOOD;
 
                 when(nutritionalValuesService.calculateForIngredient(firstIngredient)).thenReturn(firstValues);
                 when(nutritionalValuesService.calculateForIngredient(secondIngredient)).thenReturn(secondValues);
                 when(nutritionalValuesService.calculateTotalFromValues(List.of(firstValues, secondValues))).thenReturn(
                                 totalValues);
                 when(nutritionalValuesService.calculatePerProtein(totalValues)).thenReturn(perProteinValues);
+                when(nutritionalValuesService.calculateZo(totalValues)).thenReturn(zo);
+                when(nutritionalValuesService.evaluateZo(zo)).thenReturn(zoRating);
 
                 RecipeResponse response = recipeMapper
                                 .toResponse(buildRecipe(List.of(firstIngredient, secondIngredient)));
 
                 assertThat(response.nutritionalValues()).isEqualTo(totalValues);
                 assertThat(response.nutritionalValuesPerProtein()).isEqualTo(perProteinValues);
+                assertThat(response.zo()).isEqualByComparingTo(zo);
+                assertThat(response.zoRating()).isEqualTo(ZoRating.GOOD);
                 verify(nutritionalValuesService).calculateForIngredient(firstIngredient);
                 verify(nutritionalValuesService).calculateForIngredient(secondIngredient);
                 verify(nutritionalValuesService).calculateTotalFromValues(eq(List.of(firstValues, secondValues)));
                 verify(nutritionalValuesService).calculatePerProtein(totalValues);
+                verify(nutritionalValuesService).calculateZo(totalValues);
+                verify(nutritionalValuesService).evaluateZo(zo);
                 verify(nutritionalValuesService, never()).calculateTotal(anyList());
         }
 

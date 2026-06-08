@@ -1,6 +1,6 @@
 import { RecipeResponse } from '../../../api/recipesApi';
 import Button from '../../../shared/button/Button';
-import { uppercaseFirstCharacter, formatMacro } from '../../../shared/utils/text';
+import { uppercaseFirstCharacter, formatMacro, formatPercent, colorForZoRating } from '../../../shared/utils/text';
 import constants from '../../../constants';
 
 interface RecipeListProps {
@@ -30,6 +30,22 @@ const RecipeList = ({ recipes, onEdit, onDelete }: RecipeListProps) => {
                                     formatMacro(recipe.nutritionalValues.fat),
                                     formatMacro(recipe.nutritionalValues.carbohydrates),
                                 )}
+                            </span>
+                            <span
+                                className="recipe-zo-badge"
+                            >
+                                <span
+                                    className={`recipe-zo-value ${colorForZoRating(recipe.zoRating)}`}
+                                >
+                                    {constants.recipes.preview.zoPrefix}:{' '}
+                                    {formatPercent(recipe.zo)}%
+                                </span>
+                                <span className="recipe-zo-tooltip-content">
+                                    {constants.recipes.preview.zoTooltipText}{' '}
+                                    <a href={constants.routes.optimalNutrition}>
+                                        {constants.recipes.preview.zoTooltipLinkLabel}
+                                    </a>
+                                </span>
                             </span>
                         </div>
                     </div>

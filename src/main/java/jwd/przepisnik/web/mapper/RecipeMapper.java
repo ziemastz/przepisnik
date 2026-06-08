@@ -1,5 +1,6 @@
 package jwd.przepisnik.web.mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import jwd.przepisnik.service.NutritionalValuesService;
 import jwd.przepisnik.web.response.IngredientAmountResponse;
 import jwd.przepisnik.web.response.NutritionalValuesResponse;
 import jwd.przepisnik.web.response.RecipeResponse;
+import jwd.przepisnik.web.response.ZoRating;
 
 @Component
 public class RecipeMapper {
@@ -31,6 +33,8 @@ public class RecipeMapper {
         NutritionalValuesResponse total = nutritionalValuesService.calculateTotalFromValues(
                 ingredientNutritionalValues);
         NutritionalValuesResponse perProtein = nutritionalValuesService.calculatePerProtein(total);
+        BigDecimal zo = nutritionalValuesService.calculateZo(total);
+        ZoRating zoRating = nutritionalValuesService.evaluateZo(zo);
 
         return new RecipeResponse(
                 recipe.getId(),
@@ -44,7 +48,9 @@ public class RecipeMapper {
                 recipe.getUpdatedAt(),
                 ingredientResponses,
                 total,
-                perProtein);
+                perProtein,
+                zo,
+                zoRating);
     }
 
     public List<RecipeResponse> toResponses(List<Recipe> recipes) {

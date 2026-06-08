@@ -17,6 +17,7 @@ import jwd.przepisnik.models.Ingredient;
 import jwd.przepisnik.models.IngredientUnit;
 import jwd.przepisnik.models.RecipeIngredient;
 import jwd.przepisnik.web.response.NutritionalValuesResponse;
+import jwd.przepisnik.web.response.ZoRating;
 
 @ExtendWith(MockitoExtension.class)
 class NutritionalValuesServiceTest {
@@ -179,6 +180,68 @@ class NutritionalValuesServiceTest {
                 assertThat(result.protein()).isEqualByComparingTo(BigDecimal.ZERO);
                 assertThat(result.fat()).isEqualByComparingTo(BigDecimal.ZERO);
                 assertThat(result.carbohydrates()).isEqualByComparingTo(BigDecimal.ZERO);
+        }
+
+        @Test
+        void calculateZoShouldReturnOneHundredForIdealRatios() {
+                NutritionalValuesResponse total = new NutritionalValuesResponse(
+                                new BigDecimal("10.00"), new BigDecimal("25.00"), new BigDecimal("8.00"));
+
+                BigDecimal result = nutritionalValuesService.calculateZo(total);
+
+                assertThat(result).isEqualByComparingTo("100.00");
+        }
+
+        @Test
+        void calculateZoShouldAverageFatAndCarbScopes() {
+                NutritionalValuesResponse total = new NutritionalValuesResponse(
+                                new BigDecimal("10.00"), new BigDecimal("20.00"), new BigDecimal("20.00"));
+
+                BigDecimal result = nutritionalValuesService.calculateZo(total);
+
+                assertThat(result).isEqualByComparingTo("60.00");
+        }
+
+        @Test
+        void calculateZoShouldReturnZeroWhenProteinIsZero() {
+                NutritionalValuesResponse total = new NutritionalValuesResponse(
+                                BigDecimal.ZERO, new BigDecimal("20.00"), new BigDecimal("20.00"));
+
+                BigDecimal result = nutritionalValuesService.calculateZo(total);
+
+                assertThat(result).isEqualByComparingTo("0.00");
+        }
+
+        @Test
+        void evaluateZoShouldReturnIdealForScoreAtLeastNinety() {
+                ZoRating result = nutritionalValuesService
+                                .evaluateZo(new BigDecimal("90.00"));
+
+                assertThat(result).isEqualTo(ZoRating.IDEAL);
+        }
+
+        @Test
+        void evaluateZoShouldReturnGoodForScoreBetweenSeventyAndEightyNine() {
+                ZoRating result = nutritionalValuesService
+                                .evaluateZo(new BigDecimal("70.00"));
+
+                assertThat(result).isEqualTo(ZoRating.GOOD);
+        }
+
+        @Test
+        void evaluateZoShouldReturnAverageForScoreBetweenFortyAndSixtyNine() {
+                ZoRating result = nutritionalValuesService
+                                .evaluateZo(new BigDecimal("55.00"));
+
+                assertThat(result).isEqualTo(ZoRating.AVERAGE);
+        }
+
+        @Test
+        void evaluateZoShouldReturnPoorForScoreBelowForty() {
+                ZoRating result = nutritionalValuesService
+                                .evaluateZo(new BigDecimal("39.99"));
+
+                assertThat(result).isEqualTo(ZoRating.POOR);
         }
 
         private RecipeIngredient buildIngredient(BigDecimal protein, BigDecimal fat, BigDecimal carbohydrates,

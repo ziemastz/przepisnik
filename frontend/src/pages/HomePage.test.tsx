@@ -49,6 +49,8 @@ const sampleRecipe: RecipeResponse = {
         fat: 0,
         carbohydrates: 0,
     },
+    zo: 95,
+    zoRating: 'IDEAL',
 };
 
 describe('HomePage', () => {
@@ -81,6 +83,17 @@ describe('HomePage', () => {
         render(<HomePage />);
 
         expect(await screen.findByText('Nalesniki')).toBeInTheDocument();
+        expect(
+            screen.getByText((_content, element) =>
+                !!element?.classList.contains('recipe-zo-value') &&
+                !!element.textContent?.includes('ZO: 95%'),
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText(constants.recipes.preview.zoTooltipText)).toBeInTheDocument();
+        expect(screen.getByText(constants.recipes.preview.zoTooltipLinkLabel)).toHaveAttribute(
+            'href',
+            constants.routes.optimalNutrition,
+        );
         expect(mockedRecipesApi.getPublicRecipes).toHaveBeenCalledWith(undefined);
     });
 

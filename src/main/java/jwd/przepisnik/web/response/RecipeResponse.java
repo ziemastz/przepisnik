@@ -1,5 +1,6 @@
 package jwd.przepisnik.web.response;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -16,5 +17,7 @@ public record RecipeResponse(
         LocalDateTime updatedAt,
         List<IngredientAmountResponse> ingredients,
         NutritionalValuesResponse nutritionalValues,
-        NutritionalValuesResponse nutritionalValuesPerProtein) {
+        NutritionalValuesResponse nutritionalValuesPerProtein,
+        BigDecimal zo,
+        ZoRating zoRating) {
 }

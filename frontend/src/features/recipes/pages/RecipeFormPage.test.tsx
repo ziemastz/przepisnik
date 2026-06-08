@@ -91,6 +91,8 @@ const mockRecipe: RecipeResponse = {
         fat: 0,
         carbohydrates: 0,
     },
+    zo: 85,
+    zoRating: 'GOOD',
 };
 
 describe('RecipeFormPage', () => {
