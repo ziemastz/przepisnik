@@ -23,6 +23,7 @@ const IngredientAutocomplete = ({
     className,
     'aria-invalid': ariaInvalid,
 }: IngredientAutocompleteProps) => {
+    const listboxId = 'ingredient-autocomplete-listbox';
     const [suggestions, setSuggestions] = useState<IngredientSuggestion[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
@@ -103,16 +104,19 @@ const IngredientAutocomplete = ({
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 onKeyDown={handleKeyDown}
+                role="combobox"
                 placeholder={placeholder}
                 className={className}
                 aria-invalid={ariaInvalid}
                 aria-autocomplete="list"
                 aria-expanded={isOpen}
+                aria-controls={isOpen ? listboxId : undefined}
                 autoComplete="off"
                 disabled={disabled}
             />
             {isOpen && (
                 <ul
+                    id={listboxId}
                     className="ingredient-suggestions"
                     role="listbox"
                 >

@@ -59,10 +59,8 @@ describe('IngredientAutocomplete', () => {
         render(<IngredientAutocomplete {...defaultProps} value="ma" />);
         act(() => jest.runAllTimers());
 
-        await waitFor(() => {
-            expect(screen.getByText('Mąka')).toBeInTheDocument();
-            expect(screen.getByText('Masło')).toBeInTheDocument();
-        });
+        expect(await screen.findByText('Mąka')).toBeInTheDocument();
+        expect(await screen.findByText('Masło')).toBeInTheDocument();
     });
 
     test('calls onSelect and closes list when suggestion is clicked', async () => {
@@ -72,7 +70,7 @@ describe('IngredientAutocomplete', () => {
         render(<IngredientAutocomplete {...defaultProps} value="mą" onSelect={onSelect} />);
         act(() => jest.runAllTimers());
 
-        await waitFor(() => screen.getByText('Mąka'));
+        await screen.findByText('Mąka');
 
         fireEvent.mouseDown(screen.getByText('Mąka'));
 
@@ -89,18 +87,20 @@ describe('IngredientAutocomplete', () => {
         render(<IngredientAutocomplete {...defaultProps} value="ma" />);
         act(() => jest.runAllTimers());
 
-        await waitFor(() => screen.getByText('Mąka'));
+        await screen.findByText('Mąka');
 
         const input = screen.getByPlaceholderText('Nazwa składnika');
+        const flourOption = screen.getByRole('option', { name: 'Mąka' });
+        const butterOption = screen.getByRole('option', { name: 'Masło' });
 
         fireEvent.keyDown(input, { key: 'ArrowDown' });
-        expect(screen.getByText('Mąka').closest('li')).toHaveClass('ingredient-suggestion-item--active');
+        expect(flourOption).toHaveAttribute('aria-selected', 'true');
 
         fireEvent.keyDown(input, { key: 'ArrowDown' });
-        expect(screen.getByText('Masło').closest('li')).toHaveClass('ingredient-suggestion-item--active');
+        expect(butterOption).toHaveAttribute('aria-selected', 'true');
 
         fireEvent.keyDown(input, { key: 'ArrowUp' });
-        expect(screen.getByText('Mąka').closest('li')).toHaveClass('ingredient-suggestion-item--active');
+        expect(flourOption).toHaveAttribute('aria-selected', 'true');
     });
 
     test('selects active suggestion on Enter and closes list', async () => {
@@ -110,7 +110,7 @@ describe('IngredientAutocomplete', () => {
         render(<IngredientAutocomplete {...defaultProps} value="mą" onSelect={onSelect} />);
         act(() => jest.runAllTimers());
 
-        await waitFor(() => screen.getByText('Mąka'));
+        await screen.findByText('Mąka');
 
         const input = screen.getByPlaceholderText('Nazwa składnika');
         fireEvent.keyDown(input, { key: 'ArrowDown' });
@@ -126,7 +126,7 @@ describe('IngredientAutocomplete', () => {
         render(<IngredientAutocomplete {...defaultProps} value="mą" />);
         act(() => jest.runAllTimers());
 
-        await waitFor(() => screen.getByRole('listbox'));
+        await screen.findByRole('listbox');
 
         const input = screen.getByPlaceholderText('Nazwa składnika');
         fireEvent.keyDown(input, { key: 'Escape' });
