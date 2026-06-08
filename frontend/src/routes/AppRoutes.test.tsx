@@ -37,6 +37,11 @@ jest.mock('../pages/RecipePreviewPage', () => ({
     default: () => <div>Recipe Preview Page</div>,
 }));
 
+jest.mock('../pages/OptimalNutritionPage', () => ({
+    __esModule: true,
+    default: () => <div>Optimal Nutrition Page</div>,
+}));
+
 jest.mock('../shared/ProtectedRoute', () => ({
     __esModule: true,
     default: ({ children }: { children: ReactNode }) => <div>{children}</div>,
@@ -64,13 +69,14 @@ describe('AppRoutes', () => {
         capturedRoutes.length = 0;
     });
 
-    test('defines home, login, register, recipe preview, protected routes, and fallback routes', () => {
+    test('defines home, login, register, informational, recipe preview, protected routes, and fallback routes', () => {
         render(<AppRoutes />);
 
         expect(screen.getByText('Home Page')).toBeInTheDocument();
         expect(screen.getByText('Login Page')).toBeInTheDocument();
         expect(screen.getByText('Register Page')).toBeInTheDocument();
         expect(screen.getByText('Ingredients Page')).toBeInTheDocument();
+        expect(screen.getByText('Optimal Nutrition Page')).toBeInTheDocument();
         expect(screen.getByText('Recipe Preview Page')).toBeInTheDocument();
         expect(screen.getByText('404 - Strona nie istnieje')).toBeInTheDocument();
         expect(screen.getByText('My Recipes Page')).toBeInTheDocument();
@@ -81,6 +87,7 @@ describe('AppRoutes', () => {
         expect(paths).toContain('/login');
         expect(paths).toContain('/register');
         expect(paths).toContain('/ingredients');
+        expect(paths).toContain('/optimal-nutrition');
         expect(paths).toContain('/recipes/:id');
         expect(paths).toContain('/my-recipes');
         expect(paths).toContain('/recipes/new');

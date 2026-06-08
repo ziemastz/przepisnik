@@ -32,11 +32,21 @@ jest.mock('./pages/RecipePreviewPage', () => ({
     default: () => <div>Recipe Preview Page</div>,
 }));
 
+jest.mock('./pages/OptimalNutritionPage', () => ({
+    __esModule: true,
+    default: () => <div>Optimal Nutrition Page</div>,
+}));
+
 jest.mock('./router', () => ({
     BrowserRouter: ({ children }: { children: ReactNode }) => <div>{children}</div>,
     Routes: ({ children }: { children: ReactNode }) => <>{children}</>,
     Route: ({ element }: { element: ReactNode }) => <>{element}</>,
     Navigate: () => null,
+    Link: ({ to, children, className }: { to: string; children: ReactNode; className?: string }) => (
+        <a href={to} className={className}>
+            {children}
+        </a>
+    ),
     useNavigate: () => jest.fn(),
     useLocation: () => ({ pathname: '/', state: null }),
     useParams: () => ({}),
