@@ -472,6 +472,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    padding-right: 18px;
 
     span {
         display: inline-flex;
@@ -493,10 +494,10 @@
     font-weight: 600;
     position: relative;
     gap: 6px;
-    cursor: help;
     overflow: visible;
     white-space: nowrap;
     z-index: 3;
+    margin-right: 10px;
 }
 
 .recipe-zo-value {
