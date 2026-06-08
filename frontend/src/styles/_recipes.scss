@@ -198,7 +198,7 @@
 
 .recipe-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
     gap: 20px;
 
     @include respond(md) {
@@ -222,7 +222,7 @@
     }
 
     .recipe-card-header {
-        padding: 16px;
+        padding: 16px 24px 16px 16px;
         border-bottom: 1px solid rgba($color-primary, 0.08);
 
         h3 {
@@ -237,14 +237,29 @@
             font-size: 13px;
             color: $color-text-subtle;
             flex-wrap: nowrap;
-            padding-right: 14px;
+            padding-right: 10px;
+            min-width: 0;
 
             span {
                 display: flex;
                 align-items: center;
                 gap: 4px;
                 white-space: nowrap;
-                flex-shrink: 0;
+            }
+
+            .recipe-time,
+            .recipe-servings,
+            .recipe-zo-badge {
+                flex: 0 0 auto;
+            }
+
+            .recipe-ingredient-btw {
+                flex: 1 1 auto;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                display: block;
             }
         }
     }
@@ -497,7 +512,8 @@
     overflow: visible;
     white-space: nowrap;
     z-index: 3;
-    margin-right: 10px;
+    margin-left: auto;
+    margin-right: 8px;
 }
 
 .recipe-zo-value {
