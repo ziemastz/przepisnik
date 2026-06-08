@@ -258,6 +258,7 @@ const constants = {
         },
         ingredients: {
             list: '/api/ingredients/list',
+            search: '/api/ingredients/search',
             create: '/api/ingredients/create',
             byId: (id: string) => `/api/ingredients/${id}`,
             update: (id: string) => `/api/ingredients/update/${id}`,
