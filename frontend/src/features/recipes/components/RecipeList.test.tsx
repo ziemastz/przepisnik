@@ -54,7 +54,6 @@ describe('RecipeList', () => {
                 !!element.textContent?.includes('ZO: 38.75%'),
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText(constants.recipes.preview.zoTooltipText)).toBeInTheDocument();
     });
 
     test('calls onEdit with recipe id when Edytuj is clicked', () => {

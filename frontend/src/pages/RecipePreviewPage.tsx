@@ -106,12 +106,6 @@ const RecipePreviewPage = () => {
                                 {constants.recipes.preview.zoPrefix}:{' '}
                                 {formatPercent(recipe.zo)}%
                             </span>
-                            <span className="recipe-zo-tooltip-content">
-                                {constants.recipes.preview.zoTooltipText}{' '}
-                                <a href={constants.routes.optimalNutrition}>
-                                    {constants.recipes.preview.zoTooltipLinkLabel}
-                                </a>
-                            </span>
                         </span>
                         <span>
                             {constants.home.authorPrefix} {recipe.author}

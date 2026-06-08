@@ -106,11 +106,6 @@ describe('RecipePreviewPage', () => {
                 !!element.textContent?.includes('ZO: 72.5%'),
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText(constants.recipes.preview.zoTooltipText)).toBeInTheDocument();
-        expect(screen.getByText(constants.recipes.preview.zoTooltipLinkLabel)).toHaveAttribute(
-            'href',
-            constants.routes.optimalNutrition,
-        );
 
         await waitFor(() => {
             expect(screen.getByText(/B: 10.13g T: 2g W: 75.5g/)).toBeInTheDocument();

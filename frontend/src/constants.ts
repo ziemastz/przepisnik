@@ -116,9 +116,6 @@ const constants = {
                 `B: ${protein} T: ${fat} W: ${carbohydrates}`,
             zoPrefix: 'ZO',
             formatZO: (score: string) => `ZO: ${score}%`,
-            zoTooltipLabel: 'Informacje o parametrze ZO',
-            zoTooltipText: 'ZO pokazuje zgodność przepisu z zasadami żywienia optymalnego.',
-            zoTooltipLinkLabel: 'Zobacz zasady żywienia optymalnego',
             backToHome: 'Wróć do listy',
         },
         form: {

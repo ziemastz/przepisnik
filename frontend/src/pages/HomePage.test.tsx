@@ -89,11 +89,6 @@ describe('HomePage', () => {
                 !!element.textContent?.includes('ZO: 95%'),
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText(constants.recipes.preview.zoTooltipText)).toBeInTheDocument();
-        expect(screen.getByText(constants.recipes.preview.zoTooltipLinkLabel)).toHaveAttribute(
-            'href',
-            constants.routes.optimalNutrition,
-        );
         expect(mockedRecipesApi.getPublicRecipes).toHaveBeenCalledWith(undefined);
     });
 

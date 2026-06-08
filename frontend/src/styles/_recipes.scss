@@ -198,7 +198,7 @@
 
 .recipe-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 20px;
 
     @include respond(md) {
@@ -211,7 +211,7 @@
     background: $color-white;
     border: 1px solid rgba($color-primary, 0.15);
     border-radius: 12px;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
@@ -236,11 +236,15 @@
             gap: 12px;
             font-size: 13px;
             color: $color-text-subtle;
+            flex-wrap: nowrap;
+            padding-right: 14px;
 
             span {
                 display: flex;
                 align-items: center;
                 gap: 4px;
+                white-space: nowrap;
+                flex-shrink: 0;
             }
         }
     }
@@ -477,6 +481,7 @@
         background: rgba(255, 255, 255, 0.2);
         font-size: 13px;
         font-weight: 600;
+        white-space: nowrap;
     }
 
     span:nth-of-type(5) {
@@ -490,6 +495,8 @@
     gap: 6px;
     cursor: help;
     overflow: visible;
+    white-space: nowrap;
+    z-index: 3;
 }
 
 .recipe-zo-value {
@@ -514,51 +521,6 @@
 
 .recipe-zo-value--default {
     color: $color-text;
-}
-
-.recipe-zo-tooltip-content {
-    position: absolute;
-    left: 50%;
-    top: calc(100% + 8px);
-    transform: translateX(-50%);
-    width: min(260px, 70vw);
-    background: $color-white;
-    color: $color-text;
-    border: 1px solid rgba($color-primary, 0.2);
-    border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
-    padding: 10px 12px;
-    font-size: 12px;
-    line-height: 1.5;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    z-index: 10;
-
-    &::after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: -6px;
-        width: 10px;
-        height: 10px;
-        background: $color-white;
-        border-left: 1px solid rgba($color-primary, 0.2);
-        border-top: 1px solid rgba($color-primary, 0.2);
-        transform: translateX(-50%) rotate(45deg);
-    }
-
-    a {
-        color: $color-primary;
-        text-decoration: underline;
-    }
-}
-
-.recipe-zo-badge:hover .recipe-zo-tooltip-content,
-.recipe-zo-badge:focus-within .recipe-zo-tooltip-content {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
 }
 
 .recipe-preview-content {
