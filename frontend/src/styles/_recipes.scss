@@ -198,7 +198,7 @@
 
 .recipe-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
     gap: 20px;
 
     @include respond(md) {
@@ -211,7 +211,7 @@
     background: $color-white;
     border: 1px solid rgba($color-primary, 0.15);
     border-radius: 12px;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
@@ -222,7 +222,7 @@
     }
 
     .recipe-card-header {
-        padding: 16px;
+        padding: 16px 24px 16px 16px;
         border-bottom: 1px solid rgba($color-primary, 0.08);
 
         h3 {
@@ -236,11 +236,45 @@
             gap: 12px;
             font-size: 13px;
             color: $color-text-subtle;
+            flex-wrap: wrap;
+            row-gap: 6px;
+            padding-right: 10px;
+            min-width: 0;
 
-            span {
+            > span {
                 display: flex;
                 align-items: center;
                 gap: 4px;
+                white-space: nowrap;
+            }
+
+            .recipe-time,
+            .recipe-servings,
+            .recipe-zo-badge {
+                flex: 0 0 auto;
+            }
+
+            .recipe-time {
+                order: 1;
+            }
+
+            .recipe-servings {
+                order: 2;
+            }
+
+            .recipe-zo-badge {
+                order: 3;
+                margin-left: auto;
+            }
+
+            .recipe-ingredient-btw {
+                order: 4;
+                flex: 0 0 100%;
+                overflow: visible;
+                text-overflow: unset;
+                white-space: nowrap;
+                line-height: 1.25;
+                display: block;
             }
         }
     }
@@ -468,8 +502,9 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    padding-right: 18px;
 
-    span {
+    > span {
         display: inline-flex;
         align-items: center;
         padding: 6px 10px;
@@ -477,11 +512,43 @@
         background: rgba(255, 255, 255, 0.2);
         font-size: 13px;
         font-weight: 600;
+        white-space: nowrap;
     }
 
-    span:nth-of-type(4) {
+    > span:nth-of-type(5) {
         margin-left: auto;
     }
+}
+
+.recipe-zo-badge {
+    font-weight: 600;
+    white-space: nowrap;
+    margin-left: auto;
+    margin-right: 8px;
+}
+
+.recipe-zo-value {
+    font-weight: 800;
+}
+
+.recipe-zo-value--ideal {
+    color: #22c55e;
+}
+
+.recipe-zo-value--good {
+    color: #84cc16;
+}
+
+.recipe-zo-value--average {
+    color: #f59e0b;
+}
+
+.recipe-zo-value--poor {
+    color: #ef4444;
+}
+
+.recipe-zo-value--default {
+    color: $color-text;
 }
 
 .recipe-preview-content {

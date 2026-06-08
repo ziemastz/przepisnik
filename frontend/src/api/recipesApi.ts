@@ -31,6 +31,8 @@ export interface NutritionalValuesResponse {
     carbohydrates: number;  
 }
 
+export type ZoRating = 'IDEAL' | 'GOOD' | 'AVERAGE' | 'POOR';
+
 export interface IngredientAmountResponse {
     name: string;
     quantity: string | number;
@@ -51,6 +53,8 @@ export interface RecipeResponse {
     ingredients: IngredientAmountResponse[];
     nutritionalValues: NutritionalValuesResponse;
     nutritionalValuesPerProtein: NutritionalValuesResponse;
+    zo: number;
+    zoRating: ZoRating;
 }
 
 export const recipesApi = {

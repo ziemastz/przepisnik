@@ -57,6 +57,8 @@ const sampleRecipe: RecipeResponse = {
         fat: 0,
         carbohydrates: 0,
     },
+    zo: 72.5,
+    zoRating: 'GOOD',
 };
 
 describe('RecipePreviewPage', () => {
@@ -98,6 +100,12 @@ describe('RecipePreviewPage', () => {
         expect(screen.getByText('Wymieszaj skladniki i piecz przez 45 minut.')).toBeInTheDocument();
         expect(screen.getByText(/Autor:\s*anna/)).toBeInTheDocument();
         expect(screen.getByText(new RegExp(`${constants.recipes.list.createdPrefix}`))).toBeInTheDocument();
+        expect(
+            screen.getByText((_content, element) =>
+                !!element?.classList.contains('recipe-zo-value') &&
+                !!element.textContent?.includes(`${constants.recipes.preview.zoPrefix}: 72.5%`),
+            ),
+        ).toBeInTheDocument();
 
         await waitFor(() => {
             expect(screen.getByText(/B: 10.13g T: 2g W: 75.5g/)).toBeInTheDocument();

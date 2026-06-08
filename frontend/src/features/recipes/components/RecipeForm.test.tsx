@@ -51,6 +51,8 @@ describe('RecipeForm', () => {
                 fat: 0,
                 carbohydrates: 0,
             },
+            zo: 70,
+            zoRating: 'GOOD',
         };
 
         render(<RecipeForm initialData={initialData} onSubmit={onSubmit} />);

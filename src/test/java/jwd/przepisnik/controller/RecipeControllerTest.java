@@ -70,6 +70,14 @@ class RecipeControllerTest {
                                 .when(nutritionalValuesService.calculatePerProtein(
                                                 org.mockito.ArgumentMatchers.any()))
                                 .thenReturn(zeroNutrition);
+                org.mockito.Mockito.lenient()
+                                .when(nutritionalValuesService.calculateZo(
+                                                org.mockito.ArgumentMatchers.any()))
+                                .thenReturn(java.math.BigDecimal.ZERO);
+                org.mockito.Mockito.lenient()
+                                .when(nutritionalValuesService.evaluateZo(
+                                                org.mockito.ArgumentMatchers.any()))
+                                .thenReturn(jwd.przepisnik.web.response.ZoRating.POOR);
 
                 mockMvc = MockMvcBuilders
                                 .standaloneSetup(new RecipeController(recipeService,
@@ -143,7 +151,9 @@ class RecipeControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.success", is(true)))
-                                .andExpect(jsonPath("$.data.author", equalTo("john")));
+                                .andExpect(jsonPath("$.data.author", equalTo("john")))
+                                .andExpect(jsonPath("$.data.zo", equalTo(0)))
+                                .andExpect(jsonPath("$.data.zoRating", equalTo("POOR")));
         }
 
         @Test

@@ -26,7 +26,7 @@ const constants = {
             logout: 'Wyloguj',
             addRecipe: '+ Przepis',
             ingredients: 'Składniki',
-            optimalNutrition: 'Żywienie optymalne',
+            optimalNutrition: 'ŻO',
             login: 'Zaloguj',
             register: 'Zarejestruj',
             welcomePrefix: 'Witaj,',
@@ -114,6 +114,7 @@ const constants = {
             preparationHeading: 'Opis przygotowania',
             formatBTW: (protein: string, fat: string, carbohydrates: string) =>
                 `B: ${protein} T: ${fat} W: ${carbohydrates}`,
+            zoPrefix: 'ŻO',
             backToHome: 'Wróć do listy',
         },
         form: {

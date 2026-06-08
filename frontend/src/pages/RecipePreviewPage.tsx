@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from '../router';
 import { recipesApi, RecipeResponse } from '../api/recipesApi';
-import { uppercaseFirstCharacter, formatMacro } from '../shared/utils/text';
+import { uppercaseFirstCharacter, formatMacro, formatPercent, colorForZoRating } from '../shared/utils/text';
 import constants from '../constants';
 
 const RecipePreviewPage = () => {
@@ -96,6 +96,16 @@ const RecipePreviewPage = () => {
                                 formatMacro(recipe.nutritionalValues.fat),
                                 formatMacro(recipe.nutritionalValues.carbohydrates),
                             )}
+                        </span>
+                        <span
+                            className="recipe-zo-badge"
+                        >
+                            <span
+                                className={`recipe-zo-value ${colorForZoRating(recipe.zoRating)}`}
+                            >
+                                {constants.recipes.preview.zoPrefix}:{' '}
+                                {formatPercent(recipe.zo)}%
+                            </span>
                         </span>
                         <span>
                             {constants.home.authorPrefix} {recipe.author}

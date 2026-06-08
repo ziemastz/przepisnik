@@ -50,6 +50,8 @@ const makeRecipe = (overrides: Partial<RecipeResponse> = {}): RecipeResponse => 
         fat: 0,
         carbohydrates: 0,
     },
+    zo: 70,
+    zoRating: 'GOOD',
     ...overrides,
 });
 

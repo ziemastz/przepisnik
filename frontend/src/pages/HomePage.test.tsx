@@ -40,15 +40,17 @@ const sampleRecipe: RecipeResponse = {
         },
     ],
     nutritionalValues: {
-        protein: 0,
-        fat: 0,
-        carbohydrates: 0,
+        protein: 100,
+        fat: 200,
+        carbohydrates: 300,
     },
     nutritionalValuesPerProtein: {
-        protein: 0,
-        fat: 0,
-        carbohydrates: 0,
+        protein: 10,
+        fat: 20,
+        carbohydrates: 30,
     },
+    zo: 95,
+    zoRating: 'IDEAL',
 };
 
 describe('HomePage', () => {
@@ -81,6 +83,13 @@ describe('HomePage', () => {
         render(<HomePage />);
 
         expect(await screen.findByText('Nalesniki')).toBeInTheDocument();
+        expect(screen.getByText('🧾 B: 10 T: 20 W: 30')).toBeInTheDocument();
+        expect(
+            screen.getByText((_content, element) =>
+                !!element?.classList.contains('recipe-zo-value') &&
+                !!element.textContent?.includes(`${constants.recipes.preview.zoPrefix}: 95%`),
+            ),
+        ).toBeInTheDocument();
         expect(mockedRecipesApi.getPublicRecipes).toHaveBeenCalledWith(undefined);
     });
 
