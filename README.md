@@ -23,6 +23,8 @@ https://przepisnik-web-dmbwcwe2etdke5ge.westeurope-01.azurewebsites.net/
 ## 📌 Opis projektu
 **Przepiśnik** to aplikacja do przechowywania, organizowania i wyszukiwania przepisów kulinarnych.
 
+Projekt został zrealizowany jako praca dyplomowa na kierunku „Java Web Developer” i stanowi praktyczną implementację pełnego procesu wytwarzania aplikacji webowej: od modelu domenowego i warstwy REST API, przez frontend SPA, po testy automatyczne i wdrożenie CI/CD.
+
 Aktualnie zaimplementowane funkcjonalności:
 - rejestracja i logowanie użytkowników (JWT),
 - dodawanie, edycja i usuwanie przepisów,
@@ -43,6 +45,24 @@ Funkcjonalności planowane / w trakcie rozwoju:
 - dalsze rozbudowanie filtrowania i wyszukiwania.
 
 Projekt został zrealizowany w ramach pracy dyplomowej i stanowi praktyczne zastosowanie technologii Java (Spring Boot) oraz React.
+
+---
+
+## 📚 Zakres pracy dyplomowej
+
+Zakres zrealizowany:
+- zaprojektowanie i implementacja warstwowej architektury aplikacji (Controller → Service → Repository → Entity/DTO),
+- implementacja autentykacji i autoryzacji (JWT + Spring Security),
+- model danych dla przepisów, składników i wartości odżywczych,
+- implementacja mechanizmu publicznych i prywatnych przepisów,
+- budowa frontendowego interfejsu SPA z routingiem i formularzami,
+- przygotowanie testów jednostkowych, integracyjnych i komponentowych,
+- konfiguracja pipeline CI (lint/test/build/analiza jakości) oraz wdrożenia na Azure.
+
+Zakres planowany w kolejnych iteracjach:
+- kategoryzacja przepisów,
+- obsługa zdjęć potraw,
+- dalsze rozszerzenie filtrów i wyszukiwania.
 
 ---
 
@@ -73,6 +93,27 @@ Aplikacja składa się z dwóch warstw:
 - **Frontend (SPA)** napisany w React, renderowany po stronie klienta i kompilowany do statycznych plików serwowanych przez Spring Boot
 
 Podejście: architektura warstwowa (Controller → Service → Repository → Entity/DTO)
+
+Kluczowe decyzje architektoniczne:
+- rozdzielenie konfiguracji środowisk (`local`/`prod`) z domyślnym profilem lokalnym,
+- migracje schematu bazy danych przez Flyway,
+- stateless security oparte o JWT,
+- publiczne endpointy tylko dla odczytu danych niechronionych (lista/podgląd publicznych przepisów),
+- automatyczne budowanie frontendu i osadzanie artefaktów w aplikacji Spring Boot.
+
+---
+
+## 🧪 Jakość i testy
+
+Aktualny stan testów:
+- backend: **20 klas testowych**, łącznie **126 testów** (JUnit 5 / Mockito / Spring Test),
+- frontend: **26 plików testowych** (Jest / React Testing Library),
+- dodatkowo test walidujący zgodność Flyway + Hibernate dla PostgreSQL uruchamiany w CI.
+
+Walidacja jakości:
+- analiza jakości i pokrycia kodu przez SonarCloud,
+- linting i formatowanie frontendu (ESLint + Prettier),
+- automatyczny build i testy w GitHub Actions.
 
 ---
 
