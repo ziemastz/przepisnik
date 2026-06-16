@@ -1,6 +1,6 @@
 # 🥘 Przepiśnik
 
-Aplikacja webowa do zarządzania przepisami kulinarnymi z wbudowanym kalkulatorem wartości odżywczych (B/T/W)
+Aplikacja webowa do zarządzania przepisami kulinarnymi z obliczaniem wartości odżywczych (B/T/W) i wskaźnika ŻO
 
 **Praca dyplomowa — studia podyplomowe „Java Web Developer”**
 
@@ -21,21 +21,26 @@ https://przepisnik-web-dmbwcwe2etdke5ge.westeurope-01.azurewebsites.net/
 ---
 
 ## 📌 Opis projektu
-**Przepiśnik** to aplikacja, która pozwala na łatwe przechowywanie, organizowanie i wyszukiwanie przepisów kulinarnych. 
+**Przepiśnik** to aplikacja do przechowywania, organizowania i wyszukiwania przepisów kulinarnych.
 
 Aktualnie zaimplementowane funkcjonalności:
 - rejestracja i logowanie użytkowników (JWT),
-- dodawanie własnych przepisów,
-- edycja i usuwanie istniejących przepisów,
+- dodawanie, edycja i usuwanie przepisów,
 - lista „Moje przepisy” dla zalogowanego użytkownika,
-- zarządzanie składnikami przepisu (nazwa, ilość, jednostka),
-- podpowiedzi składników (endpoint wyszukiwania składników),- **strona główna z listą publicznych przepisów i wyszukiwarką** (bez logowania),- obsługa błędów i walidacji po stronie backendu i frontendu.
+- obsługa przepisów publicznych i prywatnych,
+- publiczna strona główna z wyszukiwarką przepisów (`GET /api/recipes/public`),
+- publiczny podgląd szczegółów przepisu (`GET /api/recipes/public/{id}`),
+- zarządzanie składnikami (CRUD), wyszukiwarka i paginacja listy składników,
+- podpowiedzi składników podczas tworzenia/edycji przepisu,
+- automatyczne wyliczanie wartości odżywczych B/T/W dla składników i całego przepisu,
+- wyliczanie wskaźnika ŻO oraz oceny (IDEAL/GOOD/AVERAGE/POOR),
+- dedykowana strona informacyjna „Zasady żywienia optymalnego”,
+- obsługa błędów i walidacji po stronie backendu i frontendu.
 
 Funkcjonalności planowane / w trakcie rozwoju:
-- kalkulator wartości odżywczych (B/T/W),
 - kategorie przepisów,
 - zdjęcia potraw,
-- rozbudowane wyszukiwanie i filtrowanie przepisów.
+- dalsze rozbudowanie filtrowania i wyszukiwania.
 
 Projekt został zrealizowany w ramach pracy dyplomowej i stanowi praktyczne zastosowanie technologii Java (Spring Boot) oraz React.
 
@@ -45,15 +50,15 @@ Projekt został zrealizowany w ramach pracy dyplomowej i stanowi praktyczne zast
 
 | Warstwa        | Zastosowane technologie |
 |----------------|------------------------|
-| 🔙 Backend    | Java 25, Spring Boot, Spring Web, Spring Data JPA, Hibernate, Flyway |
-| 🎨 Frontend       | React (TypeScript/JavaScript) |
+| 🔙 Backend    | Java 25, Spring Boot 3.5, Spring Web, Spring Data JPA, Hibernate, Flyway |
+| 🎨 Frontend       | React 19 + TypeScript, React Router |
 | 🗄️ Baza danych    | H2 (local/test), PostgreSQL (prod) |
 | 🔐 Bezpieczeństwo | Spring Security, JWT Authentication |
-| ⚙️ Budowanie      | Maven, npm |
-| 🧪 Testy | React Testing Library, Jest, Mockito, JUnit 5| 
+| ⚙️ Budowanie      | Maven, npm, frontend-maven-plugin |
+| 🧪 Testy | JUnit 5, Mockito, Spring Test, Testcontainers, React Testing Library, Jest |
 | 📊 Analiza jakości kodu | SonarCloud |
 | 🧹 Formatowanie & Linting| ESLint, Prettier|
-| 🚀 CI/CD          | GitHub Actions, SonarCloud Scan, Azure Web App Deployment |
+| 🚀 CI/CD          | GitHub Actions, SonarCloud Scan, Azure Web App Deployment, walidacja Flyway + Hibernate na PostgreSQL |
 | 🎨 UI | własne style CSS/SCSS, FontAwesome |
 | 📦 Kontrola wersji| Git, GitHub |
 | 🧰 Narzędzia developerskie | Visual Studio Code, IntelliJ IDEA |
@@ -73,24 +78,26 @@ Podejście: architektura warstwowa (Controller → Service → Repository → En
 
 ## 🚧 Postęp prac (to-do / done)
 
-Stan na 2026-04-15
+Stan na 2026-06-16
 
 | Etap | Opis | Status |
 |------|------|--------|
 | Utworzenie repozytorium projektu i README.md | Założenie repo i wstępny opis projektu | ✅ Zrobione |
 | Utworzenie aplikacji Spring Boot | Dodanie podstawowych modułów (Web, JPA, Security, Validation) | ✅ Zrobione |
-| Konfiguracja baz danych | Modele, repozytoria, migracje Flyway (V1, V2) | ✅ Zrobione |
+| Konfiguracja baz danych | Modele, repozytoria, migracje Flyway (V1-V6), profile local/prod | ✅ Zrobione |
 | Stworzenie podstawowego CRUD (przepisy) | Endpoints REST + testy kontrolerów i serwisów | ✅ Zrobione |
 | Dodanie logowania i rejestracji użytkownika | Spring Security + JWT | ✅ Zrobione |
 | Konfiguracja GitHub Actions (CI) | Automatyczne budowanie projektu, Integracja CI z SonarCloud | ✅ Zrobione |
-| Publikacja backendu na Azure | Azure Web App / Azure Spring Apps | ✅ Zrobione |
-| Stworzenie projektu React | Inicjalizacja projektu + routing + podstawowe widoki auth i przepisy | ✅ Zrobione |
-| Integracja backend ↔ frontend | Integracja API (auth, user, recipes, ingredients) | ✅ Zrobione |
+| Publikacja aplikacji na Azure | Build i deploy artefaktu JAR do Azure Web App | ✅ Zrobione |
+| Stworzenie projektu React | Inicjalizacja projektu + routing + widoki auth, przepisy, składniki | ✅ Zrobione |
+| Integracja backend ↔ frontend | Integracja API (auth, user, recipes, ingredients, public recipes) | ✅ Zrobione |
 | Budowanie frontendu wewnątrz Spring Boot | Włączenie React `npm build` → `static/` w Spring | ✅ Zrobione |
 | Testy automatyczne | Testy backendu (JUnit/Mockito) i frontendu (Jest/RTL) | ✅ Zrobione |
-| Strona główna z wyszukiwarką | Publiczny endpoint `GET /api/recipes/public`, strona główna z kartami przepisów i wyszukiwarką | ✅ Zrobione |
-| Finalne testy i optymalizacje UX/UI | Dopracowanie strony głównej i warstwy wizualnej | ⏳ |
-| Funkcje rozszerzone | B/T/W, kategorie, zdjęcia, rozbudowane wyszukiwanie | ⬜ |
+| Publiczna część aplikacji | `GET /api/recipes/public` + `GET /api/recipes/public/{id}`, strona główna i podgląd przepisu bez logowania | ✅ Zrobione |
+| Moduł składników | Lista, wyszukiwarka, paginacja, CRUD + podpowiedzi składników | ✅ Zrobione |
+| Wartości odżywcze | B/T/W per składnik i per przepis + wskaźnik ŻO i ocena | ✅ Zrobione |
+| Finalne testy i optymalizacje UX/UI | Dopracowanie interfejsu i flow użytkownika | ⏳ |
+| Funkcje rozszerzone | Kategorie, zdjęcia, dalsze filtry i wyszukiwanie | ⬜ |
 | Dokumentacja do pracy dyplomowej | Opis architektury, technologii, wniosków | ⏳ |
 
 Legenda:  
@@ -117,6 +124,13 @@ cd przepisnik
 # Uruchomienie backendu na profilu lokalnym (H2)
 mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
+
+Domyślny profil aplikacji to `local` (H2). W środowisku produkcyjnym należy ustawić:
+
+```bash
+SPRING_PROFILES_ACTIVE=prod
+```
+
 Frontend znajduje się w folderze `/frontend`:
 ```bash
 # Uruchamianie aplikacji frontend (React.js)
